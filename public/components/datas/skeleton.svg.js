@@ -1,0 +1,15 @@
+/////////////////////////////////////////////////////////////////////////
+//          SKELETON SVG
+/////////////////////////////////////////////////////////////////////////
+
+(function (_) {
+
+
+    _.svg = {
+        method:{},
+        // Global olarak istendiğinde erişileilecek methodların listesi
+        globals:{},
+        matrix:null
+    }
+    
+})(SkeletonAction);

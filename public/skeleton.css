@@ -1,0 +1,98 @@
+  
+  
+  
+  .skeleton-popup-modal-shadow{
+                 background-color:rgba(0,0,0,.4);
+                 position: fixed;
+                 left:0; right:0; top:0; bottom:0;
+             }
+
+             .skeleton-popup-modal{
+                 position: fixed;
+                 background-color:white;
+                 left:50%;
+                 top:50%;
+                 transform:translate(-50%,-50%);
+                 border: 2px solid #fff;
+                 padding: 0;
+                 box-shadow: 3px 3px 17px -3px #000;
+                 animation:skeleton-popup-modal .5s forwards;
+             }
+             @keyframes skeleton-popup-modal{
+                 from{
+                        opacity:0;
+                 }
+                 to{
+                     opacity:1;
+                 }
+             }
+
+                #modalpage *{
+                    box-sizing:border-box;
+                }
+                 #modalpage .bheader{
+                    font-size:17px;
+                    color: white;
+                    background: #009dd2;
+                    margin: 0;
+                    padding: 19px;
+                }
+                #modalpage .btitle{
+                    font-size:15px;
+                    color:#555;
+                    margin: 0;
+                    padding: 7px;
+                    background-color: #eee;
+                }
+
+                #modalpage tr{
+
+                }
+
+                #modalpage hr{
+                border: 0;
+                height: 1px;
+                background: #eee;
+                margin: 7px 0 10px;
+            }
+              #modalpage b{
+                display:block;
+              }
+
+               #modalpage-content{
+                   max-height:400px;
+                   overflow: hidden;
+                   overflow-y:auto;
+                   border:1px solid #ddd;
+                   padding:5px;
+                   margin:5px 0;
+               }
+                #modalpage input[type=text],
+                #modalpage input[type=number]{
+                    width:100%;
+                    padding:10px;
+                }
+
+                #modalpage td{padding: 10px 0;}
+                #modalpage{
+                    font-family: arial;
+                    color: #444;
+                    font-size: 14px;
+                    padding: 18px;
+                }
+
+                #modalpage input[type=button]{
+                    width: 100%;
+                    padding: 13px;
+                    font-weight: bold;
+                    font-size: 16px;
+                    border-radius: 4px;
+                    background: #009dd2;
+                    color:white;
+                    border: 1px solid #ddd;
+                    /* outline: none; */
+                }
+
+
+
+        
