@@ -45,7 +45,7 @@
                 });
 
                 // Sınıfları ata
-                clone.setClass(['path2', 'svg_mini']);
+                clone.setClass('path2', 'svg_mini');
 
                 // ID değerine ait bırakılabilecek tüm pathleri bul ve renklendir
                 var isAllow = pathMethod.findAllowPath(butonID);
@@ -67,7 +67,7 @@
 
                 // Sürükleme esnasında, eğer geçerli alanlar yoksa kullanıcıya uyarı bilgisi verelim
                 if (!isAllow) {
-                    console.log(tooltip);
+                    
                     tooltip.message('Bırakabileceğiniz geçerli bir alan bulunamadı');
                     tooltip.container.setClass('no-animate');
 

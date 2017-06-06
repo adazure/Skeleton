@@ -722,6 +722,7 @@ var SkeletonAction = (function (_) {
 
         var global = _.globalWindowEvents;
 
+        var inc = {};
 
         //....................................................................................
 
@@ -753,21 +754,9 @@ var SkeletonAction = (function (_) {
 
 
             // Methodları aktaralım
-            self.wrap = wrap;
-            self.create = create;
-            self.append = append;
-            self.insert = insert;
-            self.remove = remove;
-            self.setClass = setClass;
-            self.remClass = remClass;
-            self.setBind = setBind;
-            self.remBind = remBind;
-            self.setCSS = setCSS;
-            self.setCSSChildren = setCSSChildren;
-            self.setVal = setVal;
-            self.setSheet = setSheet;
-            self.setHTML = setHTML;
-            self.setChecked = setChecked;
+            Object.keys(inc).forEach(function (ky) {
+                self[ky] = inc[ky];
+            });
 
             return self;
         }
@@ -780,7 +769,7 @@ var SkeletonAction = (function (_) {
         // oluşturduğu bu elementin içinde target'deki oluşturulan nesneyi ekler. 
         // Kısaca target nesnesini başka bir nesne içine ekler/kapsar
         // <div>{target}</div>
-        function wrap(name, attr) {
+        inc.wrap = function (name, attr) {
             var t = new coll(name, attr);
             t.target.appendChild(this.target);
             return this;
@@ -795,7 +784,7 @@ var SkeletonAction = (function (_) {
 
 
         // .create(..) şeklinde çağırıldığında parent'deki nesneye name ile tanımlı yeni nesne ekler
-        function create(name, attr) {
+        inc.create = function (name, attr) {
             var t = new coll(name, attr);
             this.target.appendChild(t.target);
             return t;
@@ -810,7 +799,7 @@ var SkeletonAction = (function (_) {
 
 
         // .append(..) ile çağırıldığında obj(HTMLElement) ekler
-        function append(obj) {
+        inc.append = function (obj) {
             this.target.appendChild(obj);
             return this;
         }
@@ -824,7 +813,7 @@ var SkeletonAction = (function (_) {
 
 
         // nesnenin kendinisi istenen başka bir nesneye import eder
-        function insert(target) {
+        inc.insert = function (target) {
             target.appendChild(this.target);
             return this;
         }
@@ -838,7 +827,7 @@ var SkeletonAction = (function (_) {
 
 
         // .delete() ile çağırıldığında nesneyi siler
-        function remove() {
+        inc.remove = function () {
             this.target.parentNode.removeChild(this.target);
             return this;
         }
@@ -852,13 +841,12 @@ var SkeletonAction = (function (_) {
 
 
         // Sınıf ekleme
-        function setClass(name) {
-            if (typeof name === 'object') {
-                for (var i = 0; i < name.length; i++)
-                    this.setClass(name[i]);
+        inc.setClass = function (name) {
+
+            for(var i = 0, n = arguments; i < n.length; i++){
+                this.target.setClass(n[i]);
             }
-            else
-                this.target.setClass(name);
+            
             return this;
         }
 
@@ -870,7 +858,7 @@ var SkeletonAction = (function (_) {
 
 
         // Sınıf kaldır
-        function remClass(name) {
+        inc.remClass = function (name) {
             if (this.target.className) {
                 var list = this.target.className.split(' ');
                 if (list.indexOf(name) != -1) {
@@ -890,7 +878,7 @@ var SkeletonAction = (function (_) {
 
 
         // Olay dinleyici atanır
-        function setBind(name, action) {
+        inc.setBind = function (name, action) {
             this.target.setBind(name, action);
             return this;
         }
@@ -904,7 +892,7 @@ var SkeletonAction = (function (_) {
 
 
         // Olay dinleyici kaldırılır
-        function remBind(name, action) {
+        inc.remBind = function (name, action) {
             this.target.remBind(name, action);
             return this;
         }
@@ -918,7 +906,7 @@ var SkeletonAction = (function (_) {
 
 
         // Nesneye style değerleri arguman olarak eklenebilir
-        function setCSS(args) {
+        inc.setCSS = function (args) {
             this.target.setCSS(args);
             return this;
         }
@@ -931,7 +919,7 @@ var SkeletonAction = (function (_) {
 
 
         // Ana nesnenin altında bulunan nesnelere style="" attribute ile style değerleri atar
-        function setCSSChildren(args) {
+        inc.setCSSChildren = function (args) {
 
             for (var i = 0; i < this.target.children.length; i++) {
                 var ch = this.target.children[i];
@@ -951,7 +939,7 @@ var SkeletonAction = (function (_) {
 
 
         // Nesnenin value değerine parametre atar
-        function setVal(value) {
+        inc.setVal = function (value) {
             this.target.value = value;
             return this;
         }
@@ -961,11 +949,33 @@ var SkeletonAction = (function (_) {
         //....................................................................................
 
 
+        // Sayfa üzerinde ilgili nesneyi gösterir
+        inc.show = function () {
+
+            this.target.setCSS('display', 'block');
+
+            return this;
+        }
+
+        //....................................................................................
+
+
+        // Sayfa üzerinde ilgili nesneyi gizler
+        inc.hide = function () {
+
+            this.target.setCSS('display', 'none');
+
+            return this;
+        }
+
+        //....................................................................................
+
+
 
 
         // <Style>...</Style> nesneleri için global style tanımlamaları oluşturur
         // Global olarak 
-        function setSheet(name, value) {
+        inc.setSheet = function (name, value) {
             var self = this;
             if (arguments.length == 2) {
                 if (!name || !value) return self;
@@ -991,7 +1001,7 @@ var SkeletonAction = (function (_) {
 
 
         // Html metin eklemek için
-        function setHTML(value) {
+        inc.setHTML = function (value) {
             this.target.innerHTML = value;
             return this;
         }
@@ -1002,13 +1012,23 @@ var SkeletonAction = (function (_) {
 
 
         // Checkbox ve Radio butonlar için işaretleme yapar
-        function setChecked(param) {
+        inc.setChecked = function (param) {
             this.target.checked = param;
             return this;
         }
 
 
         //....................................................................................
+
+
+        // Style Dosya import etmek için
+        inc.importLink = function (url) {
+            this.target.innerHTML += '@import url(' + url + ');';
+            return this;
+        }
+
+        //....................................................................................
+
 
 
         _.collection.create = coll;
@@ -1032,6 +1052,132 @@ var SkeletonAction = (function (_) {
         parent.window.addEventListener('mousemove', method.move);
 
     });
+
+})(SkeletonAction);
+/////////////////////////////////////////////////////////////////////////
+//          SKELETON TOOLTIP
+/////////////////////////////////////////////////////////////////////////
+
+(function (_) {
+
+
+    _.MODULE(function () {
+
+        _.tooltip = {};
+
+
+    }); // MODULE
+
+})(SkeletonAction);
+/////////////////////////////////////////////////////////////////////////
+//          SKELETON TOOLTIP METHOD
+/////////////////////////////////////////////////////////////////////////
+(function(_){
+
+    _.MODULE(function(){
+
+
+        var tooltip = _.tooltip;
+
+        function message(message, opts) {
+
+            if (!message) return;
+            opts = opts || { x: null, y: null, ev: parent.window.event };
+            tooltip.container.target.setCSS({
+                left: (opts.x || opts.ev.pageX || parent.window.event.pageX) + 'px',
+                top: (opts.y || opts.ev.pageY || parent.window.event.pageY) + 'px'
+            });
+
+            tooltip.container.setHTML(message);
+            show();
+        }
+
+
+        //....................................................................................
+
+
+
+        function show() {
+            tooltip.container.target.setCSS('display', 'block');
+        }
+
+
+
+        //....................................................................................
+
+
+
+        function hide() {
+            tooltip.container.target.setCSS('display', 'none');
+        }
+
+
+
+        //....................................................................................
+
+
+        tooltip.message = message;
+        tooltip.show = show;
+        tooltip.hide = hide;
+
+
+
+    }); // MODULE
+
+})(SkeletonAction);
+/////////////////////////////////////////////////////////////////////////
+//          SKELETON TOOLTIP INIT
+/////////////////////////////////////////////////////////////////////////
+(function (_) {
+
+    _.MODULE(function () {
+
+        var tooltip = _.tooltip;
+        var collection = _.collection.create;
+
+        //....................................................................................
+
+
+        var tool = new collection('div', { id: 'skeleton-tooltip' });
+
+
+        tool.setCSS({
+            position: 'absolute',
+            backgroundColor: '#f9f9d5',
+            borderWidth: '1px',
+            borderStyle: 'solid',
+            borderColor: '#ffd383',
+            borderRadius: '4px',
+            boxShadow: '1px 1px 3px #777',
+            fontSize: '16px',
+            fontFamily: 'Arial',
+            transition: 'all .2s linear',
+            display: 'none',
+            padding: '10px',
+            pointerEvents: 'none',
+            zIndex: 9999
+        });
+
+        tooltip.container = tool;
+
+        tool.insert(parent.document.body);
+
+
+
+        //....................................................................................
+
+        if (!parent.document.getElementById('skeleton-tool-tip-style'))
+            var style = new collection('style', { id: 'skeleton-tool-tip-style' })
+                .setSheet({
+                    '.no-animate': {
+                        transition: 'none !important'
+                    }
+                })
+                .insert(parent.document.body);
+
+
+
+    }); // MODULE
 
 })(SkeletonAction);
 /////////////////////////////////////////////////////////////////////////
@@ -1070,8 +1216,6 @@ var SkeletonAction = (function (_) {
 
 
         //....................................................................................
-
-
 
 
 
@@ -1117,13 +1261,13 @@ var SkeletonAction = (function (_) {
             'path23': { title: 'Proksimal İleum', data: ['icn3', 'icn2', 'icn3'] },
             'path24': { title: 'Distal Jejunum', data: ['icn3', 'icn2', 'icn3'] },
             'path25': { title: 'Proksimal Jejunum', data: ['icn3', 'icn2', 'icn3'] },
-            'path26': { title: '', data: ['icn3', 'icn2', 'icn3'] },
-            'path27': { title: '', data: ['icn3', 'icn2', 'icn3'] },
-            'path28': { title: '', data: ['icn3', 'icn2', 'icn3'] },
+            'path26': { title: '', data: ['cobble_stone', 'icn2', 'icn3'] },
+            'path27': { title: '', data: ['cobble_stone', 'icn2', 'icn3'] },
+            'path28': { title: '', data: ['cobble_stone', 'icn2', 'icn3'] },
             'path29': { title: 'Duedonum 2. Kısım', data: ['ulser_izole'] },
-            'path30': { title: '', data: ['icn3', 'icn2', 'icn3'] },
-            'path31': { title: '', data: ['icn3', 'icn2', 'icn3'] },
-            'path32': { title: '', data: ['icn3', 'icn2', 'icn3'] },
+            'path30': { title: '', data: ['cobble_stone', 'icn2', 'icn3'] },
+            'path31': { title: '', data: ['cobble_stone', 'icn2', 'icn3'] },
+            'path32': { title: '', data: ['cobble_stone', 'icn2', 'icn3'] },
             'path33': { title: 'Distal Sigmoid Kolon', data: ['icn3', 'icn2', 'icn3'] },
             'path34': { title: 'Splenik Fleksura', data: ['icn3', 'icn2', 'icn3'] },
             'path35': { title: 'Distal Çıkan Kolon', data: ['icn3', 'icn2', 'icn3'] },
@@ -1667,7 +1811,8 @@ var SkeletonAction = (function (_) {
             'cobble_stone': {
                 title: "Cobble Stone",
                 section: ['Enteroklizis', 'CiftKontrastKolonGrafi', 'Gastroskopi', 'Kolonoskopi', 'D-Balon', 'Kapsül'],
-                data: 'data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMy4yOSAzMy42OSI+PGRlZnM+PHN0eWxlPi5jbHMtMXtmaWxsOm5vbmU7c3Ryb2tlOiMyMzFmMjA7c3Ryb2tlLW1pdGVybGltaXQ6MTA7c3Ryb2tlLXdpZHRoOjJweDt9PC9zdHlsZT48L2RlZnM+PHRpdGxlPmNvYmJsZSBzdG9uZTwvdGl0bGU+PGxpbmUgY2xhc3M9ImNscy0xIiB4MT0iMTYuMzMiIHgyPSIxNi4zMyIgeTI9IjYuNjMiLz48bGluZSBjbGFzcz0iY2xzLTEiIHgxPSIxNi4zMyIgeTE9IjI3LjA2IiB4Mj0iMTYuMzMiIHkyPSIzMy42OSIvPjxsaW5lIGNsYXNzPSJjbHMtMSIgeDE9IjYuNjMiIHkxPSIxNy4wMyIgeTI9IjE3LjAzIi8+PGxpbmUgY2xhc3M9ImNscy0xIiB4MT0iMzMuMjkiIHkxPSIxNy4wMyIgeDI9IjI2LjY3IiB5Mj0iMTcuMDMiLz48cmVjdCBjbGFzcz0iY2xzLTEiIHg9IjEwMjkuODgiIHk9IjI4Ny4zMyIgd2lkdGg9IjE0LjA4IiBoZWlnaHQ9IjE0LjA4IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtOTI1LjAzIDU0Mi4wOSkgcm90YXRlKC00NSkiLz48L3N2Zz4='
+                data: 'data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMy4yOSAzMy42OSI+PGRlZnM+PHN0eWxlPi5jbHMtMXtmaWxsOm5vbmU7c3Ryb2tlOiMyMzFmMjA7c3Ryb2tlLW1pdGVybGltaXQ6MTA7c3Ryb2tlLXdpZHRoOjJweDt9PC9zdHlsZT48L2RlZnM+PHRpdGxlPmNvYmJsZSBzdG9uZTwvdGl0bGU+PGxpbmUgY2xhc3M9ImNscy0xIiB4MT0iMTYuMzMiIHgyPSIxNi4zMyIgeTI9IjYuNjMiLz48bGluZSBjbGFzcz0iY2xzLTEiIHgxPSIxNi4zMyIgeTE9IjI3LjA2IiB4Mj0iMTYuMzMiIHkyPSIzMy42OSIvPjxsaW5lIGNsYXNzPSJjbHMtMSIgeDE9IjYuNjMiIHkxPSIxNy4wMyIgeTI9IjE3LjAzIi8+PGxpbmUgY2xhc3M9ImNscy0xIiB4MT0iMzMuMjkiIHkxPSIxNy4wMyIgeDI9IjI2LjY3IiB5Mj0iMTcuMDMiLz48cmVjdCBjbGFzcz0iY2xzLTEiIHg9IjEwMjkuODgiIHk9IjI4Ny4zMyIgd2lkdGg9IjE0LjA4IiBoZWlnaHQ9IjE0LjA4IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtOTI1LjAzIDU0Mi4wOSkgcm90YXRlKC00NSkiLz48L3N2Zz4=',
+                urlForPopup:'/modals/cobble.stone.html'
             },
             /**/
             'polip': {
@@ -2227,7 +2372,7 @@ var SkeletonAction = (function (_) {
                 });
 
                 // Sınıfları ata
-                clone.setClass(['path2', 'svg_mini']);
+                clone.setClass('path2', 'svg_mini');
 
                 // ID değerine ait bırakılabilecek tüm pathleri bul ve renklendir
                 var isAllow = pathMethod.findAllowPath(butonID);
@@ -2249,7 +2394,7 @@ var SkeletonAction = (function (_) {
 
                 // Sürükleme esnasında, eğer geçerli alanlar yoksa kullanıcıya uyarı bilgisi verelim
                 if (!isAllow) {
-                    console.log(tooltip);
+                    
                     tooltip.message('Bırakabileceğiniz geçerli bir alan bulunamadı');
                     tooltip.container.setClass('no-animate');
 
@@ -2320,7 +2465,7 @@ var SkeletonAction = (function (_) {
                 overflow: 'hidden',
                 backgroundColor: 'rgb(49, 126, 181)',
                 border: '1px solid rgb(49, 126, 181)',
-                boxShadow: '0px 0px 10px 2px #555',
+                boxShadow: '1px 1px 5px 1px #555',
                 borderRadius: '4px',
                 zIndex: 1000,
                 fontFamily: 'arial',
@@ -2512,7 +2657,7 @@ var SkeletonAction = (function (_) {
                     key: key
                 })
                     // Class
-                    .setClass(['menu-item-img', 'menu-item-locked'])
+                    .setClass('menu-item-img', 'menu-item-locked')
                     // Style
                     .setCSS({
                         width: '20%'
@@ -2697,6 +2842,7 @@ var SkeletonAction = (function (_) {
 
         var method = _.popup.method;
         var popup = _.popup.objects;
+        var coll = _.collection.create;
 
 
 
@@ -2709,7 +2855,36 @@ var SkeletonAction = (function (_) {
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
-                    popup.content.innerHTML = xhttp.responseText;
+
+                    create();
+
+                    var text = xhttp.responseText;
+
+                    // Yüklenen sayfa içerisinde script tag'ı varsa çalıştır
+                    var regex = /<script[^>]*>([^<]*)<\/script>/;
+                    var src = text.match(regex);
+                    text = text.replace(regex, '');
+                    popup.content.setHTML(text);
+                    popup.container.show();
+                    parent.Skeleton.popupmodal = {
+                        content: {
+                            title: '',
+                            url: url,
+                            html: xhttp.responseText
+                        },
+                        accept: accept,
+                        reject: reject,
+                        watch: watch,
+                        close: close
+                    }
+
+                    if (src) {
+                        var _script = new coll('script')
+                            .setHTML(src[1])
+                            .insert(popup.content.target);
+
+                    }
+
                 }
             };
 
@@ -2718,6 +2893,55 @@ var SkeletonAction = (function (_) {
 
         }
 
+
+        //....................................................................................
+
+
+        function create() {
+
+
+            // Popup container 
+            var container = new coll('div', {
+                id: 'skeleton-popup-container'
+            })
+                // Style
+                .setCSS({
+                    backgroundColor: 'rgba(0,0,0,.4)',
+                    position: 'fixed',
+                    left: 0,
+                    right: 0,
+                    top: 0,
+                    bottom: 0,
+                    display: 'none'
+                });
+
+
+            // Popup Content
+            var content = new coll('div', {
+                id: 'skeleton-popup-content'
+            })
+                //.setClass('animated','jello')
+                // Style
+                .setCSS({
+                    position: 'fixed',
+                    backgroundColor: 'white',
+                    left: '50%',
+                    top: '50%',
+                    transform: 'translate(-50%,-50%)',
+                    border: '2px solid #fff',
+                    padding: 0,
+                    boxShadow: '3px 3px 17px -3px #000',
+                    animation: 'skeleton-popup-modal .5s forwards',
+                    minWidth: '500px'
+                });
+
+            popup.container = container;
+            popup.content = content;
+
+            container.target.appendChild(content.target);
+            parent.document.body.appendChild(container.target);
+
+        }
 
 
         //....................................................................................
@@ -2757,8 +2981,11 @@ var SkeletonAction = (function (_) {
 
 
         function close() {
-            if (popup.container)
-                popup.container.parentNode.removeChild(popup.container);
+            if (popup.container) {
+                popup.container.target.parentNode.removeChild(popup.container.target);
+                parent.window.popupmodal = null;
+            }
+
         }
 
 
@@ -2796,52 +3023,6 @@ var SkeletonAction = (function (_) {
 
 
 
-        // Popup container 
-        var container = new collection('div', {
-            id: 'skeleton-popup-container'
-        })
-            // Style
-            .setCSS({
-                backgroundColor: 'rgba(0,0,0,.4)',
-                position: 'fixed',
-                left: 0,
-                right: 0,
-                top: 0,
-                bottom: 0,
-                display: 'none'
-            });
-
-
-
-        //....................................................................................
-
-
-
-
-        // Popup Content
-        var content = new collection('div', {
-            id: 'skeleton-popup-content'
-        })
-            // Style
-            .setCSS({
-                position: 'fixed',
-                backgroundColor: 'white',
-                left: '50%',
-                top: '50%',
-                transform: 'translate(-50%,-50%)',
-                border: '2px solid #fff',
-                padding: 0,
-                boxShadow: '3px 3px 17px -3px #000',
-                animation: 'skeleton-popup-modal .5s forwards'
-            });
-
-
-
-        //....................................................................................
-
-
-
-
         // Ek Style Dosyaları
         var style = new collection('style', {
             id: 'skeleton-popup-style'
@@ -2861,22 +3042,12 @@ var SkeletonAction = (function (_) {
         //....................................................................................
 
 
-
-
-        popup.objects.container = container;
-        popup.objects.content = content;
         popup.objects.style = style;
-
 
 
         //....................................................................................
 
 
-
-
-        // Popup nesnesini sahneye oluştur
-        container.target.appendChild(content.target);
-        parent.document.body.appendChild(container.target);
         parent.document.body.appendChild(style.target);
 
     }); // MODULE
@@ -3020,7 +3191,6 @@ var SkeletonAction = (function (_) {
 
 
 
-
                         //İlgili Menu butonuna ait açılması gereken bir popup varsa açtırıyoruz
                         if (menu.data[moveItemKey].urlForPopup) {
                             var url = menu.data[moveItemKey].urlForPopup;
@@ -3140,130 +3310,21 @@ var SkeletonAction = (function (_) {
     }); // MODULE
 
 })(SkeletonAction);
-/////////////////////////////////////////////////////////////////////////
-//          SKELETON TOOLTIP
-/////////////////////////////////////////////////////////////////////////
-
 (function (_) {
-
-
-    _.MODULE(function () {
-
-        _.tooltip = {};
-
-
-    }); // MODULE
-
-})(SkeletonAction);
-/////////////////////////////////////////////////////////////////////////
-//          SKELETON TOOLTIP METHOD
-/////////////////////////////////////////////////////////////////////////
-(function(_){
-
+    
     _.MODULE(function(){
 
 
-        var tooltip = _.tooltip;
+        //var coll = _.collection.create;
+        //var style = new coll('style',{id:'skeleton-app-styles'});
 
-        function message(message, opts) {
-
-            if (!message) return;
-            opts = opts || { x: null, y: null, ev: parent.window.event };
-            tooltip.container.target.setCSS({
-                left: (opts.x || opts.ev.pageX || parent.window.event.pageX) + 'px',
-                top: (opts.y || opts.ev.pageY || parent.window.event.pageY) + 'px'
-            });
-
-            tooltip.container.setHTML(message);
-            show();
-        }
+       // style.importLink('https://raw.github.com/daneden/animate.css/master/animate.css');
 
 
-        //....................................................................................
-
-
-
-        function show() {
-            tooltip.container.target.setCSS('display', 'block');
-        }
-
-
-
-        //....................................................................................
-
-
-
-        function hide() {
-            tooltip.container.target.setCSS('display', 'none');
-        }
-
-
-
-        //....................................................................................
-
-
-        tooltip.message = message;
-        tooltip.show = show;
-        tooltip.hide = hide;
-
-
+        //style.insert(parent.document.body);
 
     }); // MODULE
 
-})(SkeletonAction);
-/////////////////////////////////////////////////////////////////////////
-//          SKELETON TOOLTIP INIT
-/////////////////////////////////////////////////////////////////////////
-(function (_) {
-
-    _.MODULE(function () {
-
-        var tooltip = _.tooltip;
-        var collection = _.collection.create;
-
-        //....................................................................................
-
-
-        var tool = new collection('div', { id: 'skeleton-tooltip' });
-
-
-        tool.setCSS({
-            position: 'absolute',
-            backgroundColor: '#f9f9d5',
-            borderWidth: '1px',
-            borderStyle: 'solid',
-            borderColor: '#ffd383',
-            borderRadius: '4px',
-            boxShadow: '1px 1px 3px #777',
-            fontSize: '16px',
-            fontFamily: 'Arial',
-            transition: 'all .2s linear',
-            display: 'none',
-            padding: '10px',
-            pointerEvents: 'none',
-            zIndex: 9999
-        });
-
-        tooltip.container = tool;
-
-        tool.insert(parent.document.body);
-
-
-
-        //....................................................................................
-
-        if (!parent.document.getElementById('skeleton-tool-tip-style'))
-            var style = new collection('style', { id: 'skeleton-tool-tip-style' })
-                .setSheet({
-                    '.no-animate': {
-                        transition: 'none !important'
-                    }
-                })
-                .insert(parent.document.body);
-
-
-
-    }); // MODULE
 
 })(SkeletonAction);
 /////////////////////////////////////////////////////////////////////////

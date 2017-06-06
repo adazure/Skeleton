@@ -8,6 +8,7 @@
 
         var method = _.popup.method;
         var popup = _.popup.objects;
+        var coll = _.collection.create;
 
 
 
@@ -20,7 +21,36 @@
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
-                    popup.content.innerHTML = xhttp.responseText;
+
+                    create();
+
+                    var text = xhttp.responseText;
+
+                    // Yüklenen sayfa içerisinde script tag'ı varsa çalıştır
+                    var regex = /<script[^>]*>([^<]*)<\/script>/;
+                    var src = text.match(regex);
+                    text = text.replace(regex, '');
+                    popup.content.setHTML(text);
+                    popup.container.show();
+                    parent.Skeleton.popupmodal = {
+                        content: {
+                            title: '',
+                            url: url,
+                            html: xhttp.responseText
+                        },
+                        accept: accept,
+                        reject: reject,
+                        watch: watch,
+                        close: close
+                    }
+
+                    if (src) {
+                        var _script = new coll('script')
+                            .setHTML(src[1])
+                            .insert(popup.content.target);
+
+                    }
+
                 }
             };
 
@@ -29,6 +59,55 @@
 
         }
 
+
+        //....................................................................................
+
+
+        function create() {
+
+
+            // Popup container 
+            var container = new coll('div', {
+                id: 'skeleton-popup-container'
+            })
+                // Style
+                .setCSS({
+                    backgroundColor: 'rgba(0,0,0,.4)',
+                    position: 'fixed',
+                    left: 0,
+                    right: 0,
+                    top: 0,
+                    bottom: 0,
+                    display: 'none'
+                });
+
+
+            // Popup Content
+            var content = new coll('div', {
+                id: 'skeleton-popup-content'
+            })
+                //.setClass('animated','jello')
+                // Style
+                .setCSS({
+                    position: 'fixed',
+                    backgroundColor: 'white',
+                    left: '50%',
+                    top: '50%',
+                    transform: 'translate(-50%,-50%)',
+                    border: '2px solid #fff',
+                    padding: 0,
+                    boxShadow: '3px 3px 17px -3px #000',
+                    animation: 'skeleton-popup-modal .5s forwards',
+                    minWidth: '500px'
+                });
+
+            popup.container = container;
+            popup.content = content;
+
+            container.target.appendChild(content.target);
+            parent.document.body.appendChild(container.target);
+
+        }
 
 
         //....................................................................................
@@ -68,8 +147,11 @@
 
 
         function close() {
-            if (popup.container)
-                popup.container.parentNode.removeChild(popup.container);
+            if (popup.container) {
+                popup.container.target.parentNode.removeChild(popup.container.target);
+                parent.window.popupmodal = null;
+            }
+
         }
 
 

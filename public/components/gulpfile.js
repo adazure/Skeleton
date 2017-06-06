@@ -36,6 +36,7 @@ var data = [
         path + 'skeleton.popup.methods.js',
         path + 'skeleton.popup.init.js',
         path + 'skeleton.methods.js',
+        path + 'skeleton.styles.js',
         path + 'skeleton.init.js'
     ];
 

@@ -9,6 +9,7 @@
 
         var global = _.globalWindowEvents;
 
+        var inc = {};
 
         //....................................................................................
 
@@ -40,21 +41,9 @@
 
 
             // Methodları aktaralım
-            self.wrap = wrap;
-            self.create = create;
-            self.append = append;
-            self.insert = insert;
-            self.remove = remove;
-            self.setClass = setClass;
-            self.remClass = remClass;
-            self.setBind = setBind;
-            self.remBind = remBind;
-            self.setCSS = setCSS;
-            self.setCSSChildren = setCSSChildren;
-            self.setVal = setVal;
-            self.setSheet = setSheet;
-            self.setHTML = setHTML;
-            self.setChecked = setChecked;
+            Object.keys(inc).forEach(function (ky) {
+                self[ky] = inc[ky];
+            });
 
             return self;
         }
@@ -67,7 +56,7 @@
         // oluşturduğu bu elementin içinde target'deki oluşturulan nesneyi ekler. 
         // Kısaca target nesnesini başka bir nesne içine ekler/kapsar
         // <div>{target}</div>
-        function wrap(name, attr) {
+        inc.wrap = function (name, attr) {
             var t = new coll(name, attr);
             t.target.appendChild(this.target);
             return this;
@@ -82,7 +71,7 @@
 
 
         // .create(..) şeklinde çağırıldığında parent'deki nesneye name ile tanımlı yeni nesne ekler
-        function create(name, attr) {
+        inc.create = function (name, attr) {
             var t = new coll(name, attr);
             this.target.appendChild(t.target);
             return t;
@@ -97,7 +86,7 @@
 
 
         // .append(..) ile çağırıldığında obj(HTMLElement) ekler
-        function append(obj) {
+        inc.append = function (obj) {
             this.target.appendChild(obj);
             return this;
         }
@@ -111,7 +100,7 @@
 
 
         // nesnenin kendinisi istenen başka bir nesneye import eder
-        function insert(target) {
+        inc.insert = function (target) {
             target.appendChild(this.target);
             return this;
         }
@@ -125,7 +114,7 @@
 
 
         // .delete() ile çağırıldığında nesneyi siler
-        function remove() {
+        inc.remove = function () {
             this.target.parentNode.removeChild(this.target);
             return this;
         }
@@ -139,13 +128,12 @@
 
 
         // Sınıf ekleme
-        function setClass(name) {
-            if (typeof name === 'object') {
-                for (var i = 0; i < name.length; i++)
-                    this.setClass(name[i]);
+        inc.setClass = function (name) {
+
+            for(var i = 0, n = arguments; i < n.length; i++){
+                this.target.setClass(n[i]);
             }
-            else
-                this.target.setClass(name);
+            
             return this;
         }
 
@@ -157,7 +145,7 @@
 
 
         // Sınıf kaldır
-        function remClass(name) {
+        inc.remClass = function (name) {
             if (this.target.className) {
                 var list = this.target.className.split(' ');
                 if (list.indexOf(name) != -1) {
@@ -177,7 +165,7 @@
 
 
         // Olay dinleyici atanır
-        function setBind(name, action) {
+        inc.setBind = function (name, action) {
             this.target.setBind(name, action);
             return this;
         }
@@ -191,7 +179,7 @@
 
 
         // Olay dinleyici kaldırılır
-        function remBind(name, action) {
+        inc.remBind = function (name, action) {
             this.target.remBind(name, action);
             return this;
         }
@@ -205,7 +193,7 @@
 
 
         // Nesneye style değerleri arguman olarak eklenebilir
-        function setCSS(args) {
+        inc.setCSS = function (args) {
             this.target.setCSS(args);
             return this;
         }
@@ -218,7 +206,7 @@
 
 
         // Ana nesnenin altında bulunan nesnelere style="" attribute ile style değerleri atar
-        function setCSSChildren(args) {
+        inc.setCSSChildren = function (args) {
 
             for (var i = 0; i < this.target.children.length; i++) {
                 var ch = this.target.children[i];
@@ -238,7 +226,7 @@
 
 
         // Nesnenin value değerine parametre atar
-        function setVal(value) {
+        inc.setVal = function (value) {
             this.target.value = value;
             return this;
         }
@@ -248,11 +236,33 @@
         //....................................................................................
 
 
+        // Sayfa üzerinde ilgili nesneyi gösterir
+        inc.show = function () {
+
+            this.target.setCSS('display', 'block');
+
+            return this;
+        }
+
+        //....................................................................................
+
+
+        // Sayfa üzerinde ilgili nesneyi gizler
+        inc.hide = function () {
+
+            this.target.setCSS('display', 'none');
+
+            return this;
+        }
+
+        //....................................................................................
+
+
 
 
         // <Style>...</Style> nesneleri için global style tanımlamaları oluşturur
         // Global olarak 
-        function setSheet(name, value) {
+        inc.setSheet = function (name, value) {
             var self = this;
             if (arguments.length == 2) {
                 if (!name || !value) return self;
@@ -278,7 +288,7 @@
 
 
         // Html metin eklemek için
-        function setHTML(value) {
+        inc.setHTML = function (value) {
             this.target.innerHTML = value;
             return this;
         }
@@ -289,13 +299,23 @@
 
 
         // Checkbox ve Radio butonlar için işaretleme yapar
-        function setChecked(param) {
+        inc.setChecked = function (param) {
             this.target.checked = param;
             return this;
         }
 
 
         //....................................................................................
+
+
+        // Style Dosya import etmek için
+        inc.importLink = function (url) {
+            this.target.innerHTML += '@import url(' + url + ');';
+            return this;
+        }
+
+        //....................................................................................
+
 
 
         _.collection.create = coll;

@@ -15,8 +15,6 @@
 
 
 
-
-
         // Sahne üzerinde bulunan path nesnelerinin alabilecekleri menulist parametrelerini burada tanımlıyoruz
         // keyname : sahne üzerinde yer alan path/rect/circle gibi herhangi tanımlanmış nesnenin ID bilgisini içerir. Benzersiz bir ad olmalı.
         // keyname.title : fare ile nesne üzerine gelindiğinde gösterilecek metin
@@ -59,13 +57,13 @@
             'path23': { title: 'Proksimal İleum', data: ['icn3', 'icn2', 'icn3'] },
             'path24': { title: 'Distal Jejunum', data: ['icn3', 'icn2', 'icn3'] },
             'path25': { title: 'Proksimal Jejunum', data: ['icn3', 'icn2', 'icn3'] },
-            'path26': { title: '', data: ['icn3', 'icn2', 'icn3'] },
-            'path27': { title: '', data: ['icn3', 'icn2', 'icn3'] },
-            'path28': { title: '', data: ['icn3', 'icn2', 'icn3'] },
+            'path26': { title: '', data: ['cobble_stone', 'icn2', 'icn3'] },
+            'path27': { title: '', data: ['cobble_stone', 'icn2', 'icn3'] },
+            'path28': { title: '', data: ['cobble_stone', 'icn2', 'icn3'] },
             'path29': { title: 'Duedonum 2. Kısım', data: ['ulser_izole'] },
-            'path30': { title: '', data: ['icn3', 'icn2', 'icn3'] },
-            'path31': { title: '', data: ['icn3', 'icn2', 'icn3'] },
-            'path32': { title: '', data: ['icn3', 'icn2', 'icn3'] },
+            'path30': { title: '', data: ['cobble_stone', 'icn2', 'icn3'] },
+            'path31': { title: '', data: ['cobble_stone', 'icn2', 'icn3'] },
+            'path32': { title: '', data: ['cobble_stone', 'icn2', 'icn3'] },
             'path33': { title: 'Distal Sigmoid Kolon', data: ['icn3', 'icn2', 'icn3'] },
             'path34': { title: 'Splenik Fleksura', data: ['icn3', 'icn2', 'icn3'] },
             'path35': { title: 'Distal Çıkan Kolon', data: ['icn3', 'icn2', 'icn3'] },

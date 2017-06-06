@@ -27,7 +27,7 @@
                 overflow: 'hidden',
                 backgroundColor: 'rgb(49, 126, 181)',
                 border: '1px solid rgb(49, 126, 181)',
-                boxShadow: '0px 0px 10px 2px #555',
+                boxShadow: '1px 1px 5px 1px #555',
                 borderRadius: '4px',
                 zIndex: 1000,
                 fontFamily: 'arial',
@@ -219,7 +219,7 @@
                     key: key
                 })
                     // Class
-                    .setClass(['menu-item-img', 'menu-item-locked'])
+                    .setClass('menu-item-img', 'menu-item-locked')
                     // Style
                     .setCSS({
                         width: '20%'
