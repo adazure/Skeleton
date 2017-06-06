@@ -33,14 +33,18 @@
                     popup.content.setHTML(text);
                     popup.container.show();
                     parent.Skeleton.popupmodal = {
+                        // Popup ile ilgili veriler
                         content: {
                             title: '',
                             url: url,
                             html: xhttp.responseText
                         },
+                        // Kaydet/onayla butonuna basıldığında işletilecek
                         accept: accept,
+                        // Sayfadan çıkıldığında/iptal edildiğinde çalıştırılacak method
                         reject: reject,
                         watch: watch,
+                        // Popup pencereyi kapatmak için kullanılmaktadır
                         close: close
                     }
 
@@ -116,7 +120,7 @@
 
         //Formu onayladığında yapılacak işlemler
         function accept() {
-            console.log('Kabul edildi');
+            console.log('Kabul edildi', _.data);
         }
 
 
@@ -144,12 +148,19 @@
 
         //....................................................................................
 
+        // Popup modalın verilerini sıfırlayalım
 
+        function reset() {
+            popup.data = null;
+        }
 
+        //....................................................................................
+
+        
         function close() {
             if (popup.container) {
                 popup.container.target.parentNode.removeChild(popup.container.target);
-                parent.window.popupmodal = null;
+                reset();
             }
 
         }

@@ -95,4 +95,16 @@
 
 
 
+                #modalpage .group-label-list{
+}
+                #modalpage .group-label-list label{
+    padding: 10px 10px;
+    background-color: #eee;
+    border-radius: 9px;
+    font-weight: bold;
+    display: inline-block;
+}
+                #modalpage .group-label-list label.selected{}
+                
+
         

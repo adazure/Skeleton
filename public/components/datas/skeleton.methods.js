@@ -17,6 +17,7 @@
         var matrix = _.svg.matrix;
         var menu = _.menuObject;
         var popup = _.popup;
+        var dbdata = _.data;
 
 
         //....................................................................................
@@ -117,6 +118,9 @@
                         });
 
 
+                        // Yeni kaydettiğimiz nesneyi diziden alalım
+                        // Amacımız; eğer açılacak popup varsa, bu değerleri popup'a göndermek
+                        var newItem = dbdataCurrent.transforms[dbdataCurrent.transforms.length - 1];
 
 
                         _.selectedObject.setAttr({
@@ -139,7 +143,13 @@
                         //İlgili Menu butonuna ait açılması gereken bir popup varsa açtırıyoruz
                         if (menu.data[moveItemKey].urlForPopup) {
                             var url = menu.data[moveItemKey].urlForPopup;
+
+                            // Üzerinde değişiklik yapılacak datayı bildirelim
+                            popup.data = newItem;
+
+                            // Popup açtır
                             popup.method.open(url);
+
                         }
 
 

@@ -6,7 +6,7 @@
         <tr>
             <td>
                 <b>Adet</b><br/>
-                <input type="number" placeholder="Adet" />
+                <input type="number" step="0.1" placeholder="Adet" onkeyup="changetext(event)" />
             </td>
         </tr>
         <tr>
@@ -22,3 +22,9 @@
    <input type="button" value="Kaydet" onclick="Skeleton.popupmodal.accept()" />
   </div>
 </div>
+
+<script>
+    function changetext(e){
+        Skeleton.popup.data.adet = e.target.value;
+    }
+</script>

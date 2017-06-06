@@ -1242,13 +1242,13 @@ var SkeletonAction = (function (_) {
             'path4': { title: 'Hipofarenks', data: ['icn4'] },
             'path5': { title: 'custom path name', data: ['icn1', 'icn2'] },
             'path6': { title: 'custom path name', data: ['icn1', 'icn9', 'icn10'] },
-            'path7': { title: 'Proksimal Çıkan Kolon', data: ['icn4', 'icn7', 'icn11'] },
-            'path8': { title: 'custom path name', data: ['icn1', 'icn8', 'icn12'] },
-            'path9': { title: 'Proksimal Sigmoid Kolon', data: ['icn1', 'icn2'] },
-            'path10': { title: 'Distal İnen Kolon', data: ['icn5'] },
-            'path11': { title: 'Proksimal İnen Kolon', data: ['icn6'] },
-            'path12': { title: '', data: ['icn3', 'icn2', 'icn3'] },
-            'path13': { title: '', data: ['icn3', 'icn2', 'icn3'] },
+            'path7': { title: 'Proksimal Çıkan Kolon', data: ['polip', 'icn7', 'icn11'] },
+            'path8': { title: 'custom path name', data: ['polip', 'icn8', 'icn12'] },
+            'path9': { title: 'Proksimal Sigmoid Kolon', data: ['polip', 'icn2'] },
+            'path10': { title: 'Distal İnen Kolon', data: ['polip'] },
+            'path11': { title: 'Proksimal İnen Kolon', data: ['polip'] },
+            'path12': { title: '', data: ['polip', 'icn2', 'icn3'] },
+            'path13': { title: '', data: ['polip', 'icn2', 'icn3'] },
             'path14': { title: 'Hepatik Fleksura', data: ['icn3', 'icn2', 'icn3'] },
             'path15': { title: 'Distal Çekum', data: ['icn3', 'icn2', 'icn3'] },
             'path16': { title: 'Proksimal Çekum', data: ['icn3', 'icn2', 'icn3'] },
@@ -1811,8 +1811,7 @@ var SkeletonAction = (function (_) {
             'cobble_stone': {
                 title: "Cobble Stone",
                 section: ['Enteroklizis', 'CiftKontrastKolonGrafi', 'Gastroskopi', 'Kolonoskopi', 'D-Balon', 'Kapsül'],
-                data: 'data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMy4yOSAzMy42OSI+PGRlZnM+PHN0eWxlPi5jbHMtMXtmaWxsOm5vbmU7c3Ryb2tlOiMyMzFmMjA7c3Ryb2tlLW1pdGVybGltaXQ6MTA7c3Ryb2tlLXdpZHRoOjJweDt9PC9zdHlsZT48L2RlZnM+PHRpdGxlPmNvYmJsZSBzdG9uZTwvdGl0bGU+PGxpbmUgY2xhc3M9ImNscy0xIiB4MT0iMTYuMzMiIHgyPSIxNi4zMyIgeTI9IjYuNjMiLz48bGluZSBjbGFzcz0iY2xzLTEiIHgxPSIxNi4zMyIgeTE9IjI3LjA2IiB4Mj0iMTYuMzMiIHkyPSIzMy42OSIvPjxsaW5lIGNsYXNzPSJjbHMtMSIgeDE9IjYuNjMiIHkxPSIxNy4wMyIgeTI9IjE3LjAzIi8+PGxpbmUgY2xhc3M9ImNscy0xIiB4MT0iMzMuMjkiIHkxPSIxNy4wMyIgeDI9IjI2LjY3IiB5Mj0iMTcuMDMiLz48cmVjdCBjbGFzcz0iY2xzLTEiIHg9IjEwMjkuODgiIHk9IjI4Ny4zMyIgd2lkdGg9IjE0LjA4IiBoZWlnaHQ9IjE0LjA4IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtOTI1LjAzIDU0Mi4wOSkgcm90YXRlKC00NSkiLz48L3N2Zz4=',
-                urlForPopup:'/modals/cobble.stone.html'
+                data: 'data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMy4yOSAzMy42OSI+PGRlZnM+PHN0eWxlPi5jbHMtMXtmaWxsOm5vbmU7c3Ryb2tlOiMyMzFmMjA7c3Ryb2tlLW1pdGVybGltaXQ6MTA7c3Ryb2tlLXdpZHRoOjJweDt9PC9zdHlsZT48L2RlZnM+PHRpdGxlPmNvYmJsZSBzdG9uZTwvdGl0bGU+PGxpbmUgY2xhc3M9ImNscy0xIiB4MT0iMTYuMzMiIHgyPSIxNi4zMyIgeTI9IjYuNjMiLz48bGluZSBjbGFzcz0iY2xzLTEiIHgxPSIxNi4zMyIgeTE9IjI3LjA2IiB4Mj0iMTYuMzMiIHkyPSIzMy42OSIvPjxsaW5lIGNsYXNzPSJjbHMtMSIgeDE9IjYuNjMiIHkxPSIxNy4wMyIgeTI9IjE3LjAzIi8+PGxpbmUgY2xhc3M9ImNscy0xIiB4MT0iMzMuMjkiIHkxPSIxNy4wMyIgeDI9IjI2LjY3IiB5Mj0iMTcuMDMiLz48cmVjdCBjbGFzcz0iY2xzLTEiIHg9IjEwMjkuODgiIHk9IjI4Ny4zMyIgd2lkdGg9IjE0LjA4IiBoZWlnaHQ9IjE0LjA4IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtOTI1LjAzIDU0Mi4wOSkgcm90YXRlKC00NSkiLz48L3N2Zz4='
             },
             /**/
             'polip': {
@@ -2828,7 +2827,10 @@ var SkeletonAction = (function (_) {
     
     _.popup = {
         method:{},
-        objects:{}
+        objects:{},
+        // Popup açıldığında veritabanından gelebilecek datalar buraya aktarılacak
+        // Kısacası; üzerinde değişiklik yapılacak verimiz
+        data:{}
     };
 
 })(SkeletonAction);
@@ -2867,14 +2869,18 @@ var SkeletonAction = (function (_) {
                     popup.content.setHTML(text);
                     popup.container.show();
                     parent.Skeleton.popupmodal = {
+                        // Popup ile ilgili veriler
                         content: {
                             title: '',
                             url: url,
                             html: xhttp.responseText
                         },
+                        // Kaydet/onayla butonuna basıldığında işletilecek
                         accept: accept,
+                        // Sayfadan çıkıldığında/iptal edildiğinde çalıştırılacak method
                         reject: reject,
                         watch: watch,
+                        // Popup pencereyi kapatmak için kullanılmaktadır
                         close: close
                     }
 
@@ -2950,7 +2956,7 @@ var SkeletonAction = (function (_) {
 
         //Formu onayladığında yapılacak işlemler
         function accept() {
-            console.log('Kabul edildi');
+            console.log('Kabul edildi', _.data);
         }
 
 
@@ -2978,12 +2984,19 @@ var SkeletonAction = (function (_) {
 
         //....................................................................................
 
+        // Popup modalın verilerini sıfırlayalım
 
+        function reset() {
+            popup.data = null;
+        }
 
+        //....................................................................................
+
+        
         function close() {
             if (popup.container) {
                 popup.container.target.parentNode.removeChild(popup.container.target);
-                parent.window.popupmodal = null;
+                reset();
             }
 
         }
@@ -3058,13 +3071,30 @@ var SkeletonAction = (function (_) {
 /////////////////////////////////////////////////////////////////////////
 
 (function (_) {
-    
+
 
     _.regex = {
-        rules:{
 
+        // Sorgularda kullanılabilecek regex kurallar listesi
+        rules: {
+
+            // Metin içerisindeki <script></script> etiketlerini arar. 
+            // Bunu genel olarak XMLRequest sınıfımızdan gelen datalarda aratıyoruz
+            scriptTag: /<script[^>]*>([^<]*)<\/script>/,
+
+            // Sadece integer sayılar
+            integer: /[0-9]+/,
+
+            // Ondalık sayılar
+            float: /[0-9]\.[0-9]/,
+
+            // Sadece metin 
+            alpha:/[a-zA-ZığüşöçÖÇŞİÜĞ\s]+/
+            
         },
-        method:{
+
+        
+        method: {
 
         }
     };
@@ -3080,10 +3110,14 @@ var SkeletonAction = (function (_) {
 
     _.MODULE(function(){
 
+
+
         var method = _.regex.method;
 
 
+
         //....................................................................................
+
 
 
 
@@ -3099,14 +3133,6 @@ var SkeletonAction = (function (_) {
 (function(_){
 
     _.MODULE(function(){
-
-        var method = _.regex.method;
-        var rules  = _.regex.rules;
-
-        // Metin içerisindeki <script></script> etiketlerini arar
-        rules.scriptTag = /<script[^>]*>([^<]*)<\/script>/;
-
-
 
 
     }); // MODULE
@@ -3131,6 +3157,7 @@ var SkeletonAction = (function (_) {
         var matrix = _.svg.matrix;
         var menu = _.menuObject;
         var popup = _.popup;
+        var dbdata = _.data;
 
 
         //....................................................................................
@@ -3231,6 +3258,9 @@ var SkeletonAction = (function (_) {
                         });
 
 
+                        // Yeni kaydettiğimiz nesneyi diziden alalım
+                        // Amacımız; eğer açılacak popup varsa, bu değerleri popup'a göndermek
+                        var newItem = dbdataCurrent.transforms[dbdataCurrent.transforms.length - 1];
 
 
                         _.selectedObject.setAttr({
@@ -3253,7 +3283,13 @@ var SkeletonAction = (function (_) {
                         //İlgili Menu butonuna ait açılması gereken bir popup varsa açtırıyoruz
                         if (menu.data[moveItemKey].urlForPopup) {
                             var url = menu.data[moveItemKey].urlForPopup;
+
+                            // Üzerinde değişiklik yapılacak datayı bildirelim
+                            popup.data = newItem;
+
+                            // Popup açtır
                             popup.method.open(url);
+
                         }
 
 

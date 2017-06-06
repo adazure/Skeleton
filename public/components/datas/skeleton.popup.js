@@ -6,7 +6,10 @@
     
     _.popup = {
         method:{},
-        objects:{}
+        objects:{},
+        // Popup açıldığında veritabanından gelebilecek datalar buraya aktarılacak
+        // Kısacası; üzerinde değişiklik yapılacak verimiz
+        data:{}
     };
 
 })(SkeletonAction);
