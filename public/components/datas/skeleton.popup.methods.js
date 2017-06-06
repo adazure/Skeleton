@@ -27,7 +27,7 @@
                     var text = xhttp.responseText;
 
                     // Yüklenen sayfa içerisinde script tag'ı varsa çalıştır
-                    var regex = /<script[^>]*>([^<]*)<\/script>/;
+                    var regex = _.regex.rules.scriptTag;
                     var src = text.match(regex);
                     text = text.replace(regex, '');
                     popup.content.setHTML(text);
