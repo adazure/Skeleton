@@ -82,7 +82,8 @@
                     right: 0,
                     top: 0,
                     bottom: 0,
-                    display: 'none'
+                    display: 'none',
+                    zIndex:9999
                 });
 
 

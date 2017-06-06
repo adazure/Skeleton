@@ -39,6 +39,7 @@ var data = [
         path + 'skeleton.regex.methods.js',
         path + 'skeleton.regex.init.js',
         path + 'skeleton.methods.js',
+        path + 'skeleton.form.collection.js',
         path + 'skeleton.styles.js',
         path + 'skeleton.init.js'
     ];

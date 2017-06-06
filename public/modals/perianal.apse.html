@@ -1,0 +1,49 @@
+<div id="modalpage">
+    <h1 class="bheader">Perianal Apse</h1>
+    <div id="modalpage-content">
+        <table>
+            <tr>
+                <td>
+
+                    *** 12 saat diliminden hangisinde olduğu kaydedilecek, eğer konumu bilinmiyorsa tam ortaya da bırakılabilecek
+                    <br/><br/>
+
+                    <div class="fgroup">
+                        <span class="gtitle">Çap</span>
+                        <input type="number" step="1.0" id="cap" style="width:100px;" placeholder="Çap" onkeyup="formchanger(this,event);" />                        cm
+                    </div>
+
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    <div>
+        <input type="button" value="Kaydet" onclick="Skeleton.popup.method.close();" />
+    </div>
+</div>
+
+<script>
+    function formchanger(element, args) {
+
+        switch (element.type) {
+            case 'number':
+                if (element.value)
+                    Skeleton.popup.data[element.id] = element.value;
+                else
+                    if (Skeleton.popup.data[element.id])
+                        delete Skeleton.popup.data[element.id];
+                break;
+            case 'checkbox':
+                if (element.checked)
+                    Skeleton.popup.data[element.id] = element.value || element.checked;
+                else
+                    if (Skeleton.popup.data[element.id])
+                        delete Skeleton.popup.data[element.id];
+                break;
+        }
+
+
+    }
+
+</script>

@@ -1,0 +1,51 @@
+<div id="modalpage">
+    <h1 class="bheader">Polip</h1>
+    <div id="modalpage-content">
+        <table>
+            <tr>
+                <td>
+
+                    <div class="fgroup">
+                        <span class="gtitle">Kalan Anatomik Bağırsak Uzunluğu</span>
+                        <input type="number" id="ka_bag_uz" style="width:100px;" placeholder="Bağırsak Uzunluğu" onkeyup="formchanger(this,event);" /> cm
+                    </div>
+                    <div class="fgroup">
+                        <span class="gtitle">Rezeke Edilen Bağırsak Uzunluğu</span>
+                        <input type="number" id="re_bag_uz" style="width:100px;" placeholder="Bağırsak Uzunluğu" onkeyup="formchanger(this,event);" /> cm
+                    </div>
+                   
+                   
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    <div>
+        <input type="button" value="Kaydet" onclick="Skeleton.popup.method.close();" />
+    </div>
+</div>
+
+<script>
+    function formchanger(element, args) {
+
+        switch (element.type) {
+            case 'number':
+                if (element.value)
+                    Skeleton.popup.data[element.id] = element.value;
+                else
+                    if (Skeleton.popup.data[element.id])
+                        delete Skeleton.popup.data[element.id];
+                break;
+            case 'checkbox':
+                if (element.checked)
+                    Skeleton.popup.data[element.id] = element.value || element.checked;
+                else
+                    if (Skeleton.popup.data[element.id])
+                        delete Skeleton.popup.data[element.id];
+                break;
+        }
+
+
+    }
+
+</script>

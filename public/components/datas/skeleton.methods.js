@@ -141,8 +141,8 @@
 
 
                         //İlgili Menu butonuna ait açılması gereken bir popup varsa açtırıyoruz
-                        if (menu.data[moveItemKey].urlForPopup) {
-                            var url = menu.data[moveItemKey].urlForPopup;
+                        if (menu.data[moveItemKey].url) {
+                            var url = menu.data[moveItemKey].url;
 
                             // Üzerinde değişiklik yapılacak datayı bildirelim
                             popup.data = newItem;

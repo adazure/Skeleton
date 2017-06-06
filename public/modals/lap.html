@@ -1,0 +1,49 @@
+<div id="modalpage">
+    <h1 class="bheader">LAP</h1>
+    <div id="modalpage-content">
+        <table>
+            <tr>
+                <td>
+                    <div class="fgroup">
+                        <span class="gtitle">Çap</span>
+                        <div class="group-label-list">
+                           <select id="endoskopi" onchange="formchanger(this,event)">
+                               <option value="<2 cm"><2 cm</option>
+                               <option value="≥2 cm">≥2 cm</option>
+                           </select>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    <div>
+        <input type="button" value="Kaydet" onclick="Skeleton.popup.method.close();" />
+    </div>
+</div>
+
+<script>
+    function formchanger(element, args) {
+
+        switch (element.type) {
+            case 'number':
+                if (element.value)
+                    Skeleton.popup.data[element.id] = element.value;
+                else
+                    if (Skeleton.popup.data[element.id])
+                        delete Skeleton.popup.data[element.id];
+                break;
+            case 'checkbox':
+                if (element.checked)
+                    Skeleton.popup.data[element.id] = element.value || element.checked;
+                else
+                    if (Skeleton.popup.data[element.id])
+                        delete Skeleton.popup.data[element.id];
+                break;
+        }
+
+
+    }
+
+</script>
