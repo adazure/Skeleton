@@ -1222,17 +1222,16 @@ var SkeletonAction = (function (_) {
         // Sahne üzerinde bulunan path nesnelerinin alabilecekleri menulist parametrelerini burada tanımlıyoruz
         // keyname : sahne üzerinde yer alan path/rect/circle gibi herhangi tanımlanmış nesnenin ID bilgisini içerir. Benzersiz bir ad olmalı.
         // keyname.title : fare ile nesne üzerine gelindiğinde gösterilecek metin
-        // keyname.data : array tipindedir ve bu nesne üzerine gelebilecek _.checklist içinde bulunan benzersiz keyname değerleri buraya yazılır.
+        // keyname.data : array tipindedir ve keyname.data içerisinde yazılan tüm isimler menu data içindeki keyname değerlerine denk gelmektedir.
 
-        // _.checklist içinde tanımlı olan keyname'ler ilgili SVG sahnesinde bulunan isimlerdir
-        // bu liste içinde ki ID değerleri herhangi bir SVG nesnesi içinde olabilir
-        // yani buradaki veriler birden fazla SVG nesnesinin bilgilerini barındırır. tabiki hiç biri birbirine karışmaz
+        // _.data, içinde tanımlı olan keyname'ler, ilgili SVG dosyasında bulunan ID isimleridir
+        // bu liste içinde ki ID değerleri herhangi bir SVG dosyası içinde de olabilir. Yani ayrı SVG dosyaları ama aynı path isimlerine sahip olabilir.
         // dosya1.svg içinde path1 adında ID'e sahip nesne olabilir. Buradaki data bilgisindeki değerler kullanılır
         // dosya2.svg içinde de path1 adında ID'e sahip bir nesne olursa o da bu değerleri ortak kullabilir
-        // eğer dosya3.svg içinde ayrı isimlerde ID'e sahip nesneler oluşturulsa onlarda burada tutulacaktır. 
+        // dikkat aynı isimdekiler aynı değerleri kullanırlar.
         // isim tanımlamaları isteğe göre yapılabilir. 1,2,3 diye gitmek zorunda değildir. anlaşılması için bu şekilde yapılmıştır.
-        // Uygulama çalıştırıldığı anda tüm checklist okunup sahne üzerinde taranır. Var olan isimlere ait tüm datalar aktarılır.
-        //_.2checkList
+        // Uygulama çalıştırıldığı anda tüm _.data okunup sahne üzerinde taranır. Var olan isimlere ait tüm datalar aktarılır.
+
         data = {
 
 
