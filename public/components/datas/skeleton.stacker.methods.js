@@ -2,9 +2,16 @@
 //          SKELETON STACKER METHOD
 /////////////////////////////////////////////////////////////////////////
 
-(function(_){
+(function (_) {
+
+    _.MODULE(function () {
+
+      
 
 
+
+
+    }); // MODULE
 
 
 })(SkeletonAction);

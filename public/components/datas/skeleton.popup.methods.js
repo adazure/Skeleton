@@ -9,6 +9,7 @@
         var method = _.popup.method;
         var popup = _.popup.objects;
         var coll = _.collection.create;
+        var helper = _.helper.method;
 
 
 
@@ -18,13 +19,11 @@
 
         function open(url) {
 
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
+            helper.http(url,function(data){
 
-                    create();
+                create();
 
-                    var text = xhttp.responseText;
+                    var text = data;
 
                     // Yüklenen sayfa içerisinde script tag'ı varsa çalıştır
                     var regex = _.regex.rules.scriptTag;
@@ -37,7 +36,7 @@
                         content: {
                             title: '',
                             url: url,
-                            html: xhttp.responseText
+                            html: data
                         },
                         // Kaydet/onayla butonuna basıldığında işletilecek
                         accept: accept,
@@ -55,11 +54,8 @@
 
                     }
 
-                }
-            };
+            });
 
-            xhttp.open("GET", url, true);
-            xhttp.send();
 
         }
 

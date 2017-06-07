@@ -29,9 +29,27 @@
         //....................................................................................
 
 
+        function http(url, success) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    success(xhttp.responseText);
+                }
+            }
+
+            xhttp.open("GET", url, true);
+            xhttp.send();
+        }
+
+
+
+        //....................................................................................
+
+
 
 
         method.ismobile = ismobile;
+        method.http = http;
 
     }); // MODULE
 

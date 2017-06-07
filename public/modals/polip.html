@@ -16,14 +16,13 @@
                             <label><input type="checkbox" id="sapsiz" value="Sapsız" onclick="formchanger(this,event);"/>Sapsız</label>
                         </div>
                     </div>
-
                     <div class="fgroup">
                         <span class="gtitle">Boyut</span>
                         <div class="group-label-list">
-                            <label><input type="checkbox" id="birinci" value="<0.5 cm" onclick="formchanger(this,event);"/><0.5 cm</label>
-                            <label><input type="checkbox" id="ikinci" value="0.5-1 cm" onclick="formchanger(this,event);"/>0.5-1 cm</label>
-                            <label><input type="checkbox" id="ucuncu" value="1-2 cm" onclick="formchanger(this,event);"/>1-2 cm</label>
-                            <label><input type="checkbox" id="dorduncu" value=">3 cm" onclick="formchanger(this,event);"/>>3 cm</label>
+                            <label><input type="checkbox" id="boyut1" value="<0.5 cm" onclick="formchanger(this,event);"/><0.5 cm</label>
+                            <label><input type="checkbox" id="boyut2" value="0.5-1 cm" onclick="formchanger(this,event);"/>0.5-1 cm</label>
+                            <label><input type="checkbox" id="boyut3" value="1-2 cm" onclick="formchanger(this,event);"/>1-2 cm</label>
+                            <label><input type="checkbox" id="boyut4" value=">3 cm" onclick="formchanger(this,event);"/>>3 cm</label>
                         </div>
                     </div>
                 </td>
@@ -37,26 +36,51 @@
 </div>
 
 <script>
-    function formchanger(element, args) {
+    var formchanger = (function() {
 
-        switch (element.type) {
-            case 'number':
-                if (element.value)
-                    Skeleton.popup.data[element.id] = element.value;
-                else
-                    if (Skeleton.popup.data[element.id])
-                        delete Skeleton.popup.data[element.id];
-                break;
-            case 'checkbox':
-                if (element.checked)
-                    Skeleton.popup.data[element.id] = element.value || element.checked;
-                else
-                    if (Skeleton.popup.data[element.id])
-                        delete Skeleton.popup.data[element.id];
-                break;
+
+        var __adet = document.querySelector('#adet'),
+            __sapli = document.querySelector('#sapli'),
+            __sapsiz = document.querySelector('#sapsiz'),
+            __boyut1 = document.querySelector('#boyut1'),
+            __boyut2 = document.querySelector('#boyut2'),
+            __boyut3 = document.querySelector('#boyut3'),
+            __boyut4 = document.querySelector('#boyut4');
+
+        var data = Skeleton.popup.data;
+
+
+        __adet.value = data.adet ? data.adet : 0;
+        __sapli.checked = data.sapli ? true : false;
+        __sapsiz.checked = data.sapsiz ? true : false;
+        __boyut1.checked = data.boyut1 ? true : false;
+        __boyut2.checked = data.boyut2 ? true : false;
+        __boyut3.checked = data.boyut3 ? true : false;
+        __boyut4.checked = data.boyut4 ? true : false;
+
+        function formcontrol(element, args) {
+
+            switch (element.type) {
+                case 'number':
+                    if (element.value)
+                        Skeleton.popup.data[element.id] = element.value;
+                    else
+                        if (Skeleton.popup.data[element.id])
+                            delete Skeleton.popup.data[element.id];
+                    break;
+                case 'checkbox':
+                    if (element.checked)
+                        Skeleton.popup.data[element.id] = element.value || element.checked;
+                    else
+                        if (Skeleton.popup.data[element.id])
+                            delete Skeleton.popup.data[element.id];
+                    break;
+            }
+
+            console.log(data);
         }
 
-
-    }
+        return formcontrol;
+    })();
 
 </script>

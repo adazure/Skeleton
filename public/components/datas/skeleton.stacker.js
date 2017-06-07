@@ -4,9 +4,7 @@
 
 (function(_){
 
-    _.stacker = {
-        method:{}
-    };
+    _.stacker = {};
 
 
 })(SkeletonAction);
