@@ -8,6 +8,9 @@ var data = [
 
         path + 'skeleton.js',
         path + 'skeleton.queryparser.js',
+        path + 'skeleton.stacker.js',
+        path + 'skeleton.stacker.methods.js',
+        path + 'skeleton.stacker.init.js',
         path + 'skeleton.global.prototypes.js',
         path + 'skeleton.global.prototypes.methods.js',
         path + 'skeleton.svg.js',
