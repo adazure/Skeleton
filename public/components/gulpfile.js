@@ -1,5 +1,7 @@
 var gulp = require("gulp");
 var concat = require("gulp-concat");
+var uglify = require('gulp-uglify');
+var rename = require('gulp-rename');
 
 
 var path = 'datas/';
@@ -52,7 +54,10 @@ gulp.task('scripts', function () {
 
     return gulp.src(data)
         .pipe(concat('script.data.js'))
-        .pipe(gulp.dest("./"));
+        .pipe(gulp.dest("./"))
+        .pipe(uglify())
+        .pipe(rename({ suffix: '.min' }))
+        .pipe(gulp.dest('./'));
 
 });
 
