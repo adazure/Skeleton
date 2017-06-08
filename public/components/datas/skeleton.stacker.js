@@ -2,9 +2,9 @@
 //          SKELETON STACKER
 /////////////////////////////////////////////////////////////////////////
 
-(function(_){
+(function (_) {
 
-    _.stacker = {};
+    _.stacker = null;
 
 
 })(SkeletonAction);

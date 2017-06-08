@@ -1,0 +1,95 @@
+<button onclick="parser()">Parser</button>
+<textarea style="width:100%; height:400px; margin:10px;" id="content">
+     <div class="fgroup">
+                        <span class="gtitle">Adet</span>
+                        <input type="number" id="adet" style="width:100px;" placeholder="Adet" onkeyup="formchanger(this,event);">
+                    </div>
+                    <div class="fgroup">
+                        <span class="gtitle">Tipi</span>
+                        <div class="group-label-list">
+                            <label><input type="checkbox" id="sapli" value="Saplı" onclick="formchanger(this,event);"/>Saplı</label>
+                            <label><input type="checkbox" id="sapsiz" value="Sapsız" onclick="formchanger(this,event);"/>Sapsız</label>
+                        </div>
+                    </div>
+                    <div class="fgroup">
+                        <span class="gtitle">Boyut</span>
+                        <namer>asdasdsad</namer>
+                        <div class="group-label-list">
+                            <label><input type="checkbox" id="boyut1" value="<0.5 cm" onclick="formchanger(this,event);"/><0.5 cm</label>
+                            <label><input type="checkbox" id="boyut2" value="0.5-1 cm" onclick="formchanger(this,event);"/>0.5-1 cm</label>
+                            <label><input type="checkbox" id="boyut3" value="1-2 cm" onclick="formchanger(this,event);"/>1-2 cm</label>
+                            <label><input type="checkbox" id="boyut4" value=">3 cm" onclick="formchanger(this,event);"/>>3 cm</label>
+                        </div>
+                    </div>
+
+</textarea>
+<script>
+    function parser() {
+
+        var result = document.querySelector('#result');
+        var content = document.querySelector('#content');
+
+        var t = document.createElement('div');
+        t.innerHTML = content.value;
+
+        var context = [];
+
+        function isFunction(n) {
+            if (n.substring(0, 2) == 'on') {
+                if (document[n] == null || typeof document[n] == 'function')
+                    return true;
+            }
+
+            return false;
+        }
+
+        function sub(main, item) {
+
+            var children = item.children;
+
+            for (var i = 0; i < children.length; i++) {
+
+                var node = children[i];
+
+                var name = {};
+                var z = name['$' + node.tagName.toLowerCase()] = {};
+                if (node.children.length > 0)
+                    z.children = [];
+
+                // Attribute
+                for (var n = 0, q = node.attributes; n < q.length; n++) {
+                    var nm = q[n].name;
+                    var fn = q[n].value;
+
+                    var func = isFunction(nm);
+                    if (func) {
+                        z['(' + nm + ')'] = fn;
+                    }
+                    else
+                        z[nm] = fn;
+                    //eval(fn);
+
+                }
+
+                // Text
+                if (node.innerText) {
+                    if (node.children.length == 0)
+                        z['text'] = node.innerText.replace(/\n/g, '');
+                }
+
+                main.push(name);
+                sub(z.children, node);
+
+            }
+
+        }
+
+        sub(context, t);
+        console.log(JSON.stringify(context));
+        result.style.display = 'block';
+        result.value = JSON.stringify(context);
+    }
+
+</script>
+<h1>Result</h1>
+<textarea style="width:100%; height:700px; margin:10px; display:none;" id="result"></textarea>

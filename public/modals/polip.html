@@ -1,44 +1,25 @@
 <div id="modalpage">
-    <h1 class="bheader">Polip</h1>
-    <div id="modalpage-content">
-        <table>
-            <tr>
-                <td>
 
-                    <div class="fgroup">
-                        <span class="gtitle">Adet</span>
-                        <input type="number" id="adet" style="width:100px;" placeholder="Adet" onkeyup="formchanger(this,event);">
-                    </div>
-                    <div class="fgroup">
-                        <span class="gtitle">Tipi</span>
-                        <div class="group-label-list">
-                            <label><input type="checkbox" id="sapli" value="Saplı" onclick="formchanger(this,event);"/>Saplı</label>
-                            <label><input type="checkbox" id="sapsiz" value="Sapsız" onclick="formchanger(this,event);"/>Sapsız</label>
-                        </div>
-                    </div>
-                    <div class="fgroup">
-                        <span class="gtitle">Boyut</span>
-                        <div class="group-label-list">
-                            <label><input type="checkbox" id="boyut1" value="<0.5 cm" onclick="formchanger(this,event);"/><0.5 cm</label>
-                            <label><input type="checkbox" id="boyut2" value="0.5-1 cm" onclick="formchanger(this,event);"/>0.5-1 cm</label>
-                            <label><input type="checkbox" id="boyut3" value="1-2 cm" onclick="formchanger(this,event);"/>1-2 cm</label>
-                            <label><input type="checkbox" id="boyut4" value=">3 cm" onclick="formchanger(this,event);"/>>3 cm</label>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-
-        </table>
-    </div>
-    <div>
-        <input type="button" value="Kaydet" onclick="Skeleton.popup.method.close();" />
-    </div>
 </div>
 
 <script>
-    var formchanger = (function() {
+
+    Skeleton.stacker({
+        el: '#modalpage',
+        source: 'polip',
+        formchanger: function (e) {
+
+            console.log(e.target);
+
+        },
+        close:function(){
+            console.log('kapatıldı');
+        }
+    });
 
 
+
+/*
         var __adet = document.querySelector('#adet'),
             __sapli = document.querySelector('#sapli'),
             __sapsiz = document.querySelector('#sapsiz'),
@@ -82,5 +63,6 @@
 
         return formcontrol;
     })();
+*/
 
 </script>
