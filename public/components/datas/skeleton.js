@@ -7,6 +7,7 @@ var SkeletonAction = (function (_) {
     _.method = {};
     _.globalMethod = {};
     
+    _.modalsData = {};
 
     // Sürüklenmek istenen nesne
     _.selectedObject = null;
