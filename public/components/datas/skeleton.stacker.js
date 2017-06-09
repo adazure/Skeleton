@@ -8,65 +8,7 @@
 
         var helper = _.helper.method;
 
-        /*
-        function parser(t) {
 
-            var context = [];
-
-            function isFunction(n) {
-                if (n.substring(0, 2) == 'on') {
-                    if (document[n] == null || typeof document[n] == 'function')
-                        return true;
-                }
-
-                return false;
-            }
-
-            function sub(main, item) {
-
-                var children = item.children;
-
-                for (var i = 0; i < children.length; i++) {
-
-                    var node = children[i];
-
-                    var name = {};
-                    var z = name['$' + node.tagName.toLowerCase()] = {};
-                    if (node.children.length > 0)
-                        z.children = [];
-
-                    // Attribute
-                    for (var n = 0, q = node.attributes; n < q.length; n++) {
-                        var nm = q[n].name;
-                        var fn = q[n].value;
-
-                        var func = isFunction(nm);
-                        if (func) {
-                            z['(' + nm + ')'] = fn;
-                        }
-                        else
-                            z[nm] = fn;
-
-                    }
-
-                    // Text
-                    if (node.innerText) {
-                        if (node.children.length == 0)
-                            z['text'] = node.innerText.replace(/\n/g, '');
-                    }
-
-                    main.push(name);
-                    sub(z.children, node);
-
-                }
-
-            }
-
-
-            sub(context, t);
-            parseData(context);
-        }
-        */
 
         //....................................................................................
 
@@ -175,9 +117,7 @@
                         if (_item.id || _item.name) {
                             stacker.method.items[_item.name || _item.id] = _item;
                             stacker.elements[_item.name || _item.id] = function(eventname, action) {
-
                                 var method = new stacker.method.trigger(action);
-
                                 _item.setBind(eventname, method);
                                 return stacker.elements;
                             }

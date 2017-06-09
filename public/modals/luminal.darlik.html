@@ -10,18 +10,25 @@
             <span class="gtitle">Endoskopi</span>
             <div class="group-label-list">
                 <select id="endoskopi">
-                               <option value="Geçti">Geçti</option>
-                               <option value="Geçemedi">Geçemedi</option>
-                           </select>
+                    <option value="Geçti">Geçti</option>
+                    <option value="Geçemedi">Geçemedi</option>
+                </select>
             </div>
         </div>
 
     </div>
     <div>
-        <input type="button" value="Kaydet" />
+        <input type="button" value="Kaydet" id="btnkaydet" />
     </div>
 </div>
 
-<script>
 
+<script>
+    Skeleton.stacker({
+            el: '#modalpage',
+            // Formdaki elementler trigger edildiğinde, otomatik olarak..
+            // ... Skeleton.popup.data.fields alanına dataların value değerlerini atamasını istiyoruz
+            updateWithData: Skeleton.popup.data.fields
+        })
+        .elements.btnkaydet('click', Skeleton.popup.close);
 </script>

@@ -7,16 +7,17 @@
         </div>
     </div>
     <div>
-        <input type="button" value="Kaydet" />
+        <input type="button" value="Kaydet" id="btnkaydet" />
     </div>
 </div>
 
 
 <script>
     Skeleton.stacker({
-        el: '#modalpage',
-        // Formdaki elementler trigger edildiğinde, otomatik olarak..
-        // ... Skeleton.popup.data.fields alanına dataların value değerlerini atamasını istiyoruz
-        updateWithData: Skeleton.popup.data.fields
-    })
+            el: '#modalpage',
+            // Formdaki elementler trigger edildiğinde, otomatik olarak..
+            // ... Skeleton.popup.data.fields alanına dataların value değerlerini atamasını istiyoruz
+            updateWithData: Skeleton.popup.data.fields
+        })
+        .elements.btnkaydet('click', Skeleton.popup.close);
 </script>

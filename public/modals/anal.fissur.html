@@ -13,19 +13,17 @@
         </div>
     </div>
     <div>
-        <input type="button" value="Kaydet" id="btnsave" />
+        <input type="button" value="Kaydet" id="btnkaydet" />
     </div>
 </div>
 
+
 <script>
-    var f = Skeleton.stacker({
-            el: '#modalpage'
+    Skeleton.stacker({
+            el: '#modalpage',
+            // Formdaki elementler trigger edildiğinde, otomatik olarak..
+            // ... Skeleton.popup.data.fields alanına dataların value değerlerini atamasını istiyoruz
+            updateWithData: Skeleton.popup.data.fields
         })
-        .elements
-        .btnsave('click', function(ev) {
-            Skeleton.popup.close();
-        })
-        .endoskopi('change', function(ev) {
-            Skeleton.popup.data.fields = ev.data;
-        });
+        .elements.btnkaydet('click', Skeleton.popup.close);
 </script>
