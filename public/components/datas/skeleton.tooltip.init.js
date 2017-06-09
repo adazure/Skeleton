@@ -52,4 +52,4 @@
 
     }); // MODULE
 
-})(SkeletonAction);
+})(Skeleton);

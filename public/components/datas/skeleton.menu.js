@@ -15,4 +15,4 @@
         sections:{}
     };
 
-})(SkeletonAction);
+})(Skeleton);

@@ -291,4 +291,4 @@
 
     }); // MODULE
 
-})(SkeletonAction);
+})(Skeleton);

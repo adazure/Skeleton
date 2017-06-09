@@ -69,4 +69,4 @@
         }
     ];
 
-})(SkeletonAction);
+})(Skeleton);

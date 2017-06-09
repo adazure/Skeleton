@@ -322,4 +322,4 @@
 
     }); //MODULE
 
-})(SkeletonAction);
+})(Skeleton);

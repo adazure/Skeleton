@@ -19,4 +19,4 @@
         isMovePath:false
     };
 
-})(SkeletonAction);
+})(Skeleton);

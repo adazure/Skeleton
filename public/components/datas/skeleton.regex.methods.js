@@ -22,4 +22,4 @@
     });
 
 
-})(SkeletonAction);
+})(Skeleton);

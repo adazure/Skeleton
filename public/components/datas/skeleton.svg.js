@@ -12,4 +12,4 @@
         matrix:null
     }
     
-})(SkeletonAction);
+})(Skeleton);

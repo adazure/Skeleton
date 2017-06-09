@@ -68,11 +68,7 @@
         }
         */
 
-
-
         //....................................................................................
-
-
 
 
 
@@ -91,7 +87,7 @@
                 // Methodlar trigger edildiğinde, event sınıfı içine implemente edilecek olan element listesi nesnesi
                 // function(evnt){ evnt.items } şeklinde kullanarak, form içindeki tüm nesnelere erişilebilir
                 items: {},
-                data:{},
+                data: {},
 
                 // Form üzerindeki tüm eventlerin tetikleneceği asıl method
                 trigger: function (name) {
@@ -107,35 +103,30 @@
                         ev.items = stacker.method.items;
                         ev.data = stacker.method.data;
 
-                        try {
-                            call(ev);
-                        } catch (error) {
-                            throw(name + ' adında bir method bulunamadı');
-                        }
-                        
+                        call(ev);
+
                         stacker.method.triggerGetValues(ev.target);
                     }
                     return trigger;
 
                 },
                 // Methodlar trigger olduğunda nesnelerin içeriklerini liste halinde veren method
-                triggerGetValues:function(item){
-                    
+                triggerGetValues: function (item) {
+
                     var name = item.name || item.id;
-                    
-                    if(!name) return;
+
+                    if (!name) return;
                     var data = stacker.method.data;
 
                     switch (item.type) {
                         case 'checkbox':
                         case 'radio':
                             var val = item.checked ? item.value ? item.value : true : null;
-                            if(val)
+                            if (val)
                                 data[name] = val;
-                            else if(data)
+                            else if (data)
                                 delete data[name];
                             break;
-                        break;
                         default:
                             data[name] = item.value;
                             break;
@@ -425,4 +416,4 @@
     }); // MODULE
 
 
-})(SkeletonAction);
+})(Skeleton);

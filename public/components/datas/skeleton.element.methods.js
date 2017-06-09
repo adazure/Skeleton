@@ -94,4 +94,4 @@
 
     });
 
-})(SkeletonAction);
+})(Skeleton);

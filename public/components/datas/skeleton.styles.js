@@ -14,4 +14,4 @@
     }); // MODULE
 
 
-})(SkeletonAction);
+})(Skeleton);

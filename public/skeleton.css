@@ -45,14 +45,14 @@
 #modalpage .gtitle {
     font-size: 14px;
     margin: 5px 0;
-    padding: 5px 10px;
+    padding: 5px 14px;
     background-color: #99c9d8;
     border-radius: 4px 0 0 4px;
     position: relative;
     color: white;
     display: inline-block;
     width: 88px;
-    margin-right: 7px;
+    margin-right: 14px;
     vertical-align: middle;
 }
 
@@ -165,6 +165,7 @@
 #modalpage .group-label-list {
     display: inline-block;
     vertical-align: middle;
+    padding: 4px;
 }
 
 #modalpage .group-label-list label {

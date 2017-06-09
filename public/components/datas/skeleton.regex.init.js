@@ -9,4 +9,4 @@
 
     }); // MODULE
 
-})(SkeletonAction);
+})(Skeleton);

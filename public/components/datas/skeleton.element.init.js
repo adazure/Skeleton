@@ -39,4 +39,4 @@
 
 
 
-})(SkeletonAction);
+})(Skeleton);

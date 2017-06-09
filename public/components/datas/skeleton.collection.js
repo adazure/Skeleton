@@ -18,4 +18,4 @@
 
   
 
-})(SkeletonAction);
+})(Skeleton);

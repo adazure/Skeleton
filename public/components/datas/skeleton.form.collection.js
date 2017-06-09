@@ -6,4 +6,4 @@
 
 
 
-})(SkeletonAction);
+})(Skeleton);

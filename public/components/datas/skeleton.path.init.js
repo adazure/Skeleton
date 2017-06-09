@@ -43,4 +43,4 @@
 
     }); // MODULE
 
-})(SkeletonAction);
+})(Skeleton);

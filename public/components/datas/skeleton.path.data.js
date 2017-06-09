@@ -185,4 +185,4 @@
         
     }); // MODULE
 
-})(SkeletonAction);
+})(Skeleton);

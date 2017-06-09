@@ -53,4 +53,4 @@
 
     }); // MODULE
 
-})(SkeletonAction);
+})(Skeleton);

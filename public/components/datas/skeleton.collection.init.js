@@ -15,4 +15,4 @@
 
     });
 
-})(SkeletonAction);
+})(Skeleton);

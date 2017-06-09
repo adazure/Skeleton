@@ -38,4 +38,4 @@
 
     }); // MODULE
 
-})(SkeletonAction);
+})(Skeleton);

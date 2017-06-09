@@ -570,6 +570,6 @@
 
     }); // MODULE
 
-})(SkeletonAction);
+})(Skeleton);
 
 

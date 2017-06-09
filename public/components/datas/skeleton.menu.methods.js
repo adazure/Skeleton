@@ -108,4 +108,4 @@
 
     });
 
-})(SkeletonAction);
+})(Skeleton);

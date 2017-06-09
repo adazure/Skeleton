@@ -37,4 +37,4 @@
 
     });
 
-})(SkeletonAction);
+})(Skeleton);

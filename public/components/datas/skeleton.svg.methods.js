@@ -121,4 +121,4 @@
 
     }); // MODULE
 
-})(SkeletonAction);
+})(Skeleton);

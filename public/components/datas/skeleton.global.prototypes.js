@@ -9,4 +9,4 @@
         extend:null
     }
 
-})(SkeletonAction);
+})(Skeleton);

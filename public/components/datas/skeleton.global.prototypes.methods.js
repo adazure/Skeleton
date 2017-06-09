@@ -210,4 +210,4 @@
 
     }); //MODULE
 
-})(SkeletonAction);
+})(Skeleton);

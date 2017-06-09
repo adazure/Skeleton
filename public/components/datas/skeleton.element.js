@@ -4,4 +4,4 @@
         method:{}
     };
 
-})(SkeletonAction);
+})(Skeleton);

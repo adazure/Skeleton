@@ -2,7 +2,7 @@
 //          SKELETON
 /////////////////////////////////////////////////////////////////////////
 
-var SkeletonAction = (function (_) {
+var Skeleton = (function (_) {
 
     _.method = {};
     _.globalMethod = {};
@@ -122,12 +122,13 @@ var SkeletonAction = (function (_) {
         }
     ];
 
-})(SkeletonAction);
+})(Skeleton);
 (function (_) {
 
-    function changer(e){
+    function changer(e) {
         console.clear();
-        console.log(e.data);
+        Skeleton.popup.data.fields = e.data;
+        console.log(Skeleton.popup.data);
     }
 
     _.modalsData.polip = [
@@ -151,11 +152,13 @@ var SkeletonAction = (function (_) {
                                 },
                                 {
                                     "$input": {
-                                        "type": "number",
+                                        "type": "text",
                                         "id": "adet",
-                                        "name":"adet",
+                                        "name": "adet",
                                         "style": "width:100px;",
                                         "placeholder": "Adet",
+                                        "maxlength":3,
+                                        "pattern":"[0-9]{0,3}",
                                         "(keyup)": changer
                                     }
                                 }
@@ -176,39 +179,28 @@ var SkeletonAction = (function (_) {
                                     "$div": {
                                         "children": [
                                             {
+
+                                                "$input": {
+                                                    "type": "checkbox",
+                                                    "id": "sapli",
+                                                    "value": "Saplı",
+                                                    "(click)": changer
+                                                },
                                                 "$label": {
-                                                    "children": [
-                                                        {
-                                                            "$input": {
-                                                                "type": "checkbox",
-                                                                "id": "sapli",
-                                                                "value": "Saplı",
-                                                                "(click)": changer
-                                                            },
-                                                            "$label": {
-                                                                "for": "sapli",
-                                                                "text": "Saplı"
-                                                            }
-                                                        }
-                                                    ]
+                                                    "for": "sapli",
+                                                    "text": "Saplı"
                                                 }
                                             },
                                             {
+                                                "$input": {
+                                                    "type": "checkbox",
+                                                    "id": "sapsiz",
+                                                    "value": "Sapsız",
+                                                    "(click)": changer
+                                                },
                                                 "$label": {
-                                                    "children": [
-                                                        {
-                                                            "$input": {
-                                                                "type": "checkbox",
-                                                                "id": "sapsiz",
-                                                                "value": "Sapsız",
-                                                                "(click)": changer
-                                                            },
-                                                            "$label": {
-                                                                "for": "sapsiz",
-                                                                "text": "Sapsız"
-                                                            }
-                                                        }
-                                                    ]
+                                                    "for": "sapsiz",
+                                                    "text": "Sapsız"
                                                 }
                                             }
                                         ],
@@ -264,7 +256,7 @@ var SkeletonAction = (function (_) {
                                                     "type": "checkbox",
                                                     "id": "boyut3",
                                                     "value": "1-2 cm",
-                                                    "(click)": "iskelet"
+                                                    "(click)": changer
                                                 }
                                             },
                                             {
@@ -314,7 +306,7 @@ var SkeletonAction = (function (_) {
         }
     ];
 
-})(SkeletonAction);
+})(Skeleton);
 
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON QUERY PARSER
@@ -355,7 +347,7 @@ var SkeletonAction = (function (_) {
 
     });
 
-})(SkeletonAction);
+})(Skeleton);
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON PROTOTYPES
 /////////////////////////////////////////////////////////////////////////
@@ -367,7 +359,7 @@ var SkeletonAction = (function (_) {
         extend:null
     }
 
-})(SkeletonAction);
+})(Skeleton);
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON GLOBAL PROTOTYPES METHODS
 /////////////////////////////////////////////////////////////////////////
@@ -580,7 +572,7 @@ var SkeletonAction = (function (_) {
 
     }); //MODULE
 
-})(SkeletonAction);
+})(Skeleton);
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON SVG
 /////////////////////////////////////////////////////////////////////////
@@ -595,7 +587,7 @@ var SkeletonAction = (function (_) {
         matrix:null
     }
     
-})(SkeletonAction);
+})(Skeleton);
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON SVG METHOD
 /////////////////////////////////////////////////////////////////////////
@@ -719,7 +711,7 @@ var SkeletonAction = (function (_) {
 
     }); // MODULE
 
-})(SkeletonAction);
+})(Skeleton);
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON SVG INIT
 /////////////////////////////////////////////////////////////////////////
@@ -760,7 +752,7 @@ var SkeletonAction = (function (_) {
 
     }); // MODULE
 
-})(SkeletonAction);
+})(Skeleton);
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON HELPER
 /////////////////////////////////////////////////////////////////////////
@@ -771,7 +763,7 @@ var SkeletonAction = (function (_) {
         method:{}
     };
 
-})(SkeletonAction);
+})(Skeleton);
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON GLOBAL PROTOTYPES METHODS
 /////////////////////////////////////////////////////////////////////////
@@ -827,7 +819,7 @@ var SkeletonAction = (function (_) {
 
     }); // MODULE
 
-})(SkeletonAction);
+})(Skeleton);
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON STACKER
 /////////////////////////////////////////////////////////////////////////
@@ -898,11 +890,7 @@ var SkeletonAction = (function (_) {
         }
         */
 
-
-
         //....................................................................................
-
-
 
 
 
@@ -921,7 +909,7 @@ var SkeletonAction = (function (_) {
                 // Methodlar trigger edildiğinde, event sınıfı içine implemente edilecek olan element listesi nesnesi
                 // function(evnt){ evnt.items } şeklinde kullanarak, form içindeki tüm nesnelere erişilebilir
                 items: {},
-                data:{},
+                data: {},
 
                 // Form üzerindeki tüm eventlerin tetikleneceği asıl method
                 trigger: function (name) {
@@ -937,35 +925,30 @@ var SkeletonAction = (function (_) {
                         ev.items = stacker.method.items;
                         ev.data = stacker.method.data;
 
-                        try {
-                            call(ev);
-                        } catch (error) {
-                            throw(name + ' adında bir method bulunamadı');
-                        }
-                        
+                        call(ev);
+
                         stacker.method.triggerGetValues(ev.target);
                     }
                     return trigger;
 
                 },
                 // Methodlar trigger olduğunda nesnelerin içeriklerini liste halinde veren method
-                triggerGetValues:function(item){
-                    
+                triggerGetValues: function (item) {
+
                     var name = item.name || item.id;
-                    
-                    if(!name) return;
+
+                    if (!name) return;
                     var data = stacker.method.data;
 
                     switch (item.type) {
                         case 'checkbox':
                         case 'radio':
                             var val = item.checked ? item.value ? item.value : true : null;
-                            if(val)
+                            if (val)
                                 data[name] = val;
-                            else if(data)
+                            else if (data)
                                 delete data[name];
                             break;
-                        break;
                         default:
                             data[name] = item.value;
                             break;
@@ -1255,14 +1238,14 @@ var SkeletonAction = (function (_) {
     }); // MODULE
 
 
-})(SkeletonAction);
+})(Skeleton);
 (function(_){
 
     _.element = {
         method:{}
     };
 
-})(SkeletonAction);
+})(Skeleton);
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON ELEMENT METHODS
 /////////////////////////////////////////////////////////////////////////
@@ -1359,7 +1342,7 @@ var SkeletonAction = (function (_) {
 
     });
 
-})(SkeletonAction);
+})(Skeleton);
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON ELEMENT INIT
 /////////////////////////////////////////////////////////////////////////
@@ -1401,7 +1384,7 @@ var SkeletonAction = (function (_) {
 
 
 
-})(SkeletonAction);
+})(Skeleton);
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON COLLECTION
 /////////////////////////////////////////////////////////////////////////
@@ -1422,7 +1405,7 @@ var SkeletonAction = (function (_) {
 
   
 
-})(SkeletonAction);
+})(Skeleton);
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON COLLECTION METHODS
 /////////////////////////////////////////////////////////////////////////
@@ -1747,7 +1730,7 @@ var SkeletonAction = (function (_) {
 
     }); //MODULE
 
-})(SkeletonAction);
+})(Skeleton);
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON COLLECTION INIT
 /////////////////////////////////////////////////////////////////////////
@@ -1765,7 +1748,7 @@ var SkeletonAction = (function (_) {
 
     });
 
-})(SkeletonAction);
+})(Skeleton);
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON TOOLTIP
 /////////////////////////////////////////////////////////////////////////
@@ -1780,7 +1763,7 @@ var SkeletonAction = (function (_) {
 
     }); // MODULE
 
-})(SkeletonAction);
+})(Skeleton);
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON TOOLTIP METHOD
 /////////////////////////////////////////////////////////////////////////
@@ -1836,7 +1819,7 @@ var SkeletonAction = (function (_) {
 
     }); // MODULE
 
-})(SkeletonAction);
+})(Skeleton);
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON TOOLTIP INIT
 /////////////////////////////////////////////////////////////////////////
@@ -1891,7 +1874,7 @@ var SkeletonAction = (function (_) {
 
     }); // MODULE
 
-})(SkeletonAction);
+})(Skeleton);
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON PATH
 /////////////////////////////////////////////////////////////////////////
@@ -1913,7 +1896,7 @@ var SkeletonAction = (function (_) {
         isMovePath:false
     };
 
-})(SkeletonAction);
+})(Skeleton);
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON PATH DATA
 /////////////////////////////////////////////////////////////////////////
@@ -2101,7 +2084,7 @@ var SkeletonAction = (function (_) {
         
     }); // MODULE
 
-})(SkeletonAction);
+})(Skeleton);
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON PATH METHODS
 /////////////////////////////////////////////////////////////////////////
@@ -2395,7 +2378,7 @@ var SkeletonAction = (function (_) {
 
     }); // MODULE
 
-})(SkeletonAction);
+})(Skeleton);
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON PATH INIT
 /////////////////////////////////////////////////////////////////////////
@@ -2441,7 +2424,7 @@ var SkeletonAction = (function (_) {
 
     }); // MODULE
 
-})(SkeletonAction);
+})(Skeleton);
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON MENU
 /////////////////////////////////////////////////////////////////////////
@@ -2459,7 +2442,7 @@ var SkeletonAction = (function (_) {
         sections:{}
     };
 
-})(SkeletonAction);
+})(Skeleton);
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON MENU DATA
 /////////////////////////////////////////////////////////////////////////
@@ -3032,7 +3015,7 @@ var SkeletonAction = (function (_) {
 
     }); // MODULE
 
-})(SkeletonAction);
+})(Skeleton);
 
 
 
@@ -3146,7 +3129,7 @@ var SkeletonAction = (function (_) {
 
     });
 
-})(SkeletonAction);
+})(Skeleton);
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON MENU INIT
 /////////////////////////////////////////////////////////////////////////
@@ -3530,7 +3513,7 @@ var SkeletonAction = (function (_) {
     });
 
 
-})(SkeletonAction);
+})(Skeleton);
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON POPUP
 /////////////////////////////////////////////////////////////////////////
@@ -3545,7 +3528,7 @@ var SkeletonAction = (function (_) {
         data:{}
     };
 
-})(SkeletonAction);
+})(Skeleton);
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON POPUP METHOD
 /////////////////////////////////////////////////////////////////////////
@@ -3725,7 +3708,7 @@ var SkeletonAction = (function (_) {
     }); // MODULE
 
 
-})(SkeletonAction);
+})(Skeleton);
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON POPUP INIT
 /////////////////////////////////////////////////////////////////////////
@@ -3774,7 +3757,7 @@ var SkeletonAction = (function (_) {
 
     }); // MODULE
 
-})(SkeletonAction);
+})(Skeleton);
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON REGEX
 /////////////////////////////////////////////////////////////////////////
@@ -3809,7 +3792,7 @@ var SkeletonAction = (function (_) {
     };
 
 
-})(SkeletonAction);
+})(Skeleton);
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON REGEX METHOD
 /////////////////////////////////////////////////////////////////////////
@@ -3834,7 +3817,7 @@ var SkeletonAction = (function (_) {
     });
 
 
-})(SkeletonAction);
+})(Skeleton);
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON REGEX INIT
 /////////////////////////////////////////////////////////////////////////
@@ -3846,7 +3829,7 @@ var SkeletonAction = (function (_) {
 
     }); // MODULE
 
-})(SkeletonAction);
+})(Skeleton);
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON METHODS
 /////////////////////////////////////////////////////////////////////////
@@ -4113,7 +4096,7 @@ var SkeletonAction = (function (_) {
 
     }); // MODULE
 
-})(SkeletonAction);
+})(Skeleton);
 (function (_) {
     
 
@@ -4122,7 +4105,7 @@ var SkeletonAction = (function (_) {
 
 
 
-})(SkeletonAction);
+})(Skeleton);
 (function (_) {
     
     _.MODULE(function(){
@@ -4139,7 +4122,7 @@ var SkeletonAction = (function (_) {
     }); // MODULE
 
 
-})(SkeletonAction);
+})(Skeleton);
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON INIT
 /////////////////////////////////////////////////////////////////////////
@@ -4270,4 +4253,4 @@ var SkeletonAction = (function (_) {
 
 
 
-})(SkeletonAction);
+})(Skeleton);

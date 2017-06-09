@@ -1,8 +1,9 @@
 (function (_) {
 
-    function changer(e){
+    function changer(e) {
         console.clear();
-        console.log(e.data);
+        Skeleton.popup.data.fields = e.data;
+        console.log(Skeleton.popup.data);
     }
 
     _.modalsData.polip = [
@@ -26,11 +27,13 @@
                                 },
                                 {
                                     "$input": {
-                                        "type": "number",
+                                        "type": "text",
                                         "id": "adet",
-                                        "name":"adet",
+                                        "name": "adet",
                                         "style": "width:100px;",
                                         "placeholder": "Adet",
+                                        "maxlength":3,
+                                        "pattern":"[0-9]{0,3}",
                                         "(keyup)": changer
                                     }
                                 }
@@ -51,39 +54,28 @@
                                     "$div": {
                                         "children": [
                                             {
+
+                                                "$input": {
+                                                    "type": "checkbox",
+                                                    "id": "sapli",
+                                                    "value": "Saplı",
+                                                    "(click)": changer
+                                                },
                                                 "$label": {
-                                                    "children": [
-                                                        {
-                                                            "$input": {
-                                                                "type": "checkbox",
-                                                                "id": "sapli",
-                                                                "value": "Saplı",
-                                                                "(click)": changer
-                                                            },
-                                                            "$label": {
-                                                                "for": "sapli",
-                                                                "text": "Saplı"
-                                                            }
-                                                        }
-                                                    ]
+                                                    "for": "sapli",
+                                                    "text": "Saplı"
                                                 }
                                             },
                                             {
+                                                "$input": {
+                                                    "type": "checkbox",
+                                                    "id": "sapsiz",
+                                                    "value": "Sapsız",
+                                                    "(click)": changer
+                                                },
                                                 "$label": {
-                                                    "children": [
-                                                        {
-                                                            "$input": {
-                                                                "type": "checkbox",
-                                                                "id": "sapsiz",
-                                                                "value": "Sapsız",
-                                                                "(click)": changer
-                                                            },
-                                                            "$label": {
-                                                                "for": "sapsiz",
-                                                                "text": "Sapsız"
-                                                            }
-                                                        }
-                                                    ]
+                                                    "for": "sapsiz",
+                                                    "text": "Sapsız"
                                                 }
                                             }
                                         ],
@@ -139,7 +131,7 @@
                                                     "type": "checkbox",
                                                     "id": "boyut3",
                                                     "value": "1-2 cm",
-                                                    "(click)": "iskelet"
+                                                    "(click)": changer
                                                 }
                                             },
                                             {
@@ -189,4 +181,4 @@
         }
     ];
 
-})(SkeletonAction);
+})(Skeleton);

@@ -264,4 +264,4 @@
 
     }); // MODULE
 
-})(SkeletonAction);
+})(Skeleton);

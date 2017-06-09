@@ -2,7 +2,7 @@
 //          SKELETON
 /////////////////////////////////////////////////////////////////////////
 
-var SkeletonAction = (function (_) {
+var Skeleton = (function (_) {
 
     _.method = {};
     _.globalMethod = {};

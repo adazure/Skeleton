@@ -177,4 +177,4 @@
     }); // MODULE
 
 
-})(SkeletonAction);
+})(Skeleton);

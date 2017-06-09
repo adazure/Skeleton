@@ -8,4 +8,4 @@
         method:{}
     };
 
-})(SkeletonAction);
+})(Skeleton);
