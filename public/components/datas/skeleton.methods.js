@@ -2,10 +2,10 @@
 //          SKELETON METHODS
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
 
-    _.MODULE(function () {
+    _.MODULE(function() {
 
         //SVG için method tutucu
         var method = _.method;
@@ -102,8 +102,8 @@
                         //Eğer tabloda bir veri yoksa oluşturuyoruz, varsa üzerine yazıyoruz
 
                         var dbdataCurrent = _.data[path.selectedPath.id] || (_.data[path.selectedPath.id] = {
-                            transforms: []
-                        }),
+                                transforms: []
+                            }),
                             moveItemKey = _.selectedObject.getAttr('key');
 
 
@@ -114,7 +114,7 @@
                             y: _.selectedObject.getAttr('y'),
                             obj:
                             //Sürüklenen nesnenin key ve root bilgisi
-                            moveItemKey
+                                moveItemKey
                         });
 
 
@@ -147,10 +147,27 @@
                             // Üzerinde değişiklik yapılacak datayı bildirelim
                             popup.data = newItem;
 
-                            // Popup açtır
                             popup.method.open(url);
-
                         }
+
+                        //Stacker ile açtırabilmek için özel tanımlandı
+                        else if (menu.data[moveItemKey].jsonData) {
+                            var datas = eval(menu.data[moveItemKey].jsonData);
+                            // Üzerinde değişiklik yapılacak datayı bildirelim
+                            popup.data = newItem;
+
+                            var doc = parent.document.createElement('div');
+                            doc.id = "modalpage";
+
+                            Skeleton.stacker({
+                                el: doc,
+                                source: datas
+                            });
+
+                            popup.method.openData(doc);
+                        }
+
+
 
 
 
@@ -198,7 +215,8 @@
             if (a.button != 0) return;
             var p = matrix(_.selectedObject, a);
             _.selectedObject.setAttr({
-                width: 30, height: 30
+                width: 30,
+                height: 30
             });
             _.selectedObject.style.display = 'none';
             //return;

@@ -2,12 +2,14 @@
 //          SKELETON
 /////////////////////////////////////////////////////////////////////////
 
-var Skeleton = (function (_) {
+var Skeleton = (function(_) {
 
     _.method = {};
     _.globalMethod = {};
-    
-    _.modalsData = {};
+
+    // Açılacak popuplar için özel olarak tanımlandı.
+    // Oluşturulacak yeni popup formları da bu değişken üzerinden dağıtılmalıdır
+    _.jsons = {};
 
     // Sürüklenmek istenen nesne
     _.selectedObject = null;
@@ -39,7 +41,7 @@ var Skeleton = (function (_) {
     var inits = [];
 
 
-    _.MODULE = function (action) {
+    _.MODULE = function(action) {
         if (action && typeof action === 'function') {
             inits.push(action);
         } else

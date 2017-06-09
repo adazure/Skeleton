@@ -9,7 +9,6 @@ var path = 'datas/';
 var data = [
 
     path + 'skeleton.js',
-    path + 'modals/**/*.js',
     path + 'skeleton.queryparser.js',
     path + 'skeleton.global.prototypes.js',
     path + 'skeleton.global.prototypes.methods.js',
@@ -18,9 +17,6 @@ var data = [
     path + 'skeleton.svg.init.js',
     path + 'skeleton.helper.js',
     path + 'skeleton.helper.methods.js',
-    path + 'skeleton.stacker.js',
-    path + 'skeleton.stacker.methods.js',
-    path + 'skeleton.stacker.init.js',
     path + 'skeleton.element.js',
     path + 'skeleton.element.methods.js',
     path + 'skeleton.element.init.js',
@@ -47,6 +43,8 @@ var data = [
     path + 'skeleton.methods.js',
     path + 'skeleton.form.collection.js',
     path + 'skeleton.styles.js',
+    path + 'skeleton.stacker.js',
+    path + 'modals/**/*.js',
     path + 'skeleton.init.js',
 ];
 

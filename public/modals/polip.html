@@ -1,56 +1,35 @@
 <div id="modalpage">
+    <h1 class="bheader">Polip</h1>
+    <div id="modalpage-content">
+        <div class="fgroup">
+            <span class="gtitle">Adet</span>
+            <input type="number" id="adet" name="adet" placeholder="Adet">
+        </div>
+        <div class="fgroup">
+            <span class="gtitle">Tipi</span>
+            <div class="group-label-list">
+                <input type="checkbox" id="sapli" value="Saplı">
+                <label for="sapli">Saplı</label>
+                <input type="checkbox" id="sapsiz" value="Sapsız">
+                <label for="sapsiz">Sapsız</label>
+            </div>
+        </div>
+        <div class="fgroup">
+            <span class="gtitle">Boyut</span>
+            <div class="group-label-list">
+                <input type="checkbox" id="boyut1" value="<0.5 cm">
+                <label for="boyut1">&lt;0.5 cm</label>
+                <input type="checkbox" id="boyut2" value="0.5-1 cm">
+                <label for="boyut2">0.5-1 cm</label>
+                <input type="checkbox" id="boyut3" value="1-2 cm">
+                <label for="boyut3">1-2 cm</label>
+                <input type="checkbox" id="boyut4" value=">3 cm">
+                <label for="boyut4">&gt;3 cm</label>
+            </div>
+        </div>
+    </div>
+    <div>
+        <input type="button" value="Kaydet">
+    </div>
+
 </div>
-
-<script>
-    Skeleton.stacker({
-        el: '#modalpage',
-        source: Skeleton.modalsData.polip
-    });
-
-/*
-        var __adet = document.querySelector('#adet'),
-            __sapli = document.querySelector('#sapli'),
-            __sapsiz = document.querySelector('#sapsiz'),
-            __boyut1 = document.querySelector('#boyut1'),
-            __boyut2 = document.querySelector('#boyut2'),
-            __boyut3 = document.querySelector('#boyut3'),
-            __boyut4 = document.querySelector('#boyut4');
-
-        var data = Skeleton.popup.data;
-
-
-        __adet.value = data.adet ? data.adet : 0;
-        __sapli.checked = data.sapli ? true : false;
-        __sapsiz.checked = data.sapsiz ? true : false;
-        __boyut1.checked = data.boyut1 ? true : false;
-        __boyut2.checked = data.boyut2 ? true : false;
-        __boyut3.checked = data.boyut3 ? true : false;
-        __boyut4.checked = data.boyut4 ? true : false;
-
-        function formcontrol(element, args) {
-
-            switch (element.type) {
-                case 'number':
-                    if (element.value)
-                        Skeleton.popup.data[element.id] = element.value;
-                    else
-                        if (Skeleton.popup.data[element.id])
-                            delete Skeleton.popup.data[element.id];
-                    break;
-                case 'checkbox':
-                    if (element.checked)
-                        Skeleton.popup.data[element.id] = element.value || element.checked;
-                    else
-                        if (Skeleton.popup.data[element.id])
-                            delete Skeleton.popup.data[element.id];
-                    break;
-            }
-
-            console.log(data);
-        }
-
-        return formcontrol;
-    })();
-*/
-
-</script>

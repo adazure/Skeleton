@@ -1,47 +1,31 @@
 <div id="modalpage">
     <h1 class="bheader">Anal Fissür</h1>
     <div id="modalpage-content">
-                    **12 saat diliminden hangisinde olduğu kaydedilecek, eğer konumu bilinmiyorsa tam ortaya da bırakılabilecek
-                    <div class="fgroup">
-                        <span class="gtitle">Form</span>
-                        <div class="group-label-list">
-                           <select id="endoskopi" onchange="formchanger(this,event)">
-                               <option value="Derin">Derin</option>
-                               <option value="Yüzeysel">Yüzeysel</option>
-                           </select>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-
-        </table>
+        <div class="fgroup">
+            <span class="gtitle">Form</span>
+            <div class="group-label-list">
+                <select id="endoskopi" id="endoskopi">
+                    <option value="">Seçin</option>
+                    <option value="Derin">Derin</option>
+                    <option value="Yüzeysel">Yüzeysel</option>
+                </select>
+            </div>
+        </div>
     </div>
     <div>
-        <input type="button" value="Kaydet" onclick="Skeleton.popup.method.close" />
+        <input type="button" value="Kaydet" id="btnsave" />
     </div>
 </div>
 
 <script>
-    function formchanger(element, args) {
-
-        switch (element.type) {
-            case 'number':
-                if (element.value)
-                    Skeleton.popup.data[element.id] = element.value;
-                else
-                    if (Skeleton.popup.data[element.id])
-                        delete Skeleton.popup.data[element.id];
-                break;
-            case 'checkbox':
-                if (element.checked)
-                    Skeleton.popup.data[element.id] = element.value || element.checked;
-                else
-                    if (Skeleton.popup.data[element.id])
-                        delete Skeleton.popup.data[element.id];
-                break;
-        }
-
-
-    }
-
+    var f = Skeleton.stacker({
+            el: '#modalpage'
+        })
+        .elements
+        .btnsave('click', function(ev) {
+            Skeleton.popup.close();
+        })
+        .endoskopi('change', function(ev) {
+            Skeleton.popup.data.fields = ev.data;
+        });
 </script>

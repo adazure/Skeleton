@@ -64,8 +64,7 @@
                     var func = isFunction(nm);
                     if (func) {
                         z['(' + nm + ')'] = fn;
-                    }
-                    else
+                    } else
                         z[nm] = fn;
                     //eval(fn);
 
@@ -85,11 +84,9 @@
         }
 
         sub(context, t);
-        console.log(JSON.stringify(context));
         result.style.display = 'block';
         result.value = JSON.stringify(context);
     }
-
 </script>
 <h1>Result</h1>
 <textarea style="width:100%; height:700px; margin:10px; display:none;" id="result"></textarea>

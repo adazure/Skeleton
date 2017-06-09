@@ -2,10 +2,10 @@
 //          SKELETON PATH DATA
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
 
-    _.MODULE(function () {
+    _.MODULE(function() {
 
         var data = _.path.data;
 
@@ -42,16 +42,16 @@
             'path9': { title: 'Proksimal Sigmoid Kolon', data: ['polip', 'icn2'] },
             'path10': { title: 'Distal İnen Kolon', data: ['polip'] },
             'path11': { title: 'Proksimal İnen Kolon', data: ['polip'] },
-            'path12': { title: '', data: ['polip', 'icn2', 'icn3'] },
-            'path13': { title: '', data: ['polip', 'icn2', 'icn3'] },
-            'path14': { title: 'Hepatik Fleksura', data: ['icn3', 'icn2', 'icn3'] },
-            'path15': { title: 'Distal Çekum', data: ['icn3', 'icn2', 'icn3'] },
-            'path16': { title: 'Proksimal Çekum', data: ['icn3', 'icn2', 'icn3'] },
-            'path17': { title: 'Duedonum 3. Kısım', data: ['icn3', 'icn2', 'icn3'] },
-            'path18': { title: 'Duedonum 4. Kısım', data: ['icn3', 'icn2', 'icn3'] },
-            'path19': { title: '', data: ['icn3', 'icn2', 'icn3'] },
-            'path20': { title: '', data: ['icn3', 'icn2', 'icn3'] },
-            'path21': { title: 'Terminal İleum', data: ['icn3', 'icn2', 'icn3'] },
+            'path12': { title: '', data: ['polip', 'anal_fissur', 'icn3'] },
+            'path13': { title: '', data: ['polip', 'icn2', 'anal_fissur'] },
+            'path14': { title: 'Hepatik Fleksura', data: ['anal_fissur', 'icn2', 'icn3'] },
+            'path15': { title: 'Distal Çekum', data: ['anal_fissur', 'icn2', 'icn3'] },
+            'path16': { title: 'Proksimal Çekum', data: ['anal_fissur', 'icn2', 'icn3'] },
+            'path17': { title: 'Duedonum 3. Kısım', data: ['anal_fissur', 'icn2', 'icn3'] },
+            'path18': { title: 'Duedonum 4. Kısım', data: ['anal_fissur', 'icn2', 'icn3'] },
+            'path19': { title: '', data: ['icn3', 'anal_fissur', 'icn3'] },
+            'path20': { title: '', data: ['icn3', 'anal_fissur', 'icn3'] },
+            'path21': { title: 'Terminal İleum', data: ['anal_fissur', 'icn2', 'icn3'] },
             'path22': { title: 'Distal İleum', data: ['icn3', 'icn2', 'icn3'] },
             'path23': { title: 'Proksimal İleum', data: ['icn3', 'icn2', 'icn3'] },
             'path24': { title: 'Distal Jejunum', data: ['icn3', 'icn2', 'icn3'] },
@@ -182,7 +182,7 @@
         }
 
         _.path.data = data;
-        
+
     }); // MODULE
 
 })(Skeleton);

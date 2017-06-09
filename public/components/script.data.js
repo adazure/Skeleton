@@ -2,12 +2,14 @@
 //          SKELETON
 /////////////////////////////////////////////////////////////////////////
 
-var Skeleton = (function (_) {
+var Skeleton = (function(_) {
 
     _.method = {};
     _.globalMethod = {};
-    
-    _.modalsData = {};
+
+    // Açılacak popuplar için özel olarak tanımlandı.
+    // Oluşturulacak yeni popup formları da bu değişken üzerinden dağıtılmalıdır
+    _.jsons = {};
 
     // Sürüklenmek istenen nesne
     _.selectedObject = null;
@@ -39,7 +41,7 @@ var Skeleton = (function (_) {
     var inits = [];
 
 
-    _.MODULE = function (action) {
+    _.MODULE = function(action) {
         if (action && typeof action === 'function') {
             inits.push(action);
         } else
@@ -51,263 +53,6 @@ var Skeleton = (function (_) {
     return parent.Skeleton = _;
 
 })({});
-(function (_) {
-
-    _.modalsData.analulser = [
-        {
-            "$h1": {
-                "class": "bheader",
-                "text": "Anal Fissür"
-            }
-        },
-        {
-            "$div": {
-                "children": [
-                    {
-                        "$div": {
-                            "children": [
-                                {
-                                    "$span": {
-                                        "class": "gtitle",
-                                        "text": "Form"
-                                    }
-                                },
-                                {
-                                    "$div": {
-                                        "children": [
-                                            {
-                                                "$select": {
-                                                    "children": [
-                                                        {
-                                                            "$option": {
-                                                                "value": "Derin",
-                                                                "text": "Derin"
-                                                            }
-                                                        },
-                                                        {
-                                                            "$option": {
-                                                                "value": "Yüzeysel",
-                                                                "text": "Yüzeysel"
-                                                            }
-                                                        }
-                                                    ],
-                                                    "id": "endoskopi",
-                                                    "(onchange)": "formchanger(this,event)"
-                                                }
-                                            }
-                                        ],
-                                        "class": "group-label-list"
-                                    }
-                                }
-                            ],
-                            "class": "fgroup"
-                        }
-                    }
-                ],
-                "id": "modalpage-content"
-            }
-        },
-        {
-            "$div": {
-                "children": [
-                    {
-                        "$input": {
-                            "type": "button",
-                            "value": "Kaydet",
-                            "(onclick)": "Skeleton.popup.method.close"
-                        }
-                    }
-                ]
-            }
-        }
-    ];
-
-})(Skeleton);
-(function (_) {
-
-    function changer(e) {
-        console.clear();
-        Skeleton.popup.data.fields = e.data;
-        console.log(Skeleton.popup.data);
-    }
-
-    _.modalsData.polip = [
-        {
-            "$h1": {
-                "class": "bheader",
-                "text": "Polip"
-            }
-        },
-        {
-            "$div": {
-                "children": [
-                    {
-                        "$div": {
-                            "children": [
-                                {
-                                    "$span": {
-                                        "class": "gtitle",
-                                        "text": "Adet",
-                                    }
-                                },
-                                {
-                                    "$input": {
-                                        "type": "text",
-                                        "id": "adet",
-                                        "name": "adet",
-                                        "style": "width:100px;",
-                                        "placeholder": "Adet",
-                                        "maxlength":3,
-                                        "pattern":"[0-9]{0,3}",
-                                        "(keyup)": changer
-                                    }
-                                }
-                            ],
-                            "class": "fgroup"
-                        }
-                    },
-                    {
-                        "$div": {
-                            "children": [
-                                {
-                                    "$span": {
-                                        "class": "gtitle",
-                                        "text": "Tipi"
-                                    }
-                                },
-                                {
-                                    "$div": {
-                                        "children": [
-                                            {
-
-                                                "$input": {
-                                                    "type": "checkbox",
-                                                    "id": "sapli",
-                                                    "value": "Saplı",
-                                                    "(click)": changer
-                                                },
-                                                "$label": {
-                                                    "for": "sapli",
-                                                    "text": "Saplı"
-                                                }
-                                            },
-                                            {
-                                                "$input": {
-                                                    "type": "checkbox",
-                                                    "id": "sapsiz",
-                                                    "value": "Sapsız",
-                                                    "(click)": changer
-                                                },
-                                                "$label": {
-                                                    "for": "sapsiz",
-                                                    "text": "Sapsız"
-                                                }
-                                            }
-                                        ],
-                                        "class": "group-label-list"
-                                    }
-                                }
-                            ],
-                            "class": "fgroup"
-                        }
-                    },
-                    {
-                        "$div": {
-                            "children": [
-                                {
-                                    "$span": {
-                                        "class": "gtitle",
-                                        "text": "Boyut"
-                                    }
-                                },
-                                {
-                                    "$div": {
-                                        "children": [
-                                            {
-                                                "$input": {
-                                                    "type": "checkbox",
-                                                    "id": "boyut1",
-                                                    "value": "<0.5 cm",
-                                                    "(click)": changer
-                                                }
-                                            },
-                                            {
-                                                "$label": {
-                                                    "for": "boyut1",
-                                                    "text": "<0.5 cm"
-                                                }
-                                            },
-                                            {
-                                                "$input": {
-                                                    "type": "checkbox",
-                                                    "id": "boyut2",
-                                                    "value": "0.5-1 cm",
-                                                    "(click)": changer
-                                                }
-                                            },
-                                            {
-                                                "$label": {
-                                                    "for": "boyut2",
-                                                    "text": "0.5-1 cm"
-                                                }
-                                            },
-                                            {
-                                                "$input": {
-                                                    "type": "checkbox",
-                                                    "id": "boyut3",
-                                                    "value": "1-2 cm",
-                                                    "(click)": changer
-                                                }
-                                            },
-                                            {
-                                                "$label": {
-                                                    "for": "boyut3",
-                                                    "text": "1-2 cm"
-                                                }
-                                            },
-                                            {
-                                                "$input": {
-                                                    "type": "checkbox",
-                                                    "id": "boyut4",
-                                                    "value": ">3 cm",
-                                                    "(click)": changer
-                                                }
-                                            },
-                                            {
-                                                "$label": {
-                                                    "for": "boyut4",
-                                                    "text": ">3 cm"
-                                                }
-                                            }
-                                        ],
-                                        "class": "group-label-list"
-                                    }
-                                }
-                            ],
-                            "class": "fgroup"
-                        }
-                    }
-                ],
-                "id": "modalpage-content"
-            }
-        },
-        {
-            "$div": {
-                "children": [
-                    {
-                        "$input": {
-                            "type": "button",
-                            "value": "Kaydet",
-                            "(click)": changer
-                        }
-                    }
-                ]
-            }
-        }
-    ];
-
-})(Skeleton);
-
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON QUERY PARSER
 /////////////////////////////////////////////////////////////////////////
@@ -768,10 +513,10 @@ var Skeleton = (function (_) {
 //          SKELETON GLOBAL PROTOTYPES METHODS
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
 
-    _.MODULE(function () {
+    _.MODULE(function() {
 
         var method = _.helper.method;
 
@@ -784,7 +529,7 @@ var Skeleton = (function (_) {
 
         function ismobile() {
             var check = false;
-            (function (a) {
+            (function(a) {
                 if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(a) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0, 4))) check = true;
             })(navigator.userAgent || navigator.vendor || window.opera);
             return check;
@@ -797,7 +542,7 @@ var Skeleton = (function (_) {
 
         function http(url, success) {
             var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
+            xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
                     success(xhttp.responseText);
                 }
@@ -812,431 +557,30 @@ var Skeleton = (function (_) {
         //....................................................................................
 
 
+        function forEach(data, action) {
+            if (typeof data != 'object') { action(null); return; }
+            if (data.length) {
+                for (var i = 0; i < data.length; i++) {
+                    action(data[i]);
+                }
+            } else if (data) {
+                Object.keys(data).forEach(function(key) {
+                    action(key, data[key]);
+                });
+            }
+        }
+
+
+        //....................................................................................
+
+
+
 
 
         method.ismobile = ismobile;
         method.http = http;
 
     }); // MODULE
-
-})(Skeleton);
-/////////////////////////////////////////////////////////////////////////
-//          SKELETON STACKER
-/////////////////////////////////////////////////////////////////////////
-
-(function (_) {
-
-    _.MODULE(function () {
-
-        var helper = _.helper.method;
-
-        /*
-        function parser(t) {
-
-            var context = [];
-
-            function isFunction(n) {
-                if (n.substring(0, 2) == 'on') {
-                    if (document[n] == null || typeof document[n] == 'function')
-                        return true;
-                }
-
-                return false;
-            }
-
-            function sub(main, item) {
-
-                var children = item.children;
-
-                for (var i = 0; i < children.length; i++) {
-
-                    var node = children[i];
-
-                    var name = {};
-                    var z = name['$' + node.tagName.toLowerCase()] = {};
-                    if (node.children.length > 0)
-                        z.children = [];
-
-                    // Attribute
-                    for (var n = 0, q = node.attributes; n < q.length; n++) {
-                        var nm = q[n].name;
-                        var fn = q[n].value;
-
-                        var func = isFunction(nm);
-                        if (func) {
-                            z['(' + nm + ')'] = fn;
-                        }
-                        else
-                            z[nm] = fn;
-
-                    }
-
-                    // Text
-                    if (node.innerText) {
-                        if (node.children.length == 0)
-                            z['text'] = node.innerText.replace(/\n/g, '');
-                    }
-
-                    main.push(name);
-                    sub(z.children, node);
-
-                }
-
-            }
-
-
-            sub(context, t);
-            parseData(context);
-        }
-        */
-
-        //....................................................................................
-
-
-
-        function stacker(args) {
-            if (typeof args != 'object') return;
-
-            // Geliştirici tarafından verilen json dosyası veya object nesnesi
-            var source = args.source;
-
-            // Üzerinde işlem yapılacak container element nesnesi
-            var obj = parent.document.querySelector(args.el);
-
-            // Arkaplanda methodların tutulacağı liste
-            stacker.method = {
-
-                // Methodlar trigger edildiğinde, event sınıfı içine implemente edilecek olan element listesi nesnesi
-                // function(evnt){ evnt.items } şeklinde kullanarak, form içindeki tüm nesnelere erişilebilir
-                items: {},
-                data: {},
-
-                // Form üzerindeki tüm eventlerin tetikleneceği asıl method
-                trigger: function (name) {
-
-                    // gelen name parametresi onchange, onclick gibi d
-                    function trigger(ev) {
-                        var call = null;
-                        if (typeof name != 'function') {
-                            call = stacker.method[name];
-                        } else
-                            call = name;
-
-                        ev.items = stacker.method.items;
-                        ev.data = stacker.method.data;
-
-                        call(ev);
-
-                        stacker.method.triggerGetValues(ev.target);
-                    }
-                    return trigger;
-
-                },
-                // Methodlar trigger olduğunda nesnelerin içeriklerini liste halinde veren method
-                triggerGetValues: function (item) {
-
-                    var name = item.name || item.id;
-
-                    if (!name) return;
-                    var data = stacker.method.data;
-
-                    switch (item.type) {
-                        case 'checkbox':
-                        case 'radio':
-                            var val = item.checked ? item.value ? item.value : true : null;
-                            if (val)
-                                data[name] = val;
-                            else if (data)
-                                delete data[name];
-                            break;
-                        default:
-                            data[name] = item.value;
-                            break;
-                    }
-
-                }
-            };
-
-
-            // Object data içerisineki tüm methodları bulur ve stacker.method içerisine aktarır
-            // Buranın kullanılma amacı, elementler üzerinde eğer on[change,click,mousedown vs...] gibi elle tanımlanmış methodlar varsa...
-            // .. bunları alarak trigger methodunda tetikletebilmek
-            Object.keys(args).forEach(function (key) {
-                if (typeof args[key] == 'function') {
-                    stacker.method[key] = args[key];
-                };
-            });
-
-
-            // Source'den gelen veri window aldında bulunan bir object nesnesi de olabilir ya da json uzantılı bir dosya da olabilir
-            // İlk olarak json uzantılı dosyaya bakılıyor
-            if (typeof source == 'string' && source.endsWith('.json')) {
-
-                // Dosya yüklemesini yap
-                helper.http(source, function (data) {
-                    // Gelen dataları parse et ve elementleri sayfaya yansıt
-                    data = eval(data);
-                    parseData(data, obj);
-                });
-                //} else {
-                //parser(obj);
-            }
-
-            // Gelen source bilgisi window altında herhangi bir yerden elişilebilen bir nesne olduğunu söylüyor
-            else if (source && typeof source == 'object') {
-                // O zaman direk olarak parse et ve elementleri sayfaya yansıt
-                parseData(source, obj);
-            }
-
-            // stacker constructor methodunu geri döndür
-            return stacker;
-        }
-
-
-
-        //....................................................................................
-
-
-
-        // Gelen json file yada json object datasını parse eder ve obj nesnesine, yani ana container nesnesinin içine elementleri oluşturmaya başlar
-        function parseData(data, obj) {
-
-            // Data bir array mi yoksa object nesnesini ona göre işlem yapacağız
-            // Bu bir object nesnesi
-            if (!data.length)
-                //Data verilerine göre elementleri oluştur
-                find(obj, data);
-            else
-                // Array nesnesi
-                for (var i = 0; i < data.length; i++)
-                    find(obj, data[i]);
-        }
-
-
-
-        //....................................................................................
-
-
-
-
-        // Obj nesnesine CSS style verileri ekler
-        function addStyle(obj, data) {
-            Object.keys(data).forEach(function (key) {
-                obj.style[key] = data[key];
-            });
-        }
-
-
-
-        //....................................................................................
-
-
-        function addEvent(obj, key, action) {
-
-            // Buradada istersek mutliple event değerleri verilebilir
-            // Aynı nesnelerde olduğu gibi aralarında nokta koyarak birden fazla eventname değerine aynı method aktarılabilir
-            // (mousedown.touchstart) = action()
-
-            var first = key.charAt(0);
-            var last = key.charAt(key.length - 1);
-
-            // Bu bir event değilse
-            if (first != '(' && last != ')') return false;
-
-            // Hatalı event tanımlaması varsa console'de uyarı verelim
-            if (first == '(' && last != ')' || first != '(' && last == ')')
-                throw ('Dosya adı : skeleton.stacker.methods.js\nSatır numarası 56. \nEvent tanımlaması geçersiz. Change, mousedown, click, keyup vs gibi alanlar için tanımladığınız veride parantezler kapatılmamış.');
-
-
-            // Multiple veriler varsa alalım. Yani event.event.event şeklinde gidiyor olabileceğini varsayalım
-            var multiple = key.substring(1, key.length - 1);
-
-            // event adlarını al
-            var getAllItem = multiple.split('.');
-
-            for (var i = 0; i < getAllItem.length; i++) {
-
-                // Sıradaki event adı
-                var _item = getAllItem[i];
-
-                // Geliştirici tarafından gelen action değerini değiştirerek, onun yerine önce bizim methodumuzu tetiklemesini..
-                // .. daha sonra bizim methodumuz içerisinden, bir kaç değişiklik ve ekleme yaparak action methodunu tetiklemesini sağlıyor olacağız
-                // Eğer tetiklenen method içerisinde event.items gibi özel tanımlamalar eklemek istiyorsak...
-                // .. stacker.method objesinde ekleme yapılmalıdır
-                var method = new stacker.method.trigger(action);
-
-                // json dosya içinde function(){console.log('test');} örneğindeki gibi..
-                // eğer direk çalıştırılabilir kod var ise çalıştırıyoruz
-                // eğer yok ise; yani hataya düşerse, sadece listedeki methodu ekliyoruz
-                try {
-                    var t = eval(method);
-                    obj.setBind(_item, t);
-                } catch (error) {
-                    obj.setBind(_item, method);
-                }
-            }
-
-            // Event işleminin yapıldığını bildirelim
-            return true;
-        }
-
-
-
-        //....................................................................................
-
-
-
-
-
-        function create(key) {
-
-            // Boş olmamalı ve mutlaka $ işareti olmalı
-            if (!key) return null;
-            if (key.charAt(0) != '$') return null;
-
-            // $ işaretinden sonraki kısmı al
-            key = key.substring(1);
-
-            // Varsa tiplerini alalım
-            var typename = null;
-
-            if (key.indexOf('.') != -1) {
-
-                // Gelen veride, aralarına nokta koyarak çeşitli bilgiler alabiliriz
-                // Basit anlamda element adı ve tipini aldık
-                // elementname.typename
-                // liste uzayıp gidebilir ve istediğimiz kadar bilgiyi nokta ile alabiliriz
-                // $input.text
-
-                var sp = key.split('.');
-                key = sp[0]; // Key
-                typename = sp[1]; // Type
-            }
-
-            var n = parent.document.createElement(key);
-            if (typename)
-                n.type = typename;
-
-            return n;
-
-        }
-
-
-
-        //....................................................................................
-
-
-
-
-        // Burası sadece select nesnesi için hazırlandı. Daha sonradan farklı amaçlar için kullanılabilir
-        function addItems(obj, data) {
-            Object.keys(data).forEach(function (key) {
-                var n = parent.document.createElement('option');
-                n.innerHTML = key;
-                n.value = data[key];
-                obj.appendChild(n);
-            });
-        }
-
-
-
-        //....................................................................................
-
-
-
-
-
-        // Bu alanda, gelen main nesnesi "div vs" içine ekleneceği alt nesneleri oluşturuyoruz.
-        // Aslında burası bir döngü. Kendi kendini çağıran ve alt nesneleri sonuna kadar oluşturan bir method
-        function find(main, items) {
-
-            // Gelen data objesi içindeki tüm key ve value değerlerini alıyor
-            Object.keys(items).forEach(function (key) {
-
-                // Children bilgisi bulunduğunda, alt nesneler ekleyeceğimizi bildirmiş oluyor
-                // Gelen value değerindeki dataları tekrar method'a bildirip döngü oluşturuyoruz
-                if (key == 'children')
-                    for (var i = 0, p = items[key]; i < p.length; i++) {
-                        find(main, p[i]);
-                    }
-
-                // CSS bilgisi ekleyeceğimizi anlıyoruz
-                else if (key == 'style') {
-                    addStyle(main, items[key]);
-                }
-
-                // Select nesnesi için koyuldu. İleri de farklı amaçlar için items alanına sorgular ekleyebiliriz
-                else if (key == 'items') {
-                    addItems(main, items[key]);
-                }
-
-                else if (key == 'text') {
-                    main.innerHTML = items[key];
-                }
-
-                // Yukarıdaki tanımlamalara uygumuyorsa gelen key değeri, o zaman bu bir element mi veya bir attribute değeri mi kontrol edelim
-                else {
-                    var t = create(key);
-
-                    // Eğer değer null dönmüyorsa bu bir elementtir
-                    if (t) {
-                        // Elementi ekleyeceğimiz bir root nesne varsa ekler
-                        if (main)
-                            main.appendChild(t);
-
-                        // Elementi ekledik. Şimdi value değerindeki özelliklerini ekleyelim
-                        find(t, items[key]);
-                    }
-
-                    // Bu bir element değil o zaman gelen data içerisindeki attribute değerleriymiş olduğunu varsayarak nesneye aktaralım
-                    else {
-
-                        // Mutlak root nesnesi olmalı.
-                        if (main) {
-
-                            // Bak bakalım bu bir event mi
-                            var res = addEvent(main, key, items[key]);
-
-                            // Event olayı yoksa özellik olarak ata
-                            if (!res) {
-
-                                // Eğer ID değerine sahip nesneleri ayıralım
-                                if (key == 'id') {
-                                    stacker.method.items[items[key]] = main;
-                                }
-
-                                // Bir kontrol daha koyalım işimiz düzgün olsun.
-                                // Key değeri metin dışında bir karakter içermesin
-                                if (key.indexOf('.') != -1) throw ('Nesne özellik atamasında geçersiz karakterler var. Yalnızca alpha (a-z) karakterler yazınız.')
-                                main.setAttribute(key, items[key]);
-                            }
-                        }
-                    }
-                }
-            });
-
-        }
-
-
-
-        //....................................................................................
-
-
-        stacker.addStyle = addStyle;
-        stacker.addEvent = addEvent;
-        stacker.create = create;
-        stacker.addItems = addItems;
-        stacker.find = find;
-
-
-
-        //....................................................................................
-
-
-        _.stacker = stacker;
-
-    }); // MODULE
-
 
 })(Skeleton);
 (function(_){
@@ -1901,10 +1245,10 @@ var Skeleton = (function (_) {
 //          SKELETON PATH DATA
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
 
-    _.MODULE(function () {
+    _.MODULE(function() {
 
         var data = _.path.data;
 
@@ -1941,16 +1285,16 @@ var Skeleton = (function (_) {
             'path9': { title: 'Proksimal Sigmoid Kolon', data: ['polip', 'icn2'] },
             'path10': { title: 'Distal İnen Kolon', data: ['polip'] },
             'path11': { title: 'Proksimal İnen Kolon', data: ['polip'] },
-            'path12': { title: '', data: ['polip', 'icn2', 'icn3'] },
-            'path13': { title: '', data: ['polip', 'icn2', 'icn3'] },
-            'path14': { title: 'Hepatik Fleksura', data: ['icn3', 'icn2', 'icn3'] },
-            'path15': { title: 'Distal Çekum', data: ['icn3', 'icn2', 'icn3'] },
-            'path16': { title: 'Proksimal Çekum', data: ['icn3', 'icn2', 'icn3'] },
-            'path17': { title: 'Duedonum 3. Kısım', data: ['icn3', 'icn2', 'icn3'] },
-            'path18': { title: 'Duedonum 4. Kısım', data: ['icn3', 'icn2', 'icn3'] },
-            'path19': { title: '', data: ['icn3', 'icn2', 'icn3'] },
-            'path20': { title: '', data: ['icn3', 'icn2', 'icn3'] },
-            'path21': { title: 'Terminal İleum', data: ['icn3', 'icn2', 'icn3'] },
+            'path12': { title: '', data: ['polip', 'anal_fissur', 'icn3'] },
+            'path13': { title: '', data: ['polip', 'icn2', 'anal_fissur'] },
+            'path14': { title: 'Hepatik Fleksura', data: ['anal_fissur', 'icn2', 'icn3'] },
+            'path15': { title: 'Distal Çekum', data: ['anal_fissur', 'icn2', 'icn3'] },
+            'path16': { title: 'Proksimal Çekum', data: ['anal_fissur', 'icn2', 'icn3'] },
+            'path17': { title: 'Duedonum 3. Kısım', data: ['anal_fissur', 'icn2', 'icn3'] },
+            'path18': { title: 'Duedonum 4. Kısım', data: ['anal_fissur', 'icn2', 'icn3'] },
+            'path19': { title: '', data: ['icn3', 'anal_fissur', 'icn3'] },
+            'path20': { title: '', data: ['icn3', 'anal_fissur', 'icn3'] },
+            'path21': { title: 'Terminal İleum', data: ['anal_fissur', 'icn2', 'icn3'] },
             'path22': { title: 'Distal İleum', data: ['icn3', 'icn2', 'icn3'] },
             'path23': { title: 'Proksimal İleum', data: ['icn3', 'icn2', 'icn3'] },
             'path24': { title: 'Distal Jejunum', data: ['icn3', 'icn2', 'icn3'] },
@@ -2081,7 +1425,7 @@ var Skeleton = (function (_) {
         }
 
         _.path.data = data;
-        
+
     }); // MODULE
 
 })(Skeleton);
@@ -2447,10 +1791,10 @@ var Skeleton = (function (_) {
 //          SKELETON MENU DATA
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
 
-    _.MODULE(function () {
+    _.MODULE(function() {
 
         var menu = _.menuObject;
 
@@ -2512,7 +1856,7 @@ var Skeleton = (function (_) {
                 title: "Polip",
                 section: ['Enteroklizis', 'BatinPelvisBT', 'BatinPelvisMR', 'MREnterografi', 'MREnteroklizis', 'CiftKontrastKolonGrafi', 'OzefagusMideDuedonumGrafisi', 'Gastroskopi', 'Kolonoskopi', 'D-Balon', 'Kapsül'],
                 data: 'data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOC4xNyAyNi4zMyI+PGRlZnM+PHN0eWxlPi5jbHMtMXtmaWxsOm5vbmU7c3Ryb2tlOiMwMDA7c3Ryb2tlLW1pdGVybGltaXQ6MTA7c3Ryb2tlLXdpZHRoOjJweDt9PC9zdHlsZT48L2RlZnM+PHRpdGxlPnBvbGlwPC90aXRsZT48cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0xMjA4LjUsMjk1LjE3VjI3Ny45MmE4LjA4LDguMDgsMCwwLDEsOC4wOC04LjA4aDBhOC4wOCw4LjA4LDAsMCwxLDguMDgsOC4wOHYxNy4yNSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTEyMDcuNSAtMjY4LjgzKSIvPjwvc3ZnPg==',
-                url: '/modals/polip.html'
+                jsonData: 'Skeleton.jsons.polip'
             },
             /**/
             'icv_darlik': {
@@ -2531,7 +1875,7 @@ var Skeleton = (function (_) {
                 title: "Lüminal Darlık",
                 section: ['BatinUS', 'Enteroklizis', 'BatinPelvisBT', 'BatinPelvisMR', 'MREnterografi', 'MREnteroklizis', 'CiftKontrastKolonGrafi', 'PerianalMR', 'PerianalUS', 'MRCP', 'OzefagusMideDuedonumGrafisi', 'Gastroskopi', 'Kolonoskopi', 'D-Balon', 'Kapsül'],
                 data: 'data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1OS4zOSAyMy40MSI+PGRlZnM+PHN0eWxlPi5jbHMtMXtmaWxsOm5vbmU7c3Ryb2tlOiMyMzFmMjA7c3Ryb2tlLW1pdGVybGltaXQ6MTA7c3Ryb2tlLXdpZHRoOjJweDt9PC9zdHlsZT48L2RlZnM+PHRpdGxlPkx1zIhtaW5hbCBkYXJsxLFrPC90aXRsZT48cG9seWxpbmUgY2xhc3M9ImNscy0xIiBwb2ludHM9IjAuNzQgMC45NiA4LjQgOS4yOSA1MC4wNyA5LjI5IDU4LjY1IDAuNzEiLz48cG9seWxpbmUgY2xhc3M9ImNscy0xIiBwb2ludHM9IjU4LjY1IDIyLjQ2IDUwLjk5IDE0LjEyIDkuMzIgMTQuMTIgMC43NCAyMi43MSIvPjwvc3ZnPg==',
-                url:'/modals/luminal.darlik.html'
+                url: '/modals/luminal.darlik.html'
             },
             /**/
             'kitle': {
@@ -2681,8 +2025,9 @@ var Skeleton = (function (_) {
             'ulser_multipl': {
                 title: "Ülser (Multipl)",
                 section: ['Enteroklizis', 'MREnterografi', 'MREnteroklizis', 'CiftKontrastKolonGrafi', 'OzefagusMideDuedonumGrafisi', 'Gastroskopi', 'Kolonoskopi', 'D-Balon', 'Kapsül'],
-                ////data: 'data:image/png;base64,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',,
-                url: '/modals/ulser.multi.html'
+                //data: 'data:image/png;base64,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',,
+                //url: '/modals/ulser.multi.html'
+                jsonData: 'Skeleton.jsons.ulsermultiple'
 
             },
             /**/
@@ -2808,8 +2153,9 @@ var Skeleton = (function (_) {
             /**/
             'anal_fissur': {
                 title: "Anal Fissür",
-                section: ['Perianal', 'OzefagusMideDuedonumGrafisi'],
-                //data: 'data:image/png;base64,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',
+                section: ['PerianalUS', 'Perianal', 'OzefagusMideDuedonumGrafisi'],
+                data: 'data:image/png;base64,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',
+                url: '/modals/anal.fissur.html'
             },
             /**/
             'perianal_apse': {
@@ -3016,9 +2362,6 @@ var Skeleton = (function (_) {
     }); // MODULE
 
 })(Skeleton);
-
-
-
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON MENU METHOD
 /////////////////////////////////////////////////////////////////////////
@@ -3533,9 +2876,9 @@ var Skeleton = (function (_) {
 //          SKELETON POPUP METHOD
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
-    _.MODULE(function () {
+    _.MODULE(function() {
 
         var method = _.popup.method;
         var popup = _.popup.objects;
@@ -3550,44 +2893,52 @@ var Skeleton = (function (_) {
 
         function open(url) {
 
-            helper.http(url,function(data){
+            helper.http(url, function(data) {
 
                 create();
 
-                    var text = data;
+                var text = data;
 
-                    // Yüklenen sayfa içerisinde script tag'ı varsa çalıştır
-                    var regex = _.regex.rules.scriptTag;
-                    var src = text.match(regex);
-                    text = text.replace(regex, '');
-                    popup.content.setHTML(text);
-                    popup.container.show();
-                    parent.Skeleton.popupmodal = {
-                        // Popup ile ilgili veriler
-                        content: {
-                            title: '',
-                            url: url,
-                            html: data
-                        },
-                        // Kaydet/onayla butonuna basıldığında işletilecek
-                        accept: accept,
-                        // Sayfadan çıkıldığında/iptal edildiğinde çalıştırılacak method
-                        reject: reject,
-                        watch: watch,
-                        // Popup pencereyi kapatmak için kullanılmaktadır
-                        close: close
-                    }
+                // Yüklenen sayfa içerisinde script tag'ı varsa çalıştır
+                var regex = _.regex.rules.scriptTag;
+                var src = text.match(regex);
+                text = text.replace(regex, '');
+                popup.content.setHTML(text);
+                popup.container.show();
 
-                    if (src) {
-                        var _script = new coll('script')
-                            .setHTML(src[1])
-                            .insert(popup.content.target);
 
-                    }
+                popup.header = {
+                    title: '',
+                    url: url,
+                    html: data
+                };
+
+                if (src) {
+                    var _script = new coll('script')
+                        .setHTML(src[1])
+                        .insert(popup.content.target);
+
+                }
 
             });
 
 
+        }
+
+
+
+
+        //....................................................................................
+
+
+        function openData(htmlData) {
+
+            create();
+            if (typeof htmlData != 'object')
+                popup.content.setHTML(htmlData);
+            else
+                popup.content.append(htmlData);
+            popup.container.show();
         }
 
 
@@ -3599,8 +2950,8 @@ var Skeleton = (function (_) {
 
             // Popup container 
             var container = new coll('div', {
-                id: 'skeleton-popup-container'
-            })
+                    id: 'skeleton-popup-container'
+                })
                 // Style
                 .setCSS({
                     backgroundColor: 'rgba(0,0,0,.4)',
@@ -3610,14 +2961,14 @@ var Skeleton = (function (_) {
                     top: 0,
                     bottom: 0,
                     display: 'none',
-                    zIndex:9999
+                    zIndex: 9999
                 });
 
 
             // Popup Content
             var content = new coll('div', {
-                id: 'skeleton-popup-content'
-            })
+                    id: 'skeleton-popup-content'
+                })
                 //.setClass('animated','jello')
                 // Style
                 .setCSS({
@@ -3684,7 +3035,7 @@ var Skeleton = (function (_) {
 
         //....................................................................................
 
-        
+
         function close() {
             if (popup.container) {
                 popup.container.target.parentNode.removeChild(popup.container.target);
@@ -3699,11 +3050,12 @@ var Skeleton = (function (_) {
 
 
 
-        method.open = open;
-        method.close = close;
-        method.accept = accept;
-        method.reject = reject;
-        method.watch = watch;
+        _.popup.open = method.open = open;
+        _.popup.openData = method.openData = openData;
+        _.popup.close = method.close = close;
+        _.popup.accept = method.accept = accept;
+        _.popup.reject = method.reject = reject;
+        _.popup.watch = method.watch = watch;
 
     }); // MODULE
 
@@ -3719,10 +3071,10 @@ var Skeleton = (function (_) {
     _.MODULE(function () {
 
         var popup = _.popup;
+        var method = _.popup.method;
         var collection = _.collection.create;
 
-
-
+  
         //....................................................................................
 
 
@@ -3834,10 +3186,10 @@ var Skeleton = (function (_) {
 //          SKELETON METHODS
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
 
-    _.MODULE(function () {
+    _.MODULE(function() {
 
         //SVG için method tutucu
         var method = _.method;
@@ -3934,8 +3286,8 @@ var Skeleton = (function (_) {
                         //Eğer tabloda bir veri yoksa oluşturuyoruz, varsa üzerine yazıyoruz
 
                         var dbdataCurrent = _.data[path.selectedPath.id] || (_.data[path.selectedPath.id] = {
-                            transforms: []
-                        }),
+                                transforms: []
+                            }),
                             moveItemKey = _.selectedObject.getAttr('key');
 
 
@@ -3946,7 +3298,7 @@ var Skeleton = (function (_) {
                             y: _.selectedObject.getAttr('y'),
                             obj:
                             //Sürüklenen nesnenin key ve root bilgisi
-                            moveItemKey
+                                moveItemKey
                         });
 
 
@@ -3979,10 +3331,27 @@ var Skeleton = (function (_) {
                             // Üzerinde değişiklik yapılacak datayı bildirelim
                             popup.data = newItem;
 
-                            // Popup açtır
                             popup.method.open(url);
-
                         }
+
+                        //Stacker ile açtırabilmek için özel tanımlandı
+                        else if (menu.data[moveItemKey].jsonData) {
+                            var datas = eval(menu.data[moveItemKey].jsonData);
+                            // Üzerinde değişiklik yapılacak datayı bildirelim
+                            popup.data = newItem;
+
+                            var doc = parent.document.createElement('div');
+                            doc.id = "modalpage";
+
+                            Skeleton.stacker({
+                                el: doc,
+                                source: datas
+                            });
+
+                            popup.method.openData(doc);
+                        }
+
+
 
 
 
@@ -4030,7 +3399,8 @@ var Skeleton = (function (_) {
             if (a.button != 0) return;
             var p = matrix(_.selectedObject, a);
             _.selectedObject.setAttr({
-                width: 30, height: 30
+                width: 30,
+                height: 30
             });
             _.selectedObject.style.display = 'none';
             //return;
@@ -4121,6 +3491,1067 @@ var Skeleton = (function (_) {
 
     }); // MODULE
 
+
+})(Skeleton);
+/////////////////////////////////////////////////////////////////////////
+//          SKELETON STACKER
+/////////////////////////////////////////////////////////////////////////
+
+(function(_) {
+
+    _.MODULE(function() {
+
+        var helper = _.helper.method;
+
+        /*
+        function parser(t) {
+
+            var context = [];
+
+            function isFunction(n) {
+                if (n.substring(0, 2) == 'on') {
+                    if (document[n] == null || typeof document[n] == 'function')
+                        return true;
+                }
+
+                return false;
+            }
+
+            function sub(main, item) {
+
+                var children = item.children;
+
+                for (var i = 0; i < children.length; i++) {
+
+                    var node = children[i];
+
+                    var name = {};
+                    var z = name['$' + node.tagName.toLowerCase()] = {};
+                    if (node.children.length > 0)
+                        z.children = [];
+
+                    // Attribute
+                    for (var n = 0, q = node.attributes; n < q.length; n++) {
+                        var nm = q[n].name;
+                        var fn = q[n].value;
+
+                        var func = isFunction(nm);
+                        if (func) {
+                            z['(' + nm + ')'] = fn;
+                        }
+                        else
+                            z[nm] = fn;
+
+                    }
+
+                    // Text
+                    if (node.innerText) {
+                        if (node.children.length == 0)
+                            z['text'] = node.innerText.replace(/\n/g, '');
+                    }
+
+                    main.push(name);
+                    sub(z.children, node);
+
+                }
+
+            }
+
+
+            sub(context, t);
+            parseData(context);
+        }
+        */
+
+        //....................................................................................
+
+
+
+        function stacker(args) {
+            if (typeof args != 'object') return;
+
+            // Geliştirici tarafından verilen json dosyası veya object nesnesi
+            var source = args.source;
+
+            // Burayı ekstra olacak proje için ürettik
+            // Bu değişken üzerine gelecek obje nesnesi içerisine, elementlerin value değerlerinin olduğu datayı, buraya güncelleyeceğiz
+            stacker.updateWithData = args.updateWithData;
+
+            // Üzerinde işlem yapılacak container element nesnesi
+            // Gelen el nesnesinin DIV olduğunu varsayarsak, içerisine ilgili elementleri oluşturacağız
+            var obj = typeof args.el == 'object' ? args.el : parent.document.querySelector(args.el);
+
+            // Arkaplanda methodların tutulacağı liste
+            stacker.method = {
+
+                // Methodlar trigger edildiğinde, event sınıfı içine implemente edilecek olan element listesi nesnesi
+                // function(evnt){ evnt.items } şeklinde kullanarak, form içindeki tüm nesnelere erişilebilir
+                items: {},
+                data: {},
+
+                // Form üzerindeki tüm elementlerin tetiklenmesi için ara bir method tanımlanıyor
+                trigger: function(name) {
+
+                    // Bu method ilgili element eventi tetiklendiğinde çalışacak
+                    // Biz de bu method tetiklendiğinde, method içine dönecek olan object içeriğine istediğimiz dataları gömeceğiz
+                    // Örneğin data ve items adında iki adet alanımız daha olacak
+                    // data nesnesi, tüm input,textarea,select vs gibi elementlerin içeriklerini tutan object nesnesi
+                    // items ise; name ve id attribute özelliğine sahip tüm elementlerin listesini tutar
+                    function trigger(ev) {
+
+                        var call = null;
+                        if (typeof name != 'function') {
+                            call = stacker.method[name];
+                        } else
+                            call = name;
+
+                        ev.items = stacker.method.items;
+                        ev.data = stacker.method.data;
+
+                        // Trigger methodumuz çalıştırıldığında updateWithData datasını güncelleyelim
+                        stacker.updateWithData = ev.items;
+
+                        call(ev);
+
+                        stacker.method.triggerGetValues(ev.target);
+                    }
+                    return trigger;
+
+                },
+                // Methodlar trigger olduğunda nesnelerin içeriklerini liste halinde veren method
+                triggerGetValues: function(item) {
+
+                    var name = item.name || item.id;
+
+                    if (!name) return;
+                    var data = stacker.method.data;
+
+                    switch (item.type) {
+                        case 'checkbox':
+                        case 'radio':
+                            var val = item.checked ? item.value ? item.value : true : null;
+                            if (val)
+                                data[name] = val;
+                            else if (data)
+                                delete data[name];
+                            break;
+                        case 'button':
+                            break;
+                        default:
+                            if (item.value)
+                                data[name] = item.value;
+                            else
+                                delete data[name];
+                            break;
+
+                    }
+
+                }
+            };
+
+            // Object data içerisineki tüm methodları bulur ve stacker.method içerisine aktarır
+            // Buranın kullanılma amacı, elementler üzerinde eğer on[change,click,mousedown vs...] gibi elle tanımlanmış methodlar varsa...
+            // .. bunları alarak trigger methodunda tetikletebilmek
+            Object.keys(args).forEach(function(key) {
+                if (typeof args[key] == 'function') {
+                    stacker.method[key] = args[key];
+                };
+            });
+
+            // Eğer source yoksa ancak sadece obj varsa, o halde obje içindeki dataları hesaplayıp, sadece name ve id değerine sahip olan nesneleri seçelim
+            // Amacımız HTML üzerinde çalışmak, else kısmından itibaren JSON format, file ve Object üzerinde çalışmaktadır.
+            if (obj && !source) {
+
+                stacker.elements = {};
+
+                function repeat(el) {
+                    for (var i = 0, ch = el.children; i < ch.length; i++) {
+                        var _item = ch[i];
+                        if (_item.id || _item.name) {
+                            stacker.method.items[_item.name || _item.id] = _item;
+                            stacker.elements[_item.name || _item.id] = function(eventname, action) {
+
+                                var method = new stacker.method.trigger(action);
+
+                                _item.setBind(eventname, method);
+                                return stacker.elements;
+                            }
+                        }
+                        repeat(_item);
+                    }
+                }
+
+                repeat(obj);
+
+            } else {
+
+
+
+                // Source'den gelen veri window aldında bulunan bir object nesnesi de olabilir ya da json uzantılı bir dosya da olabilir
+                // İlk olarak json uzantılı dosyaya bakılıyor
+                if (typeof source == 'string' && source.endsWith('.json')) {
+
+                    // Dosya yüklemesini yap
+                    helper.http(source, function(data) {
+                        // Gelen dataları parse et ve elementleri sayfaya yansıt
+                        data = eval(data);
+                        parseData(data, obj);
+                    });
+                    //} else {
+                    //parser(obj);
+                }
+
+                // Gelen source bilgisi window altında herhangi bir yerden elişilebilen bir nesne olduğunu söylüyor
+                else if (source && typeof source == 'object') {
+                    // O zaman direk olarak parse et ve elementleri sayfaya yansıt
+                    parseData(source, obj);
+                }
+
+            }
+
+            // stacker constructor methodunu geri döndür
+            return stacker;
+        }
+
+
+
+        //....................................................................................
+
+
+
+        // Gelen json file yada json object datasını parse eder ve obj nesnesine, yani ana container nesnesinin içine elementleri oluşturmaya başlar
+        function parseData(data, obj) {
+
+            // Data bir array mi yoksa object nesnesini ona göre işlem yapacağız
+            // Bu bir object nesnesi
+            if (!data.length)
+            //Data verilerine göre elementleri oluştur
+                find(obj, data);
+            else
+            // Array nesnesi
+                for (var i = 0; i < data.length; i++)
+                find(obj, data[i]);
+        }
+
+
+
+        //....................................................................................
+
+
+
+
+        // Obj nesnesine CSS style verileri ekler
+        function addStyle(obj, data) {
+            Object.keys(data).forEach(function(key) {
+                obj.style[key] = data[key];
+            });
+        }
+
+
+
+        //....................................................................................
+
+
+        function addEvent(obj, key, action) {
+
+            // Buradada istersek mutliple event değerleri verilebilir
+            // Aynı nesnelerde olduğu gibi aralarında nokta koyarak birden fazla eventname değerine aynı method aktarılabilir
+            // (mousedown.touchstart) = action()
+
+            var first = key.charAt(0);
+            var last = key.charAt(key.length - 1);
+
+            // Bu bir event değilse
+            if (first != '(' && last != ')') return false;
+
+            // Hatalı event tanımlaması varsa console'de uyarı verelim
+            if (first == '(' && last != ')' || first != '(' && last == ')')
+                throw ('Dosya adı : skeleton.stacker.methods.js\nSatır numarası 56. \nEvent tanımlaması geçersiz. Change, mousedown, click, keyup vs gibi alanlar için tanımladığınız veride parantezler kapatılmamış.');
+
+
+            // Multiple veriler varsa alalım. Yani event.event.event şeklinde gidiyor olabileceğini varsayalım
+            var multiple = key.substring(1, key.length - 1);
+
+            // event adlarını al
+            var getAllItem = multiple.split('.');
+
+            for (var i = 0; i < getAllItem.length; i++) {
+
+                // Sıradaki event adı
+                var _evname = getAllItem[i];
+
+                // Geliştirici tarafından gelen action değerini değiştirerek, onun yerine önce bizim methodumuzu tetiklemesini..
+                // .. daha sonra bizim methodumuz içerisinden, bir kaç değişiklik ve ekleme yaparak action methodunu tetiklemesini sağlıyor olacağız
+                // Eğer tetiklenen method içerisinde event.items gibi özel tanımlamalar eklemek istiyorsak...
+                // .. stacker.method objesinde ekleme yapılmalıdır
+                var method = new stacker.method.trigger(action);
+
+                // json dosya içinde function(){console.log('test');} örneğindeki gibi..
+                // eğer direk çalıştırılabilir kod var ise çalıştırıyoruz
+                // eğer yok ise; yani hataya düşerse, sadece listedeki methodu ekliyoruz
+
+                try {
+                    var t = eval(method);
+                    obj.setBind(_evname, t);
+                } catch (error) {
+                    obj.setBind(_evname, method);
+                }
+            }
+
+            // Event işleminin yapıldığını bildirelim
+            return true;
+        }
+
+
+
+        //....................................................................................
+
+
+
+
+
+        function create(key) {
+
+            // Boş olmamalı ve mutlaka $ işareti olmalı
+            if (!key) return null;
+            if (key.charAt(0) != '$') return null;
+
+            // $ işaretinden sonraki kısmı al
+            key = key.substring(1);
+
+            // Varsa tiplerini alalım
+            var typename = null;
+
+            if (key.indexOf('.') != -1) {
+
+                // Gelen veride, aralarına nokta koyarak çeşitli bilgiler alabiliriz
+                // Basit anlamda element adı ve tipini aldık
+                // elementname.typename
+                // liste uzayıp gidebilir ve istediğimiz kadar bilgiyi nokta ile alabiliriz
+                // $input.text
+
+                var sp = key.split('.');
+                key = sp[0]; // Key
+                typename = sp[1]; // Type
+            }
+
+            var n = parent.document.createElement(key);
+            if (typename)
+                n.type = typename;
+
+            return n;
+
+        }
+
+
+
+        //....................................................................................
+
+
+
+
+        // Burası sadece select nesnesi için hazırlandı. Daha sonradan farklı amaçlar için kullanılabilir
+        function addItems(obj, data) {
+
+            helper.forEach(data, function(key, data) {
+                var n = parent.document.createElement('option');
+                n.innerHTML = key;
+                n.value = data || key;
+                obj.appendChild(n);
+            });
+
+        }
+
+
+
+        //....................................................................................
+
+
+
+
+
+        // Bu alanda, gelen main nesnesi "div vs" içine ekleneceği alt nesneleri oluşturuyoruz.
+        // Aslında burası bir döngü. Kendi kendini çağıran ve alt nesneleri sonuna kadar oluşturan bir method
+        function find(main, items) {
+
+            // Gelen data objesi içindeki tüm key ve value değerlerini alıyor
+            Object.keys(items).forEach(function(key) {
+
+                // Children bilgisi bulunduğunda, alt nesneler ekleyeceğimizi bildirmiş oluyor
+                // Gelen value değerindeki dataları tekrar method'a bildirip döngü oluşturuyoruz
+                if (key == 'children')
+                    for (var i = 0, p = items[key]; i < p.length; i++) {
+                        find(main, p[i]);
+                    }
+
+                // CSS bilgisi ekleyeceğimizi anlıyoruz
+                else if (key == 'style') {
+                    addStyle(main, items[key]);
+                }
+
+                // Select nesnesi için koyuldu. İleri de farklı amaçlar için items alanına sorgular ekleyebiliriz
+                else if (key == 'items') {
+                    addItems(main, items[key]);
+
+                } else if (key == 'text') {
+                    main.innerHTML = items[key];
+                }
+
+                // Yukarıdaki tanımlamalara uygumuyorsa gelen key değeri, o zaman bu bir element mi veya bir attribute değeri mi kontrol edelim
+                else {
+                    var t = create(key);
+
+                    // Eğer değer null dönmüyorsa bu bir elementtir
+                    if (t) {
+                        // Elementi ekleyeceğimiz bir root nesne varsa ekler
+                        if (main)
+                            main.appendChild(t);
+
+                        // Elementi ekledik. Şimdi value değerindeki özelliklerini ekleyelim
+                        find(t, items[key]);
+                    }
+
+                    // Bu bir element değil o zaman gelen data içerisindeki attribute değerleriymiş olduğunu varsayarak nesneye aktaralım
+                    else {
+
+                        // Mutlak root nesnesi olmalı.
+                        if (main) {
+
+                            // Bak bakalım bu bir event mi
+                            var res = addEvent(main, key, items[key]);
+
+                            // Event olayı yoksa özellik olarak ata
+                            if (!res) {
+
+                                // Eğer ID değerine sahip nesneleri ayıralım
+                                if (key == 'id') {
+                                    stacker.method.items[items[key]] = main;
+                                }
+
+                                // Bir kontrol daha koyalım işimiz düzgün olsun.
+                                // Key değeri metin dışında bir karakter içermesin
+                                if (key.indexOf('.') != -1) throw ('Nesne özellik atamasında geçersiz karakterler var. Yalnızca alpha (a-z) karakterler yazınız.')
+                                main.setAttribute(key, items[key]);
+                            }
+                        }
+                    }
+                }
+            });
+
+        }
+
+
+
+        //....................................................................................
+
+
+        stacker.addStyle = addStyle;
+        stacker.addEvent = addEvent;
+        stacker.create = create;
+        stacker.addItems = addItems;
+        stacker.find = find;
+
+
+
+        //....................................................................................
+
+
+        _.stacker = stacker;
+
+    }); // MODULE
+
+
+})(Skeleton);
+(function(_) {
+
+    _.MODULE(function() {
+
+        _.jsons.analfissur = [{
+                "$h1": {
+                    "class": "bheader",
+                    "text": "Anal Fissür"
+                }
+            },
+            {
+                "$div": {
+                    "children": [{
+                        "$div": {
+                            "children": [{
+                                    "$span": {
+                                        "class": "gtitle",
+                                        "text": "Form"
+                                    }
+                                },
+                                {
+                                    "$div": {
+                                        "children": [{
+                                            "$select": {
+                                                "items": ['Derin', 'Yüzeysel'],
+                                                "id": "endoskopi"
+                                            }
+                                        }],
+                                        "class": "group-label-list"
+                                    }
+                                }
+                            ],
+                            "class": "fgroup"
+                        }
+                    }],
+                    "id": "modalpage-content"
+                }
+            },
+            {
+                "$div": {
+                    "children": [{
+                        "$input": {
+                            "type": "button",
+                            "value": "Kaydet"
+                        }
+                    }]
+                }
+            }
+        ];
+
+
+    });
+
+})(Skeleton);
+(function(_) {
+
+
+
+
+    _.jsons.analulser = [{
+            "$h1": {
+                "class": "bheader",
+                "text": "Anal Fissür"
+            }
+        },
+        {
+            "$div": {
+                "children": [{
+                    "$div": {
+                        "children": [{
+                                "$span": {
+                                    "class": "gtitle",
+                                    "text": "Form"
+                                }
+                            },
+                            {
+                                "$div": {
+                                    "children": [{
+                                        "$select": {
+                                            "children": [{
+                                                    "$option": {
+                                                        "value": "Derin",
+                                                        "text": "Derin"
+                                                    }
+                                                },
+                                                {
+                                                    "$option": {
+                                                        "value": "Yüzeysel",
+                                                        "text": "Yüzeysel"
+                                                    }
+                                                }
+                                            ],
+                                            "id": "endoskopi",
+                                            "(onchange)": "formchanger(this,event)"
+                                        }
+                                    }],
+                                    "class": "group-label-list"
+                                }
+                            }
+                        ],
+                        "class": "fgroup"
+                    }
+                }],
+                "id": "modalpage-content"
+            }
+        },
+        {
+            "$div": {
+                "children": [{
+                    "$input": {
+                        "type": "button",
+                        "value": "Kaydet",
+                        "(onclick)": "Skeleton.popup.method.close"
+                    }
+                }]
+            }
+        }
+    ];
+
+})(Skeleton);
+(function(_) {
+
+    _.MODULE(function() {
+
+
+        _.jsons.luminalDarlik = [{
+                "$h1": {
+                    "class": "bheader",
+                    "text": "Lüminal Darlık"
+                }
+            },
+            {
+                "$div": {
+                    "children": [{
+                            "$div": {
+                                "children": [{
+                                        "$span": {
+                                            "class": "gtitle",
+                                            "text": "Uzunluk"
+                                        }
+                                    },
+                                    {
+                                        "$input": {
+                                            "type": "number",
+                                            "id": "uzunluk",
+                                            "style": "width:100px;",
+                                            "placeholder": "Uzunluk"
+                                        }
+                                    }
+                                ],
+                                "class": "fgroup"
+                            }
+                        },
+                        {
+                            "$div": {
+                                "children": [{
+                                        "$span": {
+                                            "class": "gtitle",
+                                            "text": "Endoskopi"
+                                        }
+                                    },
+                                    {
+                                        "$div": {
+                                            "children": [{
+                                                "$select": {
+                                                    "children": [{
+                                                            "$option": {
+                                                                "value": "Geçti",
+                                                                "text": "Geçti"
+                                                            }
+                                                        },
+                                                        {
+                                                            "$option": {
+                                                                "value": "Geçemedi",
+                                                                "text": "Geçemedi"
+                                                            }
+                                                        }
+                                                    ],
+                                                    "id": "endoskopi"
+                                                }
+                                            }],
+                                            "class": "group-label-list"
+                                        }
+                                    }
+                                ],
+                                "class": "fgroup"
+                            }
+                        }
+                    ],
+                    "id": "modalpage-content"
+                }
+            },
+            {
+                "$div": {
+                    "children": [{
+                        "$input": {
+                            "type": "button",
+                            "value": "Kaydet",
+                            "(click)": Skeleton.popup.close
+                        }
+                    }]
+                }
+            }
+        ];
+
+
+    });
+
+
+})(Skeleton);
+(function(_) {
+
+    _.MODULE(function() {
+
+        function all(e) {
+            Skeleton.popup.data.fields = e.data;
+        }
+
+        function changer(e) {
+            all(e);
+        }
+
+        function keyup(e) {
+            all(e);
+        }
+
+        _.jsons.polip = [{
+                "$h1": {
+                    "class": "bheader",
+                    "text": "Polip"
+                }
+            },
+            {
+                "$div": {
+                    "children": [{
+                            "$div": {
+                                "children": [{
+                                        "$span": {
+                                            "class": "gtitle",
+                                            "text": "Adet",
+                                        }
+                                    },
+                                    {
+                                        "$input": {
+                                            "type": "number",
+                                            "id": "adet",
+                                            "name": "adet",
+                                            "style": "width:100px;",
+                                            "placeholder": "Adet",
+                                            "(keyup)": keyup
+                                        }
+                                    }
+                                ],
+                                "class": "fgroup"
+                            }
+                        },
+                        {
+                            "$div": {
+                                "children": [{
+                                        "$span": {
+                                            "class": "gtitle",
+                                            "text": "Tipi"
+                                        }
+                                    },
+                                    {
+                                        "$div": {
+                                            "children": [{
+
+                                                    "$input": {
+                                                        "type": "checkbox",
+                                                        "id": "sapli",
+                                                        "value": "Saplı",
+                                                        "(click)": changer
+                                                    },
+                                                    "$label": {
+                                                        "for": "sapli",
+                                                        "text": "Saplı"
+                                                    }
+                                                },
+                                                {
+                                                    "$input": {
+                                                        "type": "checkbox",
+                                                        "id": "sapsiz",
+                                                        "value": "Sapsız",
+                                                        "(click)": changer
+                                                    },
+                                                    "$label": {
+                                                        "for": "sapsiz",
+                                                        "text": "Sapsız"
+                                                    }
+                                                }
+                                            ],
+                                            "class": "group-label-list"
+                                        }
+                                    }
+                                ],
+                                "class": "fgroup"
+                            }
+                        },
+                        {
+                            "$div": {
+                                "children": [{
+                                        "$span": {
+                                            "class": "gtitle",
+                                            "text": "Boyut"
+                                        }
+                                    },
+                                    {
+                                        "$div": {
+                                            "children": [{
+                                                    "$input": {
+                                                        "type": "checkbox",
+                                                        "id": "boyut1",
+                                                        "value": "<0.5 cm",
+                                                        "(click)": changer
+                                                    }
+                                                },
+                                                {
+                                                    "$label": {
+                                                        "for": "boyut1",
+                                                        "text": "<0.5 cm"
+                                                    }
+                                                },
+                                                {
+                                                    "$input": {
+                                                        "type": "checkbox",
+                                                        "id": "boyut2",
+                                                        "value": "0.5-1 cm",
+                                                        "(click)": changer
+                                                    }
+                                                },
+                                                {
+                                                    "$label": {
+                                                        "for": "boyut2",
+                                                        "text": "0.5-1 cm"
+                                                    }
+                                                },
+                                                {
+                                                    "$input": {
+                                                        "type": "checkbox",
+                                                        "id": "boyut3",
+                                                        "value": "1-2 cm",
+                                                        "(click)": changer
+                                                    }
+                                                },
+                                                {
+                                                    "$label": {
+                                                        "for": "boyut3",
+                                                        "text": "1-2 cm"
+                                                    }
+                                                },
+                                                {
+                                                    "$input": {
+                                                        "type": "checkbox",
+                                                        "id": "boyut4",
+                                                        "value": ">3 cm",
+                                                        "(click)": changer
+                                                    }
+                                                },
+                                                {
+                                                    "$label": {
+                                                        "for": "boyut4",
+                                                        "text": ">3 cm"
+                                                    }
+                                                }
+                                            ],
+                                            "class": "group-label-list"
+                                        }
+                                    }
+                                ],
+                                "class": "fgroup"
+                            }
+                        }
+                    ],
+                    "id": "modalpage-content"
+                }
+            },
+            {
+                "$div": {
+                    "style": "padding:10px;",
+                    "children": [{
+                        "$input": {
+                            "type": "button",
+                            "value": "Kaydet",
+                            "(click)": Skeleton.popup.close
+                        }
+                    }]
+                }
+            }
+        ];
+
+    });
+
+})(Skeleton);
+(function(_) {
+
+    _.MODULE(function() {
+
+        _.jsons.ulsermultiple = [{
+                "$h1": {
+                    "class": "bheader",
+                    "text": "Ülser Multipl"
+                }
+            },
+            {
+                "$div": {
+                    "children": [{
+                            "$div": {
+                                "children": [{
+                                        "$span": {
+                                            "class": "gtitle",
+                                            "text": "Formasyon"
+                                        }
+                                    },
+                                    {
+                                        "$div": {
+                                            "children": [{
+                                                    "$input": {
+                                                        "type": "checkbox",
+                                                        "value": "Aftöz",
+                                                        "id": "aftoz"
+                                                    }
+                                                },
+                                                {
+                                                    "$label": {
+                                                        "for": "aftoz",
+                                                        "text": "Aftöz"
+                                                    }
+                                                },
+                                                {
+                                                    "$input": {
+                                                        "type": "checkbox",
+                                                        "value": "Oval",
+                                                        "id": "oval"
+                                                    }
+                                                },
+                                                {
+                                                    "$label": {
+                                                        "for": "oval",
+                                                        "text": "Oval"
+                                                    }
+                                                },
+                                                {
+                                                    "$input": {
+                                                        "type": "checkbox",
+                                                        "value": "Yıldız",
+                                                        "id": "yildiz"
+                                                    }
+                                                },
+                                                {
+                                                    "$label": {
+                                                        "for": "yildiz",
+                                                        "text": "Yıldız"
+                                                    }
+                                                },
+                                                {
+                                                    "$input": {
+                                                        "type": "checkbox",
+                                                        "value": "Sirküler",
+                                                        "id": "sirkuler"
+                                                    }
+                                                },
+                                                {
+                                                    "$label": {
+                                                        "for": "sirkuler",
+                                                        "text": "Sirküler (Horizontal)"
+                                                    }
+                                                }
+                                            ],
+                                            "class": "group-label-list"
+                                        }
+                                    }
+                                ],
+                                "class": "fgroup"
+                            }
+                        },
+                        {
+                            "$div": {
+                                "children": [{
+                                        "$span": {
+                                            "class": "gtitle",
+                                            "text": "Boyut"
+                                        }
+                                    },
+                                    {
+                                        "$div": {
+                                            "children": [{
+                                                    "$input": {
+                                                        "type": "checkbox",
+                                                        "value": "<0.5 cm"
+                                                    }
+                                                },
+                                                {
+                                                    "$label": {
+                                                        "for": "boyut1",
+                                                        "text": "<0.5 cm"
+                                                    }
+                                                },
+                                                {
+                                                    "$input": {
+                                                        "type": "checkbox",
+                                                        "value": "0.5-1 cm"
+                                                    }
+                                                },
+                                                {
+                                                    "$label": {
+                                                        "for": "boyut2",
+                                                        "text": "0.5-1 cm"
+                                                    }
+                                                },
+                                                {
+                                                    "$input": {
+                                                        "type": "checkbox",
+                                                        "value": "1-2 cm"
+                                                    }
+                                                },
+                                                {
+                                                    "$label": {
+                                                        "for": "boyut3",
+                                                        "text": "1-2 cm"
+                                                    }
+                                                },
+                                                {
+                                                    "$input": {
+                                                        "type": "checkbox",
+                                                        "value": "3-5 cm"
+                                                    }
+                                                },
+                                                {
+                                                    "$label": {
+                                                        "for": "boyut4",
+                                                        "text": "3-5 cm"
+                                                    }
+                                                },
+                                                {
+                                                    "$input": {
+                                                        "type": "checkbox",
+                                                        "value": ">5 cm"
+                                                    }
+                                                },
+                                                {
+                                                    "$label": {
+                                                        "for": "boyut5",
+                                                        "text": ">5 cm"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "class": "fgroup"
+                            }
+                        },
+                        {
+                            "$div": {
+                                "children": [{
+                                        "$span": {
+                                            "class": "gtitle",
+                                            "text": "Adet"
+                                        }
+                                    },
+                                    {
+                                        "$input": {
+                                            "type": "number",
+                                            "placeholder": "Adet",
+                                            "title": "İzole olarak kayda geçmesini istediğiniz birden fazla ülser için sayı girebilirsiniz."
+                                        }
+                                    }
+                                ],
+                                "class": "fgroup"
+                            }
+                        }
+                    ],
+                    "id": "modalpage-content"
+                }
+            },
+            {
+                "$div": {
+                    "children": [{
+                        "$input": {
+                            "type": "button",
+                            "value": "Kaydet"
+                        }
+                    }]
+                }
+            }
+        ];
+
+
+    });
 
 })(Skeleton);
 /////////////////////////////////////////////////////////////////////////

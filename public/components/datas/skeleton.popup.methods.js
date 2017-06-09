@@ -2,9 +2,9 @@
 //          SKELETON POPUP METHOD
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
-    _.MODULE(function () {
+    _.MODULE(function() {
 
         var method = _.popup.method;
         var popup = _.popup.objects;
@@ -19,44 +19,52 @@
 
         function open(url) {
 
-            helper.http(url,function(data){
+            helper.http(url, function(data) {
 
                 create();
 
-                    var text = data;
+                var text = data;
 
-                    // Yüklenen sayfa içerisinde script tag'ı varsa çalıştır
-                    var regex = _.regex.rules.scriptTag;
-                    var src = text.match(regex);
-                    text = text.replace(regex, '');
-                    popup.content.setHTML(text);
-                    popup.container.show();
-                    parent.Skeleton.popupmodal = {
-                        // Popup ile ilgili veriler
-                        content: {
-                            title: '',
-                            url: url,
-                            html: data
-                        },
-                        // Kaydet/onayla butonuna basıldığında işletilecek
-                        accept: accept,
-                        // Sayfadan çıkıldığında/iptal edildiğinde çalıştırılacak method
-                        reject: reject,
-                        watch: watch,
-                        // Popup pencereyi kapatmak için kullanılmaktadır
-                        close: close
-                    }
+                // Yüklenen sayfa içerisinde script tag'ı varsa çalıştır
+                var regex = _.regex.rules.scriptTag;
+                var src = text.match(regex);
+                text = text.replace(regex, '');
+                popup.content.setHTML(text);
+                popup.container.show();
 
-                    if (src) {
-                        var _script = new coll('script')
-                            .setHTML(src[1])
-                            .insert(popup.content.target);
 
-                    }
+                popup.header = {
+                    title: '',
+                    url: url,
+                    html: data
+                };
+
+                if (src) {
+                    var _script = new coll('script')
+                        .setHTML(src[1])
+                        .insert(popup.content.target);
+
+                }
 
             });
 
 
+        }
+
+
+
+
+        //....................................................................................
+
+
+        function openData(htmlData) {
+
+            create();
+            if (typeof htmlData != 'object')
+                popup.content.setHTML(htmlData);
+            else
+                popup.content.append(htmlData);
+            popup.container.show();
         }
 
 
@@ -68,8 +76,8 @@
 
             // Popup container 
             var container = new coll('div', {
-                id: 'skeleton-popup-container'
-            })
+                    id: 'skeleton-popup-container'
+                })
                 // Style
                 .setCSS({
                     backgroundColor: 'rgba(0,0,0,.4)',
@@ -79,14 +87,14 @@
                     top: 0,
                     bottom: 0,
                     display: 'none',
-                    zIndex:9999
+                    zIndex: 9999
                 });
 
 
             // Popup Content
             var content = new coll('div', {
-                id: 'skeleton-popup-content'
-            })
+                    id: 'skeleton-popup-content'
+                })
                 //.setClass('animated','jello')
                 // Style
                 .setCSS({
@@ -153,7 +161,7 @@
 
         //....................................................................................
 
-        
+
         function close() {
             if (popup.container) {
                 popup.container.target.parentNode.removeChild(popup.container.target);
@@ -168,11 +176,12 @@
 
 
 
-        method.open = open;
-        method.close = close;
-        method.accept = accept;
-        method.reject = reject;
-        method.watch = watch;
+        _.popup.open = method.open = open;
+        _.popup.openData = method.openData = openData;
+        _.popup.close = method.close = close;
+        _.popup.accept = method.accept = accept;
+        _.popup.reject = method.reject = reject;
+        _.popup.watch = method.watch = watch;
 
     }); // MODULE
 

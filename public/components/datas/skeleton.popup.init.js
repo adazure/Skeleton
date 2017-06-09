@@ -8,10 +8,10 @@
     _.MODULE(function () {
 
         var popup = _.popup;
+        var method = _.popup.method;
         var collection = _.collection.create;
 
-
-
+  
         //....................................................................................
 
 

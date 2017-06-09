@@ -2,22 +2,10 @@
 
     _.MODULE(function() {
 
-        function all(e) {
-            Skeleton.popup.data.fields = e.data;
-        }
-
-        function changer(e) {
-            all(e);
-        }
-
-        function keyup(e) {
-            all(e);
-        }
-
-        _.jsons.polip = [{
+        _.jsons.ulsermultiple = [{
                 "$h1": {
                     "class": "bheader",
-                    "text": "Polip"
+                    "text": "Ülser Multipl"
                 }
             },
             {
@@ -27,56 +15,61 @@
                                 "children": [{
                                         "$span": {
                                             "class": "gtitle",
-                                            "text": "Adet",
-                                        }
-                                    },
-                                    {
-                                        "$input": {
-                                            "type": "number",
-                                            "id": "adet",
-                                            "name": "adet",
-                                            "style": "width:100px;",
-                                            "placeholder": "Adet",
-                                            "(keyup)": keyup
-                                        }
-                                    }
-                                ],
-                                "class": "fgroup"
-                            }
-                        },
-                        {
-                            "$div": {
-                                "children": [{
-                                        "$span": {
-                                            "class": "gtitle",
-                                            "text": "Tipi"
+                                            "text": "Formasyon"
                                         }
                                     },
                                     {
                                         "$div": {
                                             "children": [{
-
                                                     "$input": {
                                                         "type": "checkbox",
-                                                        "id": "sapli",
-                                                        "value": "Saplı",
-                                                        "(click)": changer
-                                                    },
+                                                        "value": "Aftöz",
+                                                        "id": "aftoz"
+                                                    }
+                                                },
+                                                {
                                                     "$label": {
-                                                        "for": "sapli",
-                                                        "text": "Saplı"
+                                                        "for": "aftoz",
+                                                        "text": "Aftöz"
                                                     }
                                                 },
                                                 {
                                                     "$input": {
                                                         "type": "checkbox",
-                                                        "id": "sapsiz",
-                                                        "value": "Sapsız",
-                                                        "(click)": changer
-                                                    },
+                                                        "value": "Oval",
+                                                        "id": "oval"
+                                                    }
+                                                },
+                                                {
                                                     "$label": {
-                                                        "for": "sapsiz",
-                                                        "text": "Sapsız"
+                                                        "for": "oval",
+                                                        "text": "Oval"
+                                                    }
+                                                },
+                                                {
+                                                    "$input": {
+                                                        "type": "checkbox",
+                                                        "value": "Yıldız",
+                                                        "id": "yildiz"
+                                                    }
+                                                },
+                                                {
+                                                    "$label": {
+                                                        "for": "yildiz",
+                                                        "text": "Yıldız"
+                                                    }
+                                                },
+                                                {
+                                                    "$input": {
+                                                        "type": "checkbox",
+                                                        "value": "Sirküler",
+                                                        "id": "sirkuler"
+                                                    }
+                                                },
+                                                {
+                                                    "$label": {
+                                                        "for": "sirkuler",
+                                                        "text": "Sirküler (Horizontal)"
                                                     }
                                                 }
                                             ],
@@ -100,9 +93,7 @@
                                             "children": [{
                                                     "$input": {
                                                         "type": "checkbox",
-                                                        "id": "boyut1",
-                                                        "value": "<0.5 cm",
-                                                        "(click)": changer
+                                                        "value": "<0.5 cm"
                                                     }
                                                 },
                                                 {
@@ -114,9 +105,7 @@
                                                 {
                                                     "$input": {
                                                         "type": "checkbox",
-                                                        "id": "boyut2",
-                                                        "value": "0.5-1 cm",
-                                                        "(click)": changer
+                                                        "value": "0.5-1 cm"
                                                     }
                                                 },
                                                 {
@@ -128,9 +117,7 @@
                                                 {
                                                     "$input": {
                                                         "type": "checkbox",
-                                                        "id": "boyut3",
-                                                        "value": "1-2 cm",
-                                                        "(click)": changer
+                                                        "value": "1-2 cm"
                                                     }
                                                 },
                                                 {
@@ -142,19 +129,47 @@
                                                 {
                                                     "$input": {
                                                         "type": "checkbox",
-                                                        "id": "boyut4",
-                                                        "value": ">3 cm",
-                                                        "(click)": changer
+                                                        "value": "3-5 cm"
                                                     }
                                                 },
                                                 {
                                                     "$label": {
                                                         "for": "boyut4",
-                                                        "text": ">3 cm"
+                                                        "text": "3-5 cm"
+                                                    }
+                                                },
+                                                {
+                                                    "$input": {
+                                                        "type": "checkbox",
+                                                        "value": ">5 cm"
+                                                    }
+                                                },
+                                                {
+                                                    "$label": {
+                                                        "for": "boyut5",
+                                                        "text": ">5 cm"
                                                     }
                                                 }
-                                            ],
-                                            "class": "group-label-list"
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "class": "fgroup"
+                            }
+                        },
+                        {
+                            "$div": {
+                                "children": [{
+                                        "$span": {
+                                            "class": "gtitle",
+                                            "text": "Adet"
+                                        }
+                                    },
+                                    {
+                                        "$input": {
+                                            "type": "number",
+                                            "placeholder": "Adet",
+                                            "title": "İzole olarak kayda geçmesini istediğiniz birden fazla ülser için sayı girebilirsiniz."
                                         }
                                     }
                                 ],
@@ -167,17 +182,16 @@
             },
             {
                 "$div": {
-                    "style": "padding:10px;",
                     "children": [{
                         "$input": {
                             "type": "button",
-                            "value": "Kaydet",
-                            "(click)": Skeleton.popup.close
+                            "value": "Kaydet"
                         }
                     }]
                 }
             }
         ];
+
 
     });
 
