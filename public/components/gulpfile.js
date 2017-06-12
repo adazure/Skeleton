@@ -23,6 +23,9 @@ var data = [
     path + 'skeleton.collection.js',
     path + 'skeleton.collection.methods.js',
     path + 'skeleton.collection.init.js',
+    path + 'skeleton.contextmenu.js',
+    path + 'skeleton.contextmenu.methods.js',
+    path + 'skeleton.contextmenu.init.js',
     path + 'skeleton.tooltip.js',
     path + 'skeleton.tooltip.methods.js',
     path + 'skeleton.tooltip.init.js',
@@ -48,7 +51,7 @@ var data = [
     path + 'skeleton.init.js',
 ];
 
-gulp.task('scripts', function () {
+gulp.task('scripts', function() {
 
     return gulp.src(data)
         .pipe(concat('script.data.js'))
@@ -59,6 +62,6 @@ gulp.task('scripts', function () {
 
 });
 
-gulp.task('default', function () {
+gulp.task('default', function() {
     gulp.watch(data, ['scripts']);
 });
