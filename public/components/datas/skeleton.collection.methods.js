@@ -2,10 +2,10 @@
 //          SKELETON COLLECTION METHODS
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
 
-    _.MODULE(function () {
+    _.MODULE(function() {
 
         var global = _.globalWindowEvents;
 
@@ -35,13 +35,13 @@
 
             // Eğer Attribute özellikleri girilmesi istenirse hepsini ekler
             if (attr)
-                Object.keys(attr).forEach(function (key) {
+                Object.keys(attr).forEach(function(key) {
                     self.target.setAttr(key, attr[key]);
                 });
 
 
             // Methodları aktaralım
-            Object.keys(inc).forEach(function (ky) {
+            Object.keys(inc).forEach(function(ky) {
                 self[ky] = inc[ky];
             });
 
@@ -56,7 +56,7 @@
         // oluşturduğu bu elementin içinde target'deki oluşturulan nesneyi ekler. 
         // Kısaca target nesnesini başka bir nesne içine ekler/kapsar
         // <div>{target}</div>
-        inc.wrap = function (name, attr) {
+        inc.wrap = function(name, attr) {
             var t = new coll(name, attr);
             t.target.appendChild(this.target);
             return this;
@@ -71,7 +71,7 @@
 
 
         // .create(..) şeklinde çağırıldığında parent'deki nesneye name ile tanımlı yeni nesne ekler
-        inc.create = function (name, attr) {
+        inc.create = function(name, attr) {
             var t = new coll(name, attr);
             this.target.appendChild(t.target);
             return t;
@@ -86,7 +86,7 @@
 
 
         // .append(..) ile çağırıldığında obj(HTMLElement) ekler
-        inc.append = function (obj) {
+        inc.append = function(obj) {
             this.target.appendChild(obj);
             return this;
         }
@@ -100,7 +100,7 @@
 
 
         // nesnenin kendinisi istenen başka bir nesneye import eder
-        inc.insert = function (target) {
+        inc.insert = function(target) {
             target.appendChild(this.target);
             return this;
         }
@@ -114,7 +114,9 @@
 
 
         // .delete() ile çağırıldığında nesneyi siler
-        inc.remove = function () {
+        inc.remove = function() {
+            console.log(this.target);
+            if (this.target);
             this.target.parentNode.removeChild(this.target);
             return this;
         }
@@ -128,12 +130,12 @@
 
 
         // Sınıf ekleme
-        inc.setClass = function (name) {
+        inc.setClass = function(name) {
 
-            for(var i = 0, n = arguments; i < n.length; i++){
+            for (var i = 0, n = arguments; i < n.length; i++) {
                 this.target.setClass(n[i]);
             }
-            
+
             return this;
         }
 
@@ -145,7 +147,7 @@
 
 
         // Sınıf kaldır
-        inc.remClass = function (name) {
+        inc.remClass = function(name) {
             if (this.target.className) {
                 var list = this.target.className.split(' ');
                 if (list.indexOf(name) != -1) {
@@ -165,7 +167,7 @@
 
 
         // Olay dinleyici atanır
-        inc.setBind = function (name, action) {
+        inc.setBind = function(name, action) {
             this.target.setBind(name, action);
             return this;
         }
@@ -179,7 +181,7 @@
 
 
         // Olay dinleyici kaldırılır
-        inc.remBind = function (name, action) {
+        inc.remBind = function(name, action) {
             this.target.remBind(name, action);
             return this;
         }
@@ -193,7 +195,7 @@
 
 
         // Nesneye style değerleri arguman olarak eklenebilir
-        inc.setCSS = function (args) {
+        inc.setCSS = function(args) {
             this.target.setCSS(args);
             return this;
         }
@@ -206,11 +208,11 @@
 
 
         // Ana nesnenin altında bulunan nesnelere style="" attribute ile style değerleri atar
-        inc.setCSSChildren = function (args) {
+        inc.setCSSChildren = function(args) {
 
             for (var i = 0; i < this.target.children.length; i++) {
                 var ch = this.target.children[i];
-                Object.keys(args).forEach(function (key) {
+                Object.keys(args).forEach(function(key) {
                     ch.style[key] = args[key];
                 });
             }
@@ -226,7 +228,7 @@
 
 
         // Nesnenin value değerine parametre atar
-        inc.setVal = function (value) {
+        inc.setVal = function(value) {
             this.target.value = value;
             return this;
         }
@@ -237,7 +239,7 @@
 
 
         // Sayfa üzerinde ilgili nesneyi gösterir
-        inc.show = function () {
+        inc.show = function() {
 
             this.target.setCSS('display', 'block');
 
@@ -248,7 +250,7 @@
 
 
         // Sayfa üzerinde ilgili nesneyi gizler
-        inc.hide = function () {
+        inc.hide = function() {
 
             this.target.setCSS('display', 'none');
 
@@ -262,7 +264,7 @@
 
         // <Style>...</Style> nesneleri için global style tanımlamaları oluşturur
         // Global olarak 
-        inc.setSheet = function (name, value) {
+        inc.setSheet = function(name, value) {
             var self = this;
             if (arguments.length == 2) {
                 if (!name || !value) return self;
@@ -272,9 +274,8 @@
                 json = json.replace(/:{/g, '{')
                 json = json.replace(/\"/g, '')
                 self.target.innerHTML += (name + json + '\n');
-            }
-            else if (arguments.length == 1) {
-                Object.keys(name).forEach(function (t) {
+            } else if (arguments.length == 1) {
+                Object.keys(name).forEach(function(t) {
                     self.setSheet(t, name[t]);
                 });
             }
@@ -288,7 +289,7 @@
 
 
         // Html metin eklemek için
-        inc.setHTML = function (value) {
+        inc.setHTML = function(value) {
             this.target.innerHTML = value;
             return this;
         }
@@ -299,7 +300,7 @@
 
 
         // Checkbox ve Radio butonlar için işaretleme yapar
-        inc.setChecked = function (param) {
+        inc.setChecked = function(param) {
             this.target.checked = param;
             return this;
         }
@@ -309,7 +310,7 @@
 
 
         // Style Dosya import etmek için
-        inc.importLink = function (url) {
+        inc.importLink = function(url) {
             this.target.innerHTML += '@import url(' + url + ');';
             return this;
         }

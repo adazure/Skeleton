@@ -48,26 +48,57 @@
             }
         }
 
+
         //....................................................................................
+
 
 
         // Listeyi temizler
-        function clear() {
-            for (var i = 0; i < data.length; i++) {
-                var it = data[i];
-                data.el.remBind('click', it.action);
-                data.el.parentNode.remove(data.el);
-                delete id;
+        function clear(action) {
+            //hide();
+            for (var i = 0, f = context.data; i < f.length; i++) {
+                var it = f[i];
+                it.el.remove();
             }
-            console.log(data);
+            context.data = [];
+            if (action)
+                action();
         }
 
+
         //....................................................................................
+
+
+        function show(e) {
+
+            context.container.setCSS({
+                left: e.pageX + 'px',
+                top: e.pageY + 'px'
+            });
+            context.container.show();
+        }
+
+
+
+        //....................................................................................
+
+
+        function hide() {
+            context.container.hide();
+        }
+
+
+
+
+        //....................................................................................
+
 
 
         context.method.add = add;
         context.method.load = load;
         context.method.clear = clear;
+        context.method.show = show;
+        context.method.hide = hide;
 
 
     }); // MENU

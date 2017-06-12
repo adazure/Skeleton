@@ -2,9 +2,9 @@
 //          SKELETON MENU METHOD
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
-    _.MODULE(function () {
+    _.MODULE(function() {
 
         var method = _.menuObject.method;
         var data = _.menuObject.data;
@@ -13,6 +13,7 @@
         var svgGlob = _.svg.globals;
         var skeletonGlobalMethod = _.globalMethod;
         var tooltip = _.tooltip;
+        var context = _.contextmenu;
 
 
         //....................................................................................
@@ -51,7 +52,31 @@
                 var isAllow = pathMethod.findAllowPath(butonID);
 
                 // Sayfaya eklendiğinde kaldırılabilmesi için, seçme olayını ekle
-                clone.setBind('mouseup', pathMethod.selectRemovedItem);
+                // clone.setBind('mouseup', pathMethod.selectRemovedItem);
+
+                // Sağ tuş özelliği ekleyelim
+                clone.setBind('contextmenu', function(e) {
+                    e.preventDefault();
+                    context.method.clear(function() {
+                        context.method.add({
+                            title: 'Delete Item',
+                            action: function() {
+
+                                // Silinecek nesneyi seç
+                                pathMethod.selectRemovedItem(e);
+
+                                // Nesneyi sil
+                                pathMethod.removeSelectedClone(e);
+
+                                context.method.hide();
+                            }
+                        });
+                        context.method.show(e);
+                    });
+
+                    return;
+                });
+
 
                 // Nesneyi seçilen nesne olarak işaretle
                 _.selectedObject = clone;
@@ -67,7 +92,7 @@
 
                 // Sürükleme esnasında, eğer geçerli alanlar yoksa kullanıcıya uyarı bilgisi verelim
                 if (!isAllow) {
-                    
+
                     tooltip.message('Bırakabileceğiniz geçerli bir alan bulunamadı');
                     tooltip.container.setClass('no-animate');
 

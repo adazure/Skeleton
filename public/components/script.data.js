@@ -754,10 +754,10 @@ var Skeleton = (function(_) {
 //          SKELETON COLLECTION METHODS
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
 
-    _.MODULE(function () {
+    _.MODULE(function() {
 
         var global = _.globalWindowEvents;
 
@@ -787,13 +787,13 @@ var Skeleton = (function(_) {
 
             // Eğer Attribute özellikleri girilmesi istenirse hepsini ekler
             if (attr)
-                Object.keys(attr).forEach(function (key) {
+                Object.keys(attr).forEach(function(key) {
                     self.target.setAttr(key, attr[key]);
                 });
 
 
             // Methodları aktaralım
-            Object.keys(inc).forEach(function (ky) {
+            Object.keys(inc).forEach(function(ky) {
                 self[ky] = inc[ky];
             });
 
@@ -808,7 +808,7 @@ var Skeleton = (function(_) {
         // oluşturduğu bu elementin içinde target'deki oluşturulan nesneyi ekler. 
         // Kısaca target nesnesini başka bir nesne içine ekler/kapsar
         // <div>{target}</div>
-        inc.wrap = function (name, attr) {
+        inc.wrap = function(name, attr) {
             var t = new coll(name, attr);
             t.target.appendChild(this.target);
             return this;
@@ -823,7 +823,7 @@ var Skeleton = (function(_) {
 
 
         // .create(..) şeklinde çağırıldığında parent'deki nesneye name ile tanımlı yeni nesne ekler
-        inc.create = function (name, attr) {
+        inc.create = function(name, attr) {
             var t = new coll(name, attr);
             this.target.appendChild(t.target);
             return t;
@@ -838,7 +838,7 @@ var Skeleton = (function(_) {
 
 
         // .append(..) ile çağırıldığında obj(HTMLElement) ekler
-        inc.append = function (obj) {
+        inc.append = function(obj) {
             this.target.appendChild(obj);
             return this;
         }
@@ -852,7 +852,7 @@ var Skeleton = (function(_) {
 
 
         // nesnenin kendinisi istenen başka bir nesneye import eder
-        inc.insert = function (target) {
+        inc.insert = function(target) {
             target.appendChild(this.target);
             return this;
         }
@@ -866,7 +866,9 @@ var Skeleton = (function(_) {
 
 
         // .delete() ile çağırıldığında nesneyi siler
-        inc.remove = function () {
+        inc.remove = function() {
+            console.log(this.target);
+            if (this.target);
             this.target.parentNode.removeChild(this.target);
             return this;
         }
@@ -880,12 +882,12 @@ var Skeleton = (function(_) {
 
 
         // Sınıf ekleme
-        inc.setClass = function (name) {
+        inc.setClass = function(name) {
 
-            for(var i = 0, n = arguments; i < n.length; i++){
+            for (var i = 0, n = arguments; i < n.length; i++) {
                 this.target.setClass(n[i]);
             }
-            
+
             return this;
         }
 
@@ -897,7 +899,7 @@ var Skeleton = (function(_) {
 
 
         // Sınıf kaldır
-        inc.remClass = function (name) {
+        inc.remClass = function(name) {
             if (this.target.className) {
                 var list = this.target.className.split(' ');
                 if (list.indexOf(name) != -1) {
@@ -917,7 +919,7 @@ var Skeleton = (function(_) {
 
 
         // Olay dinleyici atanır
-        inc.setBind = function (name, action) {
+        inc.setBind = function(name, action) {
             this.target.setBind(name, action);
             return this;
         }
@@ -931,7 +933,7 @@ var Skeleton = (function(_) {
 
 
         // Olay dinleyici kaldırılır
-        inc.remBind = function (name, action) {
+        inc.remBind = function(name, action) {
             this.target.remBind(name, action);
             return this;
         }
@@ -945,7 +947,7 @@ var Skeleton = (function(_) {
 
 
         // Nesneye style değerleri arguman olarak eklenebilir
-        inc.setCSS = function (args) {
+        inc.setCSS = function(args) {
             this.target.setCSS(args);
             return this;
         }
@@ -958,11 +960,11 @@ var Skeleton = (function(_) {
 
 
         // Ana nesnenin altında bulunan nesnelere style="" attribute ile style değerleri atar
-        inc.setCSSChildren = function (args) {
+        inc.setCSSChildren = function(args) {
 
             for (var i = 0; i < this.target.children.length; i++) {
                 var ch = this.target.children[i];
-                Object.keys(args).forEach(function (key) {
+                Object.keys(args).forEach(function(key) {
                     ch.style[key] = args[key];
                 });
             }
@@ -978,7 +980,7 @@ var Skeleton = (function(_) {
 
 
         // Nesnenin value değerine parametre atar
-        inc.setVal = function (value) {
+        inc.setVal = function(value) {
             this.target.value = value;
             return this;
         }
@@ -989,7 +991,7 @@ var Skeleton = (function(_) {
 
 
         // Sayfa üzerinde ilgili nesneyi gösterir
-        inc.show = function () {
+        inc.show = function() {
 
             this.target.setCSS('display', 'block');
 
@@ -1000,7 +1002,7 @@ var Skeleton = (function(_) {
 
 
         // Sayfa üzerinde ilgili nesneyi gizler
-        inc.hide = function () {
+        inc.hide = function() {
 
             this.target.setCSS('display', 'none');
 
@@ -1014,7 +1016,7 @@ var Skeleton = (function(_) {
 
         // <Style>...</Style> nesneleri için global style tanımlamaları oluşturur
         // Global olarak 
-        inc.setSheet = function (name, value) {
+        inc.setSheet = function(name, value) {
             var self = this;
             if (arguments.length == 2) {
                 if (!name || !value) return self;
@@ -1024,9 +1026,8 @@ var Skeleton = (function(_) {
                 json = json.replace(/:{/g, '{')
                 json = json.replace(/\"/g, '')
                 self.target.innerHTML += (name + json + '\n');
-            }
-            else if (arguments.length == 1) {
-                Object.keys(name).forEach(function (t) {
+            } else if (arguments.length == 1) {
+                Object.keys(name).forEach(function(t) {
                     self.setSheet(t, name[t]);
                 });
             }
@@ -1040,7 +1041,7 @@ var Skeleton = (function(_) {
 
 
         // Html metin eklemek için
-        inc.setHTML = function (value) {
+        inc.setHTML = function(value) {
             this.target.innerHTML = value;
             return this;
         }
@@ -1051,7 +1052,7 @@ var Skeleton = (function(_) {
 
 
         // Checkbox ve Radio butonlar için işaretleme yapar
-        inc.setChecked = function (param) {
+        inc.setChecked = function(param) {
             this.target.checked = param;
             return this;
         }
@@ -1061,7 +1062,7 @@ var Skeleton = (function(_) {
 
 
         // Style Dosya import etmek için
-        inc.importLink = function (url) {
+        inc.importLink = function(url) {
             this.target.innerHTML += '@import url(' + url + ');';
             return this;
         }
@@ -1163,26 +1164,57 @@ var Skeleton = (function(_) {
             }
         }
 
+
         //....................................................................................
+
 
 
         // Listeyi temizler
-        function clear() {
-            for (var i = 0; i < data.length; i++) {
-                var it = data[i];
-                data.el.remBind('click', it.action);
-                data.el.parentNode.remove(data.el);
-                delete id;
+        function clear(action) {
+            //hide();
+            for (var i = 0, f = context.data; i < f.length; i++) {
+                var it = f[i];
+                it.el.remove();
             }
-            console.log(data);
+            context.data = [];
+            if (action)
+                action();
         }
 
+
         //....................................................................................
+
+
+        function show(e) {
+
+            context.container.setCSS({
+                left: e.pageX + 'px',
+                top: e.pageY + 'px'
+            });
+            context.container.show();
+        }
+
+
+
+        //....................................................................................
+
+
+        function hide() {
+            context.container.hide();
+        }
+
+
+
+
+        //....................................................................................
+
 
 
         context.method.add = add;
         context.method.load = load;
         context.method.clear = clear;
+        context.method.show = show;
+        context.method.hide = hide;
 
 
     }); // MENU
@@ -1218,13 +1250,14 @@ var Skeleton = (function(_) {
                         zIndex: 10000,
                         'box-shadow': '1px 1px 3px #888',
                         'background-color': '#eee',
-                        'border': '1px solid #ccc',
+                        border: '1px solid #ccc',
                         'min-width': '200px',
-                        'padding': '1px',
+                        padding: '1px',
                         'font-size': '14px',
                         'font-family': 'Arial',
-                        'left': 0,
-                        'top': 0
+                        left: 0,
+                        top: 0,
+                        display: 'none'
                     },
                     '#contextmenu-content': {},
                     '#contextmenu-content > div': {
@@ -1236,17 +1269,59 @@ var Skeleton = (function(_) {
                     }
                 }).insert(parent.document.body);
 
-            console.log(context.style.target);
 
             // TEST
-            context.method.load([
-                { title: 'Delete Item', action: function() { console.log('Item is deleted'); } }, { title: 'Delete Item', action: function() { console.log('Item is deleted'); } },
-                { title: 'Change Position', action: function() { console.log('Position is Changed'); } },
-                { title: 'Item Info', action: function() { console.log('Show Item'); } }
-            ]);
+            // context.method.load([
+            //    { title: 'Delete Item', action: function() { console.log('Item is deleted'); } }, { title: 'Delete Item', action: function() { console.log('Item is deleted'); } },
+            //    { title: 'Change Position', action: function() { console.log('Position is Changed'); } },
+            //    { title: 'Item Info', action: function() { console.log('Show Item'); } }
+            // ]);
 
 
         }
+    }); // MODULE
+
+
+})(Skeleton);
+/////////////////////////////////////////////////////////////////////////
+//          SKELETON DIALOG
+/////////////////////////////////////////////////////////////////////////
+
+(function(_) {
+
+    _.dialog = {
+        method: {},
+        container: false,
+        content: false
+    }
+
+
+})(Skeleton);
+/////////////////////////////////////////////////////////////////////////
+//          SKELETON DIALOG METHOD
+/////////////////////////////////////////////////////////////////////////
+
+(function(_) {
+
+    _.MODULE(function() {
+        var method = _.dialog.method;
+
+
+    }); // MODULE
+
+})(Skeleton);
+/////////////////////////////////////////////////////////////////////////
+//          SKELETON DIALOG INIT
+/////////////////////////////////////////////////////////////////////////
+
+(function(_) {
+
+
+    _.MODULE(function() {
+
+        var method = _.dialog;
+
+
     }); // MODULE
 
 
@@ -1591,14 +1666,16 @@ var Skeleton = (function(_) {
 //          SKELETON PATH METHODS
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
 
-    _.MODULE(function () {
+    _.MODULE(function() {
 
         var path = _.path;
         var menu = _.menu;
         var tooltip = _.tooltip;
+        var context = _.contextmenu;
+        var data = _.data;
 
 
         //....................................................................................
@@ -1706,19 +1783,19 @@ var Skeleton = (function(_) {
         // Sahne üzerinde, gelen dataya göre nesne oluşturur
         function createPathItem(dbdata) {
 
-            Object.keys(dbdata).forEach(function (e) {
+            Object.keys(dbdata).forEach(function(e) {
 
                 // Mevcut data bilgilerini alır
                 // Sahnede oluşturulacak menu butonunun kendisini alır ve kopyasını oluşturur
                 var current = dbdata[e],
                     clone = menu.data[dt.obj].clone;
 
+
                 // Kopya için bilgi varsa
                 if (clone) {
 
                     // Kopyasını oluştur
                     clone = clone.cloneNode(true);
-
                     // Kopyanınn özelliklerini gir
                     clone.setAttr({
                         key: current.obj,
@@ -1732,7 +1809,31 @@ var Skeleton = (function(_) {
                     clone.setClass('svg_mini');
 
                     // Oluşturulan kopyaya fare ile tıklandığında silinebilir olduğunu işaretle
-                    clone.setBind('mouseup', path.method.selectRemovedItem);
+                    // clone.setBind('mouseup', path.method.selectRemovedItem);
+
+                    // Sağ tuş özelliği ekleyelim
+                    clone.setBind('click', function(e) {
+                        e.preventDefault();
+                        context.method.clear(
+                            function() {
+                                context.method.add({
+                                    title: 'Delete Item',
+                                    action: function() {
+                                        // Silinecek nesneyi seç
+                                        pathMethod.selectRemovedItem(e);
+
+                                        // Nesneyi sil
+                                        pathMethod.removeSelectedClone(e);
+
+                                        context.method.hide();
+                                    }
+                                });
+                                context.method.show();
+                            }
+                        );
+
+                        return;
+                    });
 
                     // Kopyayı sahneye ekle
                     _.container.appendChild(clone);
@@ -1750,7 +1851,7 @@ var Skeleton = (function(_) {
 
         // Veritabanından gelen verileri sahneye yansıtıyoruz
         function loadData(dbdata) {
-            Object.keys(path.data).forEach(function (e) {
+            Object.keys(path.data).forEach(function(e) {
                 createPathItem(path.data[e].transforms);
             });
         }
@@ -1766,59 +1867,54 @@ var Skeleton = (function(_) {
 
         function removeSelectedClone(e) {
 
-            console.log('tıklandı');
-            // Klavyeden space tuşuna basıltığında siler
-            if (e.keyCode == 32) {
+            // Silinmesi istenen seçilmiş nesne varsa devam et
+            if (path.removedPath) {
 
-                // Silinmesi istenen seçilmiş nesne varsa devam et
-                if (path.removedPath) {
+                // Silinecek nesnenin key değeri ve bağlı olduğu root değeri
+                var id = path.removedPath.getAttr('key');
+                var root = path.removedPath.getAttr('rootname');
 
-                    // Silinecek nesnenin key değeri ve bağlı olduğu root değeri
-                    var id = path.removedPath.getAttr('key');
-                    var root = path.removedPath.getAttr('rootname');
+                // Mutlak key değeri olmalı
+                if (id) {
 
-                    // Mutlak key değeri olmalı
-                    if (id) {
+                    // Clone nesneyi sahneden temizle
+                    path.removedPath.parentNode.removeChild(path.removedPath);
 
-                        // Clone nesneyi sahneden temizle
-                        path.removedPath.parentNode.removeChild(path.removedPath);
+                    // Silinecek nesnenin yok olduğu bilgisi
+                    path.removedPath = null;
 
-                        // Silinecek nesnenin yok olduğu bilgisi
-                        path.removedPath = null;
+                    // Silinen nesneyi veritabanı için tutulan tablodan silme aşaması
+                    var dta = data[root];
+                    // Data tablosunda bir bilgi varsa
+                    if (dta) {
 
-                        // Silinen nesneyi veritabanı için tutulan tablodan silme aşaması
-                        var dta = path.data[root];
+                        // Kaydın bulunacağı pozisyon index değeri
+                        var removeItem = -1;
 
-                        // Data tablosunda bir bilgi varsa
-                        if (dta) {
+                        console.log(dta);
+                        // Veriyi bul
+                        for (var i = 0; i < dta.transforms.length; i++) {
 
-                            // Kaydın bulunacağı pozisyon index değeri
-                            var removeItem = -1;
-
-                            // Veriyi bul
-                            for (var i = 0; i < dta.data.length; i++) {
-
-                                // Transform alanı nesnenin pozisyon değerleri ve adını tuttuğu için..
-                                // path nesnesinin dataları içinde pozisyonunu arıyoruz
-                                if (dta.transforms[i].obj == id)
-                                    removeItem = i;
-                            }
+                            // Transform alanı nesnenin pozisyon değerleri ve adını tuttuğu için..
+                            // ..path nesnesinin dataları içinde pozisyonunu arıyoruz
+                            if (dta.transforms[i].obj == id)
+                                removeItem = i;
+                        }
 
 
-                            // Kayıt pozisyonu varsa 0 dan büyük olacağından sil
-                            if (removeItem != -1)
-                                dta.transforms.splice(removeItem, 1);
+                        // Kayıt pozisyonu varsa 0 dan büyük olacağından sil
+                        if (removeItem != -1)
+                            dta.transforms.splice(removeItem, 1);
 
 
-                            // İlgili Path ID nesnesine ait transform listesinde tutulan bir veri kalmadıysa, maviye boyanmış/taranmış alanı iptal eder
-                            if (dta.transforms.length == 0)
-                                doc.querySelector('#' + root).remClass('reserve');
+                        // İlgili Path ID nesnesine ait transform listesinde tutulan bir veri kalmadıysa, maviye boyanmış/taranmış alanı iptal eder
+                        if (dta.transforms.length == 0)
+                            document.querySelector('#' + root).remClass('reserve');
 
 
-                        } else
-                            // Tabloda tutulan bir veri kalmadıysa, maviye boyanmış/taranmış alanı iptal eder
-                            doc.querySelector('#' + root).remClass('reserve');
-                    }
+                    } else
+                    // Tabloda tutulan bir veri kalmadıysa, maviye boyanmış/taranmış alanı iptal eder
+                        doc.querySelector('#' + root).remClass('reserve');
                 }
             }
         }
@@ -1875,6 +1971,7 @@ var Skeleton = (function(_) {
         path.method.checkAllowItem = checkAllowItem;
         path.method.createPathItem = createPathItem;
         path.method.selectRemovedItem = selectRemovedItem;
+        path.method.removeSelectedClone = removeSelectedClone;
         path.method.findAllowPath = findAllowPath;
         path.method.loadData = loadData;
 
@@ -2545,9 +2642,9 @@ var Skeleton = (function(_) {
 //          SKELETON MENU METHOD
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
-    _.MODULE(function () {
+    _.MODULE(function() {
 
         var method = _.menuObject.method;
         var data = _.menuObject.data;
@@ -2556,6 +2653,7 @@ var Skeleton = (function(_) {
         var svgGlob = _.svg.globals;
         var skeletonGlobalMethod = _.globalMethod;
         var tooltip = _.tooltip;
+        var context = _.contextmenu;
 
 
         //....................................................................................
@@ -2594,7 +2692,31 @@ var Skeleton = (function(_) {
                 var isAllow = pathMethod.findAllowPath(butonID);
 
                 // Sayfaya eklendiğinde kaldırılabilmesi için, seçme olayını ekle
-                clone.setBind('mouseup', pathMethod.selectRemovedItem);
+                // clone.setBind('mouseup', pathMethod.selectRemovedItem);
+
+                // Sağ tuş özelliği ekleyelim
+                clone.setBind('contextmenu', function(e) {
+                    e.preventDefault();
+                    context.method.clear(function() {
+                        context.method.add({
+                            title: 'Delete Item',
+                            action: function() {
+
+                                // Silinecek nesneyi seç
+                                pathMethod.selectRemovedItem(e);
+
+                                // Nesneyi sil
+                                pathMethod.removeSelectedClone(e);
+
+                                context.method.hide();
+                            }
+                        });
+                        context.method.show(e);
+                    });
+
+                    return;
+                });
+
 
                 // Nesneyi seçilen nesne olarak işaretle
                 _.selectedObject = clone;
@@ -2610,7 +2732,7 @@ var Skeleton = (function(_) {
 
                 // Sürükleme esnasında, eğer geçerli alanlar yoksa kullanıcıya uyarı bilgisi verelim
                 if (!isAllow) {
-                    
+
                     tooltip.message('Bırakabileceğiniz geçerli bir alan bulunamadı');
                     tooltip.container.setClass('no-animate');
 
@@ -3603,6 +3725,14 @@ var Skeleton = (function(_) {
         //....................................................................................
 
 
+        function contextmenu() {
+
+        }
+
+
+        //....................................................................................
+
+
         function setGlobal(name, action) {
             if (_.globalWindowEvents[name])
                 _.globalWindowEvents[name].push({ name: name, action: action });
@@ -3633,6 +3763,7 @@ var Skeleton = (function(_) {
         method.windowMouseUp = windowMouseUp;
         method.windowMouseMove = windowMouseMove;
         method.windowMouseDown = windowMouseDown;
+        method.contextmenu = contextmenu;
 
         globMethod.onRelease = onRelease;
         globMethod.onPress = onPress;
@@ -4085,11 +4216,11 @@ var Skeleton = (function(_) {
 //          SKELETON INIT
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
     // Init Module
 
-    _.MODULE(function () {
+    _.MODULE(function() {
 
         var path = _.path;
         var menu = _.menuObject;
@@ -4161,7 +4292,7 @@ var Skeleton = (function(_) {
             }
 
             var tempNames = Object.keys(menu.data);
-            Object.keys(path.data).forEach(function (e) {
+            Object.keys(path.data).forEach(function(e) {
                 var tempRnd = Math.random(6) + 1;
                 path.data[e].data = get(tempRnd);
             });
@@ -4176,7 +4307,6 @@ var Skeleton = (function(_) {
 
         // Sağ tuş menu etkileşimi sağlayalım
         window.addEventListener('contextmenu', method.contextmenu, false);
-
 
 
         //....................................................................................

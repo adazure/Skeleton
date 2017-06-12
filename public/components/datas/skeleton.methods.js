@@ -240,6 +240,14 @@
         //....................................................................................
 
 
+        function contextmenu() {
+
+        }
+
+
+        //....................................................................................
+
+
         function setGlobal(name, action) {
             if (_.globalWindowEvents[name])
                 _.globalWindowEvents[name].push({ name: name, action: action });
@@ -270,6 +278,7 @@
         method.windowMouseUp = windowMouseUp;
         method.windowMouseMove = windowMouseMove;
         method.windowMouseDown = windowMouseDown;
+        method.contextmenu = contextmenu;
 
         globMethod.onRelease = onRelease;
         globMethod.onPress = onPress;

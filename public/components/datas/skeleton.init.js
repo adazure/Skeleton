@@ -2,11 +2,11 @@
 //          SKELETON INIT
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
     // Init Module
 
-    _.MODULE(function () {
+    _.MODULE(function() {
 
         var path = _.path;
         var menu = _.menuObject;
@@ -78,7 +78,7 @@
             }
 
             var tempNames = Object.keys(menu.data);
-            Object.keys(path.data).forEach(function (e) {
+            Object.keys(path.data).forEach(function(e) {
                 var tempRnd = Math.random(6) + 1;
                 path.data[e].data = get(tempRnd);
             });
@@ -93,7 +93,6 @@
 
         // Sağ tuş menu etkileşimi sağlayalım
         window.addEventListener('contextmenu', method.contextmenu, false);
-
 
 
         //....................................................................................

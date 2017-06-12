@@ -28,13 +28,14 @@
                         zIndex: 10000,
                         'box-shadow': '1px 1px 3px #888',
                         'background-color': '#eee',
-                        'border': '1px solid #ccc',
+                        border: '1px solid #ccc',
                         'min-width': '200px',
-                        'padding': '1px',
+                        padding: '1px',
                         'font-size': '14px',
                         'font-family': 'Arial',
-                        'left': 0,
-                        'top': 0
+                        left: 0,
+                        top: 0,
+                        display: 'none'
                     },
                     '#contextmenu-content': {},
                     '#contextmenu-content > div': {
@@ -46,14 +47,13 @@
                     }
                 }).insert(parent.document.body);
 
-            console.log(context.style.target);
 
             // TEST
-            context.method.load([
-                { title: 'Delete Item', action: function() { console.log('Item is deleted'); } }, { title: 'Delete Item', action: function() { console.log('Item is deleted'); } },
-                { title: 'Change Position', action: function() { console.log('Position is Changed'); } },
-                { title: 'Item Info', action: function() { console.log('Show Item'); } }
-            ]);
+            // context.method.load([
+            //    { title: 'Delete Item', action: function() { console.log('Item is deleted'); } }, { title: 'Delete Item', action: function() { console.log('Item is deleted'); } },
+            //    { title: 'Change Position', action: function() { console.log('Position is Changed'); } },
+            //    { title: 'Item Info', action: function() { console.log('Show Item'); } }
+            // ]);
 
 
         }

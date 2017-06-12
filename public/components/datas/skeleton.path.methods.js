@@ -2,14 +2,16 @@
 //          SKELETON PATH METHODS
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
 
-    _.MODULE(function () {
+    _.MODULE(function() {
 
         var path = _.path;
         var menu = _.menu;
         var tooltip = _.tooltip;
+        var context = _.contextmenu;
+        var data = _.data;
 
 
         //....................................................................................
@@ -117,19 +119,19 @@
         // Sahne üzerinde, gelen dataya göre nesne oluşturur
         function createPathItem(dbdata) {
 
-            Object.keys(dbdata).forEach(function (e) {
+            Object.keys(dbdata).forEach(function(e) {
 
                 // Mevcut data bilgilerini alır
                 // Sahnede oluşturulacak menu butonunun kendisini alır ve kopyasını oluşturur
                 var current = dbdata[e],
                     clone = menu.data[dt.obj].clone;
 
+
                 // Kopya için bilgi varsa
                 if (clone) {
 
                     // Kopyasını oluştur
                     clone = clone.cloneNode(true);
-
                     // Kopyanınn özelliklerini gir
                     clone.setAttr({
                         key: current.obj,
@@ -143,7 +145,31 @@
                     clone.setClass('svg_mini');
 
                     // Oluşturulan kopyaya fare ile tıklandığında silinebilir olduğunu işaretle
-                    clone.setBind('mouseup', path.method.selectRemovedItem);
+                    // clone.setBind('mouseup', path.method.selectRemovedItem);
+
+                    // Sağ tuş özelliği ekleyelim
+                    clone.setBind('click', function(e) {
+                        e.preventDefault();
+                        context.method.clear(
+                            function() {
+                                context.method.add({
+                                    title: 'Delete Item',
+                                    action: function() {
+                                        // Silinecek nesneyi seç
+                                        pathMethod.selectRemovedItem(e);
+
+                                        // Nesneyi sil
+                                        pathMethod.removeSelectedClone(e);
+
+                                        context.method.hide();
+                                    }
+                                });
+                                context.method.show();
+                            }
+                        );
+
+                        return;
+                    });
 
                     // Kopyayı sahneye ekle
                     _.container.appendChild(clone);
@@ -161,7 +187,7 @@
 
         // Veritabanından gelen verileri sahneye yansıtıyoruz
         function loadData(dbdata) {
-            Object.keys(path.data).forEach(function (e) {
+            Object.keys(path.data).forEach(function(e) {
                 createPathItem(path.data[e].transforms);
             });
         }
@@ -177,59 +203,54 @@
 
         function removeSelectedClone(e) {
 
-            console.log('tıklandı');
-            // Klavyeden space tuşuna basıltığında siler
-            if (e.keyCode == 32) {
+            // Silinmesi istenen seçilmiş nesne varsa devam et
+            if (path.removedPath) {
 
-                // Silinmesi istenen seçilmiş nesne varsa devam et
-                if (path.removedPath) {
+                // Silinecek nesnenin key değeri ve bağlı olduğu root değeri
+                var id = path.removedPath.getAttr('key');
+                var root = path.removedPath.getAttr('rootname');
 
-                    // Silinecek nesnenin key değeri ve bağlı olduğu root değeri
-                    var id = path.removedPath.getAttr('key');
-                    var root = path.removedPath.getAttr('rootname');
+                // Mutlak key değeri olmalı
+                if (id) {
 
-                    // Mutlak key değeri olmalı
-                    if (id) {
+                    // Clone nesneyi sahneden temizle
+                    path.removedPath.parentNode.removeChild(path.removedPath);
 
-                        // Clone nesneyi sahneden temizle
-                        path.removedPath.parentNode.removeChild(path.removedPath);
+                    // Silinecek nesnenin yok olduğu bilgisi
+                    path.removedPath = null;
 
-                        // Silinecek nesnenin yok olduğu bilgisi
-                        path.removedPath = null;
+                    // Silinen nesneyi veritabanı için tutulan tablodan silme aşaması
+                    var dta = data[root];
+                    // Data tablosunda bir bilgi varsa
+                    if (dta) {
 
-                        // Silinen nesneyi veritabanı için tutulan tablodan silme aşaması
-                        var dta = path.data[root];
+                        // Kaydın bulunacağı pozisyon index değeri
+                        var removeItem = -1;
 
-                        // Data tablosunda bir bilgi varsa
-                        if (dta) {
+                        console.log(dta);
+                        // Veriyi bul
+                        for (var i = 0; i < dta.transforms.length; i++) {
 
-                            // Kaydın bulunacağı pozisyon index değeri
-                            var removeItem = -1;
-
-                            // Veriyi bul
-                            for (var i = 0; i < dta.data.length; i++) {
-
-                                // Transform alanı nesnenin pozisyon değerleri ve adını tuttuğu için..
-                                // path nesnesinin dataları içinde pozisyonunu arıyoruz
-                                if (dta.transforms[i].obj == id)
-                                    removeItem = i;
-                            }
+                            // Transform alanı nesnenin pozisyon değerleri ve adını tuttuğu için..
+                            // ..path nesnesinin dataları içinde pozisyonunu arıyoruz
+                            if (dta.transforms[i].obj == id)
+                                removeItem = i;
+                        }
 
 
-                            // Kayıt pozisyonu varsa 0 dan büyük olacağından sil
-                            if (removeItem != -1)
-                                dta.transforms.splice(removeItem, 1);
+                        // Kayıt pozisyonu varsa 0 dan büyük olacağından sil
+                        if (removeItem != -1)
+                            dta.transforms.splice(removeItem, 1);
 
 
-                            // İlgili Path ID nesnesine ait transform listesinde tutulan bir veri kalmadıysa, maviye boyanmış/taranmış alanı iptal eder
-                            if (dta.transforms.length == 0)
-                                doc.querySelector('#' + root).remClass('reserve');
+                        // İlgili Path ID nesnesine ait transform listesinde tutulan bir veri kalmadıysa, maviye boyanmış/taranmış alanı iptal eder
+                        if (dta.transforms.length == 0)
+                            document.querySelector('#' + root).remClass('reserve');
 
 
-                        } else
-                            // Tabloda tutulan bir veri kalmadıysa, maviye boyanmış/taranmış alanı iptal eder
-                            doc.querySelector('#' + root).remClass('reserve');
-                    }
+                    } else
+                    // Tabloda tutulan bir veri kalmadıysa, maviye boyanmış/taranmış alanı iptal eder
+                        doc.querySelector('#' + root).remClass('reserve');
                 }
             }
         }
@@ -286,6 +307,7 @@
         path.method.checkAllowItem = checkAllowItem;
         path.method.createPathItem = createPathItem;
         path.method.selectRemovedItem = selectRemovedItem;
+        path.method.removeSelectedClone = removeSelectedClone;
         path.method.findAllowPath = findAllowPath;
         path.method.loadData = loadData;
 
