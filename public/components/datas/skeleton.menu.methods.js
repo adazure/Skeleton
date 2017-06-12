@@ -14,6 +14,7 @@
         var skeletonGlobalMethod = _.globalMethod;
         var tooltip = _.tooltip;
         var context = _.contextmenu;
+        var dialog = _.dialog;
 
 
         //....................................................................................
@@ -62,13 +63,36 @@
                             title: 'Delete Item',
                             action: function() {
 
-                                // Silinecek nesneyi seç
-                                pathMethod.selectRemovedItem(e);
+                                dialog.show({
+                                    title: 'Silme işlemi',
+                                    content: 'Kaydı silmek istediğinize emin misiniz?',
+                                    button1: {
+                                        text: 'SİL',
+                                        action: function() {
+                                            // Silinecek nesneyi seç
+                                            pathMethod.selectRemovedItem(e);
 
-                                // Nesneyi sil
-                                pathMethod.removeSelectedClone(e);
+                                            // Nesneyi sil
+                                            pathMethod.removeSelectedClone(e);
 
-                                context.method.hide();
+                                            // Context menüyü gizle
+                                            context.method.hide();
+
+                                            dialog.passive();
+
+                                            dialog.hide();
+                                        }
+                                    },
+                                    button2: {
+                                        text: 'İPTAL',
+                                        action: function() {
+                                            // Context menüyü gizle
+                                            context.method.hide();
+                                            dialog.hide();
+                                        }
+                                    }
+                                });
+
                             }
                         });
                         context.method.show(e);
@@ -123,9 +147,7 @@
 
 
 
-
         //....................................................................................
-
 
 
 

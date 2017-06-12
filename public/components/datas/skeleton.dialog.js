@@ -5,9 +5,10 @@
 (function(_) {
 
     _.dialog = {
-        method: {},
         container: false,
-        content: false
+        content: false,
+        button1: false,
+        button2: false
     }
 
 

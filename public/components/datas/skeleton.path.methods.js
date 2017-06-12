@@ -227,7 +227,7 @@
                         // Kaydın bulunacağı pozisyon index değeri
                         var removeItem = -1;
 
-                        console.log(dta);
+
                         // Veriyi bul
                         for (var i = 0; i < dta.transforms.length; i++) {
 

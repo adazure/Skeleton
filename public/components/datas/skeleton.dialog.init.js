@@ -7,8 +7,6 @@
 
     _.MODULE(function() {
 
-        var method = _.dialog;
-
 
     }); // MODULE
 

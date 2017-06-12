@@ -20,32 +20,7 @@
             context.content = new coll('div', { id: 'contextmenu-content' });
             context.content.insert(context.container.target);
 
-            // STYLE
-            context.style = new coll('style', { id: 'contextmenu-style' })
-                .setSheet({
-                    '#contextmenu-container': {
-                        position: 'absolute',
-                        zIndex: 10000,
-                        'box-shadow': '1px 1px 3px #888',
-                        'background-color': '#eee',
-                        border: '1px solid #ccc',
-                        'min-width': '200px',
-                        padding: '1px',
-                        'font-size': '14px',
-                        'font-family': 'Arial',
-                        left: 0,
-                        top: 0,
-                        display: 'none'
-                    },
-                    '#contextmenu-content': {},
-                    '#contextmenu-content > div': {
-                        'border-bottom': '1px solid #ddd'
-                    },
-                    '#contextmenu-content > div > label': {
-                        display: 'block',
-                        padding: '7px 10px'
-                    }
-                }).insert(parent.document.body);
+
 
 
             // TEST
@@ -55,6 +30,9 @@
             //    { title: 'Item Info', action: function() { console.log('Show Item'); } }
             // ]);
 
+
+            // Context menüsünü, window sınıfımızda mouseup olayında her durumda kapatalım
+            parent.window.addEventListener('mouseup', context.hide);
 
         }
     }); // MODULE

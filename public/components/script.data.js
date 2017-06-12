@@ -867,7 +867,6 @@ var Skeleton = (function(_) {
 
         // .delete() ile çağırıldığında nesneyi siler
         inc.remove = function() {
-            console.log(this.target);
             if (this.target);
             this.target.parentNode.removeChild(this.target);
             return this;
@@ -1022,10 +1021,13 @@ var Skeleton = (function(_) {
                 if (!name || !value) return self;
                 var json = JSON.stringify(value);
                 json = json.replace(/},/g, '\n');
-                json = json.replace(/,/g, '; ');
-                json = json.replace(/:{/g, '{')
-                json = json.replace(/\"/g, '')
+                json = json.replace(/\",/g, '; ');
+                json = json.replace(/},/g, '; ');
+                json = json.replace(/:{/g, '{');
+                json = json.replace(/\"/g, '');
+
                 self.target.innerHTML += (name + json + '\n');
+
             } else if (arguments.length == 1) {
                 Object.keys(name).forEach(function(t) {
                     self.setSheet(t, name[t]);
@@ -1242,32 +1244,7 @@ var Skeleton = (function(_) {
             context.content = new coll('div', { id: 'contextmenu-content' });
             context.content.insert(context.container.target);
 
-            // STYLE
-            context.style = new coll('style', { id: 'contextmenu-style' })
-                .setSheet({
-                    '#contextmenu-container': {
-                        position: 'absolute',
-                        zIndex: 10000,
-                        'box-shadow': '1px 1px 3px #888',
-                        'background-color': '#eee',
-                        border: '1px solid #ccc',
-                        'min-width': '200px',
-                        padding: '1px',
-                        'font-size': '14px',
-                        'font-family': 'Arial',
-                        left: 0,
-                        top: 0,
-                        display: 'none'
-                    },
-                    '#contextmenu-content': {},
-                    '#contextmenu-content > div': {
-                        'border-bottom': '1px solid #ddd'
-                    },
-                    '#contextmenu-content > div > label': {
-                        display: 'block',
-                        padding: '7px 10px'
-                    }
-                }).insert(parent.document.body);
+
 
 
             // TEST
@@ -1277,6 +1254,9 @@ var Skeleton = (function(_) {
             //    { title: 'Item Info', action: function() { console.log('Show Item'); } }
             // ]);
 
+
+            // Context menüsünü, window sınıfımızda mouseup olayında her durumda kapatalım
+            parent.window.addEventListener('mouseup', context.hide);
 
         }
     }); // MODULE
@@ -1290,9 +1270,10 @@ var Skeleton = (function(_) {
 (function(_) {
 
     _.dialog = {
-        method: {},
         container: false,
-        content: false
+        content: false,
+        button1: false,
+        button2: false
     }
 
 
@@ -1304,7 +1285,110 @@ var Skeleton = (function(_) {
 (function(_) {
 
     _.MODULE(function() {
-        var method = _.dialog.method;
+
+        var dialog = _.dialog;
+        var coll = _.collection.create;
+
+
+
+        //....................................................................................
+
+
+
+        function show(args) {
+            create();
+            dialog.content.setHTML(args.content);
+            dialog.button1.setVal(args.button1.text);
+            dialog.button2.setVal(args.button2.text);
+            dialog.button1.setBind('click', args.button1.action);
+            dialog.button2.setBind('click', args.button2.action);
+            dialog.container.show();
+            dialog.shadow.show();
+        }
+
+
+
+        //....................................................................................
+
+
+
+        function hide() {
+            dialog.shadow.remove();
+            dialog.container.remove();
+        }
+
+
+
+
+        //....................................................................................
+
+        // Dialog penceresini oluşturur
+        function create() {
+
+
+            // Gölge katmanı
+            dialog.shadow = new coll('div', { id: 'skeleton-dialog-shadow' })
+                .insert(parent.document.body);
+
+            // Görünen dialog penceresi
+            dialog.container = new coll('div', { id: 'skeleton-dialog' })
+                .insert(parent.document.body);
+
+            // Dialog mesajının görünen kısmı
+            dialog.content = new coll('div', { id: 'skeleton-dialog-content' })
+                .insert(dialog.container.target);
+
+            // Butonların bulunduğu bölüm
+            dialog.footer = new coll('div', { id: 'skeleton-dialog-footer' })
+                .insert(dialog.container.target);
+
+            // Buton nesneleri
+            dialog.button1 = new coll('input', { type: 'button', id: 'skeleton-dialog-button1' })
+                .setClass('skeleton-dialog-button')
+                .insert(dialog.footer.target);
+
+
+            dialog.button2 = new coll('input', { type: 'button', id: 'skeleton-dialog-button2' })
+                .setClass('skeleton-dialog-button')
+                .insert(dialog.footer.target);
+
+        }
+
+
+        //....................................................................................
+
+        // Dialog penceresindeki butonları aktif yapar
+        function active() {
+
+            dialog.button1.remClass('disabled-btn');
+            dialog.button2.remClass('disabled-btn');
+
+        }
+
+
+        //....................................................................................
+
+
+
+        // Dialog penceresindeki butonları pasifize eder.
+        // Veritabanı gibi işlem sırasında belki yükleme sürmesi dolayısıyla butonları pasif duruma getirmek isteyebiliriz.
+
+        function passive() {
+
+            dialog.button1.setClass('disabled-btn');
+            dialog.button2.setClass('disabled-btn');
+
+        }
+
+
+        //....................................................................................
+
+
+        dialog.show = show;
+        dialog.hide = hide;
+        dialog.passive = passive;
+        dialog.active = active;
+
 
 
     }); // MODULE
@@ -1318,8 +1402,6 @@ var Skeleton = (function(_) {
 
 
     _.MODULE(function() {
-
-        var method = _.dialog;
 
 
     }); // MODULE
@@ -1400,9 +1482,9 @@ var Skeleton = (function(_) {
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON TOOLTIP INIT
 /////////////////////////////////////////////////////////////////////////
-(function (_) {
+(function(_) {
 
-    _.MODULE(function () {
+    _.MODULE(function() {
 
         var tooltip = _.tooltip;
         var collection = _.collection.create;
@@ -1410,42 +1492,9 @@ var Skeleton = (function(_) {
         //....................................................................................
 
 
-        var tool = new collection('div', { id: 'skeleton-tooltip' });
+        tooltip.container = new collection('div', { id: 'skeleton-tooltip' });
 
-
-        tool.setCSS({
-            position: 'absolute',
-            backgroundColor: '#f9f9d5',
-            borderWidth: '1px',
-            borderStyle: 'solid',
-            borderColor: '#ffd383',
-            borderRadius: '4px',
-            boxShadow: '1px 1px 3px #777',
-            fontSize: '16px',
-            fontFamily: 'Arial',
-            transition: 'all .2s linear',
-            display: 'none',
-            padding: '10px',
-            pointerEvents: 'none',
-            zIndex: 9999
-        });
-
-        tooltip.container = tool;
-
-        tool.insert(parent.document.body);
-
-
-
-        //....................................................................................
-
-        if (!parent.document.getElementById('skeleton-tool-tip-style'))
-            var style = new collection('style', { id: 'skeleton-tool-tip-style' })
-                .setSheet({
-                    '.no-animate': {
-                        transition: 'none !important'
-                    }
-                })
-                .insert(parent.document.body);
+        tooltip.container.insert(parent.document.body);
 
 
 
@@ -1891,7 +1940,7 @@ var Skeleton = (function(_) {
                         // Kaydın bulunacağı pozisyon index değeri
                         var removeItem = -1;
 
-                        console.log(dta);
+
                         // Veriyi bul
                         for (var i = 0; i < dta.transforms.length; i++) {
 
@@ -2654,6 +2703,7 @@ var Skeleton = (function(_) {
         var skeletonGlobalMethod = _.globalMethod;
         var tooltip = _.tooltip;
         var context = _.contextmenu;
+        var dialog = _.dialog;
 
 
         //....................................................................................
@@ -2702,13 +2752,36 @@ var Skeleton = (function(_) {
                             title: 'Delete Item',
                             action: function() {
 
-                                // Silinecek nesneyi seç
-                                pathMethod.selectRemovedItem(e);
+                                dialog.show({
+                                    title: 'Silme işlemi',
+                                    content: 'Kaydı silmek istediğinize emin misiniz?',
+                                    button1: {
+                                        text: 'SİL',
+                                        action: function() {
+                                            // Silinecek nesneyi seç
+                                            pathMethod.selectRemovedItem(e);
 
-                                // Nesneyi sil
-                                pathMethod.removeSelectedClone(e);
+                                            // Nesneyi sil
+                                            pathMethod.removeSelectedClone(e);
 
-                                context.method.hide();
+                                            // Context menüyü gizle
+                                            context.method.hide();
+
+                                            dialog.passive();
+
+                                            dialog.hide();
+                                        }
+                                    },
+                                    button2: {
+                                        text: 'İPTAL',
+                                        action: function() {
+                                            // Context menüyü gizle
+                                            context.method.hide();
+                                            dialog.hide();
+                                        }
+                                    }
+                                });
+
                             }
                         });
                         context.method.show(e);
@@ -2763,9 +2836,7 @@ var Skeleton = (function(_) {
 
 
 
-
         //....................................................................................
-
 
 
 
@@ -2778,23 +2849,23 @@ var Skeleton = (function(_) {
 //          SKELETON MENU INIT
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
-    _.MODULE(function () {
+    _.MODULE(function() {
 
         var collection = _.collection.create;
         var menu = _.menuObject;
 
 
-        
+
 
         //....................................................................................
 
 
         // Sayfada görüntülenecek menu ekranını oluşturur. Ana katman
         var displayMenu = new collection('div', {
-            id: 'skeleton-menu'
-        })
+                id: 'skeleton-menu'
+            })
             .setCSS({
                 position: 'fixed',
                 left: '40px',
@@ -2812,7 +2883,7 @@ var Skeleton = (function(_) {
             })
             //Sınıf
             .setClass('slidetoright')
-            .setBind('mousedown', function (e) { e.preventDefault(); return; });
+            .setBind('mousedown', function(e) { e.preventDefault(); return; });
 
         menu.container = displayMenu;
 
@@ -2827,14 +2898,14 @@ var Skeleton = (function(_) {
             id: 'skeleton-menu-header'
         });
         header.setCSS({
-            padding: '10px',
-            backgroundColor: 'rgb(49, 126, 181)',
-            color: 'white',
-            border: 0,
-            borderBottomWidth: '1px',
-            borderStyle: 'solid',
-            borderColor: '#444'
-        })
+                padding: '10px',
+                backgroundColor: 'rgb(49, 126, 181)',
+                color: 'white',
+                border: 0,
+                borderBottomWidth: '1px',
+                borderStyle: 'solid',
+                borderColor: '#444'
+            })
             .setHTML('Menü');
 
 
@@ -2846,8 +2917,8 @@ var Skeleton = (function(_) {
 
         // Menüde listelenecek kayıtların yeri
         var content = displayMenu.create('div', {
-            id: 'skeleton-menu-content'
-        })
+                id: 'skeleton-menu-content'
+            })
             // Style
             .setCSS({
                 padding: '10px 20px 10px 10px',
@@ -2879,7 +2950,7 @@ var Skeleton = (function(_) {
                 cursor: 'pointer'
             })
             // Footer Click
-            .setBind('click', function () {
+            .setBind('click', function() {
                 content.target.style.display = content.target.style.display == 'block' ? 'none' : 'block';
             })
             // Children A
@@ -2912,7 +2983,7 @@ var Skeleton = (function(_) {
         var ml = menu.data;
 
         // Tüm menu listesi kayıtlarını tarayalım
-        Object.keys(ml).forEach(function (key) {
+        Object.keys(ml).forEach(function(key) {
 
             // Üzerinde sorgu yapılacak nesne
             var obj = ml[key];
@@ -2940,8 +3011,8 @@ var Skeleton = (function(_) {
                 /* UL nesnesi  */
 
                 var ul = new collection('ul', {
-                    key: key
-                })
+                        key: key
+                    })
                     .setClass('skeleton-menu-item');
 
 
@@ -2956,8 +3027,8 @@ var Skeleton = (function(_) {
 
                 // Input nesnesi
                 ul.create('li', {
-                    key: key
-                })
+                        key: key
+                    })
                     // Class
                     .setClass('menu-item-chk')
                     // Style
@@ -2970,7 +3041,7 @@ var Skeleton = (function(_) {
                         id: chkName
                     })
                     // Input Event
-                    .setBind('click', function (ev) {
+                    .setBind('click', function(ev) {
 
                         var main = ev.target.parentNode.parentNode;
                         var checkbox = main.children[1];
@@ -2992,15 +3063,15 @@ var Skeleton = (function(_) {
 
                 // Image nesnesi
                 var li = ul.create('li', {
-                    key: key
-                })
+                        key: key
+                    })
                     // Class
                     .setClass('menu-item-img', 'menu-item-locked')
                     // Style
                     .setCSS({
                         width: '20%'
                     }).
-                    setBind('mousedown', menu.method.itemdown);
+                setBind('mousedown', menu.method.itemdown);
 
                 var img = li.create('img', {
                     key: key,
@@ -3008,10 +3079,10 @@ var Skeleton = (function(_) {
                     src: obj.data
                 })
 
-                    .setCSS({
-                        width: '30px',
-                        height: '30px'
-                    });
+                .setCSS({
+                    width: '30px',
+                    height: '30px'
+                });
 
 
                 //....................................................................................
@@ -3024,8 +3095,8 @@ var Skeleton = (function(_) {
 
                 // Label nesnesi
                 ul.create('li', {
-                    key: key
-                })
+                        key: key
+                    })
                     // Class
                     .setClass('menu-item-text')
                     // Style
@@ -3089,70 +3160,7 @@ var Skeleton = (function(_) {
         });
 
 
-        // Menu için global style verileri eleyelim
-        if (!parent.document.getElementById('skeleton-menu-style'))
-            var style = new collection('style', {
-                id: 'skeleton-menu-style'
-            })
-                .setSheet({
-                    '.skeleton-menu-item': {
-                        transition: 'all .3s linear',
-                        overflow: 'hidden',
-                        padding: 0,
-                        margin: 0,
-                        border: 0,
-                        'border-bottom-width': '1px',
-                        'border-style': 'solid',
-                        'border-color': '#f1f1f1',
-                        display: 'table',
-                        width: '100%',
-                        padding: '5px'
-                    },
-                    '.skeleton-menu-item:hover': {
-                        'background-color': '#eee'
-                    },
-                    '.skeleton-menu-item li': {
-                        'box-sizing': 'border-box',
-                        display: 'table-cell',
-                        'vertical-align': 'middle',
-                        'padding-top': '10px',
-                        'padding-bottom': '10px',
-                        'text-align': 'center'
-                    },
-                    '.skeleton-menu-item li:last-child': {
-                        'text-align': 'left',
-                        'padding-left': '10px'
-                    },
-                    '.skeleton-menu-item input[type=checkbox]': {
 
-                    },
-                    '.skeleton-menu-item .menu-item-img': {
-                        'box-shadow': 'inset 0px 0px 4px #777, 1px 1px 3px #ccc',
-                        background: '#fff',
-                        'border-radius': '5px',
-                        transition: 'all .3s linear',
-                        cursor: 'pointer',
-                    },
-                    '.skeleton-menu-item .menu-item-img:hover': {
-                        'box-shadow': '1px 1px 3px #000'
-                    },
-                    '.skeleton-menu-item .menu-item-text': {
-
-                    },
-                    '.skeleton-menu-item .menu-item-chk': {
-
-                    },
-                    '.skeleton-menu-item .menu-item-img > img': {
-                        'pointer-events': 'none'
-                    },
-                    '.skeleton-menu-item .menu-item-img.menu-item-locked': {
-                        'pointer-events': 'none',
-                        border: 0,
-                        'box-shadow': 'none',
-                        opacity: 0.3
-                    }
-                })
-                .insert(parent.document.body);
 
     });
 
@@ -3366,47 +3374,11 @@ var Skeleton = (function(_) {
 //          SKELETON POPUP INIT
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
 
-    _.MODULE(function () {
+    _.MODULE(function() {
 
-        var popup = _.popup;
-        var method = _.popup.method;
-        var collection = _.collection.create;
-
-  
-        //....................................................................................
-
-
-
-
-        // Ek Style Dosyaları
-        var style = new collection('style', {
-            id: 'skeleton-popup-style'
-        })
-        // Style
-        style.setSheet('@keyframes skeleton-popup-modal', {
-            from: {
-                opacity: 0,
-            },
-            to: {
-                opacity: 1
-            }
-        });
-
-
-
-        //....................................................................................
-
-
-        popup.objects.style = style;
-
-
-        //....................................................................................
-
-
-        parent.document.body.appendChild(style.target);
 
     }); // MODULE
 
@@ -3786,18 +3758,402 @@ var Skeleton = (function(_) {
 
 
 })(Skeleton);
-(function (_) {
-    
-    _.MODULE(function(){
+(function(_) {
+
+    _.MODULE(function() {
 
 
-        //var coll = _.collection.create;
-        //var style = new coll('style',{id:'skeleton-app-styles'});
+        var coll = _.collection.create;
+        var style = new coll('style', { id: 'skeleton-app-styles' });
 
-       // style.importLink('https://raw.github.com/daneden/animate.css/master/animate.css');
+        //style.importLink('https://raw.github.com/daneden/animate.css/master/animate.css');
 
 
-        //style.insert(parent.document.body);
+        style.setSheet({
+
+
+
+
+
+            // DIALOG PENCERESİ
+            '#skeleton-dialog-shadow': {
+                'position': 'fixed',
+                'z-index': '9999999',
+                'background-color': '#000',
+                'left': '0px',
+                'top': '0px',
+                'bottom': '0px',
+                'right': '0px',
+                'opacity': '0.2',
+                'display': 'none',
+                'transition': 'all .3s linear'
+            },
+            '#skeleton-dialog': {
+                'position': 'fixed',
+                'z-index': '9999999',
+                'min-width': '200px',
+                'background-color': 'white',
+                'box-shadow': '4px 4px 11px #777',
+                'transform': 'translateX(-50%) translateY(-50%)',
+                'left': '50%',
+                'top': '50%',
+                'display': 'none',
+                'transition': 'all .3s linear',
+                'border-top': '10px solid #588690',
+            },
+            '#skeleton-dialog *': {
+                'font-family': 'arial',
+                'font-size': '15px',
+                'color': '#444'
+            },
+            '#skeleton-dialog-content': {
+                'padding': '30px',
+            },
+            '#skeleton-dialog-footer': {
+                'border-top': '1px solid #ddd',
+                'text-align': 'center',
+                'padding': '10px'
+            },
+            '#skeleton-dialog-button1': {
+                'background-color': '#317eb5',
+                'color': 'white'
+            },
+            '#skeleton-dialog-button2': {
+                'background-color': '#a0a0a0',
+                'color': 'white'
+            },
+            '.skeleton-dialog-button': {
+                'cursor': 'pointer',
+                'display': 'inline-block',
+                'width': '50%',
+                'box-sizing': 'border-box',
+                'padding': '7px 14px',
+                '-webkit-appearance': 'button',
+                'border': '1px solid #fff',
+                'border-radius': '4px',
+                'font-weight': 'bold',
+                'outline': 'none'
+            },
+            '.skeleton-dialog-button:hover': {
+                'background-color': '#444 !important'
+            },
+            '.disabled-btn': {
+                'pointer-events': 'none !important',
+                'opacity': '0.4',
+                'background-color': '#888 !important',
+                'color': '#444 !important'
+            },
+
+            //....................................................................................
+
+
+
+            // CONTEXT PENCERESİ
+
+            '#contextmenu-container': {
+                'position': 'absolute',
+                'z-index': '10000',
+                'box-shadow': '0 0 0 10px rgba(0, 0, 0, 0.42)',
+                'background-color': '#eee',
+                'min-width': '200px',
+                'padding': '10px',
+                'font-size': '14px',
+                'font-family': 'Arial',
+                'left': '0',
+                'top': '0',
+                'display': 'none'
+            },
+            '#contextmenu-content': {},
+            '#contextmenu-content > div': {
+                'border-bottom': '1px solid #ddd',
+                'transition': 'all .3s linear'
+            },
+            '#contextmenu-content > div > label': {
+                'display': 'inline-block',
+                'padding': '7px 10px'
+            },
+            '#contextmenu-content > div::before': {
+                'content': "''",
+                'background-color': '#317eb5',
+                'display': 'inline-block',
+                'transition': 'width .2s linear',
+                'height': '10px',
+                'width': '0',
+            },
+            '#contextmenu-content > div:hover::before': {
+                'width': '4px'
+            },
+            '#contextmenu-content > div:last-child': {
+                'border': '0'
+            },
+
+            //....................................................................................
+
+
+
+            // SKELETON MENU PENCERESİ
+            '.skeleton-menu-item': {
+                'transition': 'all .3s linear',
+                'overflow': 'hidden',
+                'padding': '0',
+                'margin': '0',
+                'border': '0',
+                'border-bottom-width': '1px',
+                'border-style': 'solid',
+                'border-color': '#f1f1f1',
+                'display': 'table',
+                'width': '100%',
+                'padding': '5px'
+            },
+            '.skeleton-menu-item:hover': {
+                'background-color': '#eee'
+            },
+            '.skeleton-menu-item li': {
+                'box-sizing': 'border-box',
+                'display': 'table-cell',
+                'vertical-align': 'middle',
+                'padding-top': '10px',
+                'padding-bottom': '10px',
+                'text-align': 'center'
+            },
+            '.skeleton-menu-item li:last-child': {
+                'text-align': 'left',
+                'padding-left': '10px'
+            },
+            '.skeleton-menu-item input[type=checkbox]': {
+
+            },
+            '.skeleton-menu-item .menu-item-img': {
+                'box-shadow': 'inset 0px 0px 4px #777, 1px 1px 3px #ccc',
+                'background': '#fff',
+                'border-radius': '5px',
+                'transition': 'all .3s linear',
+                'cursor': 'pointer',
+            },
+            '.skeleton-menu-item .menu-item-img:hover': {
+                'box-shadow': '1px 1px 3px #000'
+            },
+            '.skeleton-menu-item .menu-item-text': {
+
+            },
+            '.skeleton-menu-item .menu-item-chk': {
+
+            },
+            '.skeleton-menu-item .menu-item-img > img': {
+                'pointer-events': 'none'
+            },
+            '.skeleton-menu-item .menu-item-img.menu-item-locked': {
+                'pointer-events': 'none',
+                'border': '0',
+                'box-shadow': 'none',
+                'opacity': '0.3'
+            },
+
+
+            // POPUP PENCERESİ
+            '@keyframes skeleton-popup-modal': {
+                'from': "{ opacity: 0}",
+                'to': "{ opacity: 1}",
+            },
+
+            // TOOLTIP PENCERESİ
+            '#skeleton-tooltip': {
+                'position': 'absolute',
+                'background-color': '#f9f9d5',
+                'border-width': '1px',
+                'border-style': 'solid',
+                'border-color': '#ffd383',
+                'border-radius': '4px',
+                'box-shadow': '1px 1px 3px #777',
+                'font-size': '16px',
+                'font-family': 'Arial',
+                'transition': 'all .2s linear',
+                'display': 'none',
+                'padding': '10px',
+                'pointer-events': 'none',
+                'z-index': '9999'
+            },
+            '.no-animate': {
+                'transition': 'none !important'
+            },
+
+
+
+
+            '.skeleton-popup-modal-shadow': {
+                'background-color': ' rgba(0, 0, 0, .4)',
+                'position': ' fixed',
+                'left': ' 0',
+                'right': ' 0',
+                'top': ' 0',
+                'bottom': ' 0'
+            },
+
+            '.skeleton-popup-modal': {
+                'position': ' fixed',
+                'background-color': ' white',
+                'left': ' 50%',
+                'top': ' 50%',
+                'transform': ' translate(-50%, -50%)',
+                'border': ' 2px solid #fff',
+                'padding': ' 0',
+                'box-shadow': ' 3px 3px 17px -3px #000',
+                'animation': 'skeleton-popup-modal .5s forwards'
+            },
+
+            '@keyframes skeleton-popup-modal': {
+                'from': "{ opacity: 0}",
+                'to': "{ opacity: 1}",
+            },
+
+            '#modalpage *': {
+                'box-sizing': ' border-box',
+                'outline': ' none'
+            },
+
+            '#modalpage table': {
+                'width': '100%'
+            },
+            '#modalpage select': {
+                'padding': '5px 10px',
+                'height': '30px ',
+                'width': '200px',
+                'border-radius': '4px'
+            },
+
+            '#modalpage .gtitle': {
+                'font-size': '14px',
+                'margin': '5px 0',
+                'padding': '5px 14px',
+                'background-color': ' #99c9d8',
+                'border-radius': '4px 0 0 4px',
+                'position': 'relative',
+                'color': 'white',
+                'display': 'inline-block',
+                'width': '88px',
+                'margin-right': '14px',
+                'vertical-align': 'middle'
+            },
+
+            '#modalpage .gtitle::after': {
+                'content': ' ',
+                'border': '1px solid rgba(255, 255, 255, 0.49)',
+                'position': 'absolute',
+                'left': '1px',
+                'top': '1px',
+                'right': '2px',
+                'bottom': '2px',
+                'border-right': '0',
+                'border-bottom': '0',
+                'border-radius': '3px 1px 0 3px'
+            },
+            '#modalpage .gtitle::before': {
+                'content': ' ',
+                'border': '13px solid transparent',
+                'border-left-color': '#99c9d8',
+                'border-right': '0',
+                'height': '0',
+                'position': 'absolute',
+                'right': '-12px',
+                'bottom': '0px'
+            },
+
+            '#modalpage .bheader': {
+                'font-size': '17px',
+                'color': ' #444',
+                'background': '#f1f1f1',
+                'margin': '0',
+                'padding': '7px'
+            },
+
+            '#modalpage .btitle': {
+                'font-size': '15px',
+                'color': '#555',
+                'margin': '0',
+                'padding': '7px',
+                'background-color': '#eee'
+            },
+
+            '#modalpage tr': {},
+
+            '#modalpage hr': {
+                'border': '0',
+                'height': '1px',
+                'background': '#eee',
+                'margin': '7px 0 10px'
+            },
+            '#modalpage b': {
+                'display': ' block'
+            },
+
+            '#modalpage-content': {
+                'max-height': '400px',
+                'overflow': 'hidden',
+                'overflow-y': 'auto',
+                'border': '1px solid #ddd',
+                'border-right-color': '#cccccc',
+                'border-bottom-color': '#ccc',
+                'padding': '5px'
+            },
+
+            '#modalpage input[type=text],#modalpage input[type=number]': {
+                'width': '100%',
+                'padding': '10px',
+                'border-radius': '5px',
+                'border': '2px solid #ddd',
+                'border-left-color': '#999',
+                'border-top-color': '#999'
+            },
+
+            '#modalpage td': {
+                'padding': '10px 0',
+            },
+
+            '#modalpage': {
+                'font-family': 'arial',
+                'color': '#444',
+                'font-size': '14px'
+            },
+
+            '#modalpage .fgroup': {
+                'clear': 'both',
+                'padding': '8px 0',
+                'border-bottom': '1px solid #eee'
+            },
+            '#modalpage .fgroup::before,#modalpage .fgroup::after': {
+                'content': '',
+                'display': 'block',
+            },
+            '#modalpage input[type=button]': {
+                'width': '100%',
+                'padding': '13px',
+                'font-weight': 'bold',
+                'font-size': '16px',
+                'background': '#99c9d8',
+                'color': 'white',
+                'border': '1px solid #ddd',
+                'outline': 'none'
+            },
+
+            '#modalpage .group-label-list': {
+                'display': 'inline-block',
+                'vertical-align': 'middle',
+                'padding': '4px',
+            },
+
+            '#modalpage .group-label-list label': {
+                'padding': '5px',
+                'background-color': '#eee',
+                'border-radius': '5px',
+                'font-weight': 'bold',
+                'display': 'inline-block'
+            },
+
+            '#modalpage .group-label-list label.selected': {}
+
+        });
+
+        style.insert(parent.document.body);
 
     }); // MODULE
 

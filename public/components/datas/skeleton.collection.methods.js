@@ -115,7 +115,6 @@
 
         // .delete() ile çağırıldığında nesneyi siler
         inc.remove = function() {
-            console.log(this.target);
             if (this.target);
             this.target.parentNode.removeChild(this.target);
             return this;
@@ -270,10 +269,13 @@
                 if (!name || !value) return self;
                 var json = JSON.stringify(value);
                 json = json.replace(/},/g, '\n');
-                json = json.replace(/,/g, '; ');
-                json = json.replace(/:{/g, '{')
-                json = json.replace(/\"/g, '')
+                json = json.replace(/\",/g, '; ');
+                json = json.replace(/},/g, '; ');
+                json = json.replace(/:{/g, '{');
+                json = json.replace(/\"/g, '');
+
                 self.target.innerHTML += (name + json + '\n');
+
             } else if (arguments.length == 1) {
                 Object.keys(name).forEach(function(t) {
                     self.setSheet(t, name[t]);

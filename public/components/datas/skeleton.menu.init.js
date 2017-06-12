@@ -2,23 +2,23 @@
 //          SKELETON MENU INIT
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
-    _.MODULE(function () {
+    _.MODULE(function() {
 
         var collection = _.collection.create;
         var menu = _.menuObject;
 
 
-        
+
 
         //....................................................................................
 
 
         // Sayfada görüntülenecek menu ekranını oluşturur. Ana katman
         var displayMenu = new collection('div', {
-            id: 'skeleton-menu'
-        })
+                id: 'skeleton-menu'
+            })
             .setCSS({
                 position: 'fixed',
                 left: '40px',
@@ -36,7 +36,7 @@
             })
             //Sınıf
             .setClass('slidetoright')
-            .setBind('mousedown', function (e) { e.preventDefault(); return; });
+            .setBind('mousedown', function(e) { e.preventDefault(); return; });
 
         menu.container = displayMenu;
 
@@ -51,14 +51,14 @@
             id: 'skeleton-menu-header'
         });
         header.setCSS({
-            padding: '10px',
-            backgroundColor: 'rgb(49, 126, 181)',
-            color: 'white',
-            border: 0,
-            borderBottomWidth: '1px',
-            borderStyle: 'solid',
-            borderColor: '#444'
-        })
+                padding: '10px',
+                backgroundColor: 'rgb(49, 126, 181)',
+                color: 'white',
+                border: 0,
+                borderBottomWidth: '1px',
+                borderStyle: 'solid',
+                borderColor: '#444'
+            })
             .setHTML('Menü');
 
 
@@ -70,8 +70,8 @@
 
         // Menüde listelenecek kayıtların yeri
         var content = displayMenu.create('div', {
-            id: 'skeleton-menu-content'
-        })
+                id: 'skeleton-menu-content'
+            })
             // Style
             .setCSS({
                 padding: '10px 20px 10px 10px',
@@ -103,7 +103,7 @@
                 cursor: 'pointer'
             })
             // Footer Click
-            .setBind('click', function () {
+            .setBind('click', function() {
                 content.target.style.display = content.target.style.display == 'block' ? 'none' : 'block';
             })
             // Children A
@@ -136,7 +136,7 @@
         var ml = menu.data;
 
         // Tüm menu listesi kayıtlarını tarayalım
-        Object.keys(ml).forEach(function (key) {
+        Object.keys(ml).forEach(function(key) {
 
             // Üzerinde sorgu yapılacak nesne
             var obj = ml[key];
@@ -164,8 +164,8 @@
                 /* UL nesnesi  */
 
                 var ul = new collection('ul', {
-                    key: key
-                })
+                        key: key
+                    })
                     .setClass('skeleton-menu-item');
 
 
@@ -180,8 +180,8 @@
 
                 // Input nesnesi
                 ul.create('li', {
-                    key: key
-                })
+                        key: key
+                    })
                     // Class
                     .setClass('menu-item-chk')
                     // Style
@@ -194,7 +194,7 @@
                         id: chkName
                     })
                     // Input Event
-                    .setBind('click', function (ev) {
+                    .setBind('click', function(ev) {
 
                         var main = ev.target.parentNode.parentNode;
                         var checkbox = main.children[1];
@@ -216,15 +216,15 @@
 
                 // Image nesnesi
                 var li = ul.create('li', {
-                    key: key
-                })
+                        key: key
+                    })
                     // Class
                     .setClass('menu-item-img', 'menu-item-locked')
                     // Style
                     .setCSS({
                         width: '20%'
                     }).
-                    setBind('mousedown', menu.method.itemdown);
+                setBind('mousedown', menu.method.itemdown);
 
                 var img = li.create('img', {
                     key: key,
@@ -232,10 +232,10 @@
                     src: obj.data
                 })
 
-                    .setCSS({
-                        width: '30px',
-                        height: '30px'
-                    });
+                .setCSS({
+                    width: '30px',
+                    height: '30px'
+                });
 
 
                 //....................................................................................
@@ -248,8 +248,8 @@
 
                 // Label nesnesi
                 ul.create('li', {
-                    key: key
-                })
+                        key: key
+                    })
                     // Class
                     .setClass('menu-item-text')
                     // Style
@@ -313,70 +313,7 @@
         });
 
 
-        // Menu için global style verileri eleyelim
-        if (!parent.document.getElementById('skeleton-menu-style'))
-            var style = new collection('style', {
-                id: 'skeleton-menu-style'
-            })
-                .setSheet({
-                    '.skeleton-menu-item': {
-                        transition: 'all .3s linear',
-                        overflow: 'hidden',
-                        padding: 0,
-                        margin: 0,
-                        border: 0,
-                        'border-bottom-width': '1px',
-                        'border-style': 'solid',
-                        'border-color': '#f1f1f1',
-                        display: 'table',
-                        width: '100%',
-                        padding: '5px'
-                    },
-                    '.skeleton-menu-item:hover': {
-                        'background-color': '#eee'
-                    },
-                    '.skeleton-menu-item li': {
-                        'box-sizing': 'border-box',
-                        display: 'table-cell',
-                        'vertical-align': 'middle',
-                        'padding-top': '10px',
-                        'padding-bottom': '10px',
-                        'text-align': 'center'
-                    },
-                    '.skeleton-menu-item li:last-child': {
-                        'text-align': 'left',
-                        'padding-left': '10px'
-                    },
-                    '.skeleton-menu-item input[type=checkbox]': {
 
-                    },
-                    '.skeleton-menu-item .menu-item-img': {
-                        'box-shadow': 'inset 0px 0px 4px #777, 1px 1px 3px #ccc',
-                        background: '#fff',
-                        'border-radius': '5px',
-                        transition: 'all .3s linear',
-                        cursor: 'pointer',
-                    },
-                    '.skeleton-menu-item .menu-item-img:hover': {
-                        'box-shadow': '1px 1px 3px #000'
-                    },
-                    '.skeleton-menu-item .menu-item-text': {
-
-                    },
-                    '.skeleton-menu-item .menu-item-chk': {
-
-                    },
-                    '.skeleton-menu-item .menu-item-img > img': {
-                        'pointer-events': 'none'
-                    },
-                    '.skeleton-menu-item .menu-item-img.menu-item-locked': {
-                        'pointer-events': 'none',
-                        border: 0,
-                        'box-shadow': 'none',
-                        opacity: 0.3
-                    }
-                })
-                .insert(parent.document.body);
 
     });
 
