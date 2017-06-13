@@ -341,10 +341,10 @@ var Skeleton = (function(_) {
 //          SKELETON SVG METHOD
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
 
-    _.MODULE(function () {
+    _.MODULE(function() {
         var method = _.svg.method;
         var glob = _.svg.globals;
         //....................................................................................
@@ -361,7 +361,7 @@ var Skeleton = (function(_) {
 
                 return this;
             }
-            
+
             if (!this.hasClass(name)) {
                 var isAttr = this.getAttr('class');
                 var e = isAttr ? isAttr.split(' ') : [];
@@ -412,7 +412,7 @@ var Skeleton = (function(_) {
             //Object nesnesi
             if (arguments.length == 1 && typeof params === 'object') {
                 var self = this;
-                Object.keys(params).forEach(function (e) {
+                Object.keys(params).forEach(function(e) {
                     self.setAttributeNS(null, e, params[e]);
                 });
             }
@@ -426,6 +426,12 @@ var Skeleton = (function(_) {
 
 
 
+        //....................................................................................
+
+
+        function getAttr(name) {
+            return this.getAttribute(name);
+        }
 
 
         //....................................................................................
@@ -456,6 +462,7 @@ var Skeleton = (function(_) {
         method.setClass = setClass;
         method.remClass = remClass;
         method.setAttr = setAttr;
+        method.getAttr = getAttr;
         _.svg.matrix = matrix;
 
     }); // MODULE
@@ -1430,9 +1437,9 @@ var Skeleton = (function(_) {
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON TOOLTIP METHOD
 /////////////////////////////////////////////////////////////////////////
-(function(_){
+(function(_) {
 
-    _.MODULE(function(){
+    _.MODULE(function() {
 
 
         var tooltip = _.tooltip;
@@ -1448,6 +1455,8 @@ var Skeleton = (function(_) {
 
             tooltip.container.setHTML(message);
             show();
+
+            setTimeout(hide, 2500);
         }
 
 
@@ -1614,6 +1623,9 @@ var Skeleton = (function(_) {
             'path52': { title: '', data: ['icn3', 'icn2', 'icn3'] },
             'path53': { title: '', data: ['icn3', 'icn2', 'icn3'] },
             'path54': { title: 'Nazofarenks', data: ['icn3', 'icn2', 'icn3'] },
+            'path55': { title: 'Nazofarenks', data: ['icn3', 'icn2', 'icn3'] },
+            'path56': { title: 'Nazofarenks', data: ['icn3', 'icn2', 'icn3'] },
+            'path57': { title: 'Nazofarenks', data: ['icn3', 'icn2', 'icn3'] },
 
 
 
@@ -1725,10 +1737,11 @@ var Skeleton = (function(_) {
     _.MODULE(function() {
 
         var path = _.path;
-        var menu = _.menu;
+        var menu = _.menuObject;
         var tooltip = _.tooltip;
         var context = _.contextmenu;
         var data = _.data;
+        var popup = _.popup;
 
 
         //....................................................................................
@@ -1830,6 +1843,77 @@ var Skeleton = (function(_) {
 
         //....................................................................................
 
+
+
+        function setCustomProperties(obj, args) {
+            obj.customdata = args;
+        }
+
+
+        //....................................................................................
+
+        // Sahne üzerindeki icon'a tıklandığında detayları gösteren method
+        function showPathDetails(e) {
+
+            // Eğer menu data'da açılması gereken bir URL bilgisi varsa açalım
+            // Şimdilik bu alana JSON data ile ilgili bir kontrol yapmadık. Sadece URL bilgisine göre etkileşim yapıyoruz
+            // Tıklanan Icon nesnesine ait data bilgisini alıp popup ekrana bildirelim
+            var icondata = e.target.customdata;
+            var url = menu.data[icondata.name].url;
+
+            if (url) {
+                var r = data[icondata.root];
+                // Popup'ın okuyacağı datayı verelim
+                popup.data = r.transforms[icondata.index];
+                popup.open(url, function() {
+                    // Popup'ı açtıktan sonra gerekli dataları ekrana yansıtalım
+                    fillData(popup.data);
+
+                });
+
+            }
+        }
+
+
+        // Popup olarak açtırdığımız Icon'a ait detayları bu alanda dolduruyoruz
+        function fillData(data) {
+
+
+            // Popup penceresi içerisindeki tüm HTML element nesnelerini seç
+            var el = parent.document.querySelectorAll('#skeleton-popup-content select,#skeleton-popup-content input,#skeleton-popup-content textarea');
+
+            for (var i = 0; i < el.length; i++) {
+
+                // Data içerisindeki her bir alan adı, formdaki bir elemente karşılık gelecek şekilde arıyoruz
+                // Yani isimler aynı kabul ediyoruz
+                var it = el[i];
+                switch (it.type) {
+
+                    case 'checkbox':
+                    case 'radio':
+
+                        // Detaya girmedik sadece checkbox ile ilgili yaptık. 
+                        // Radio butonun isimlerini kontrol etmedik. Daha sonradan ekleme yaparsak bu uyarı mesajını sileriz
+                        if (data[it.name || it.id]) {
+                            it.checked = true;
+                        }
+
+                        break;
+                    default:
+
+                        if (data[it.name || it.id]) {
+                            it.value = data[it.name];
+                        }
+
+                        break;
+                }
+
+            }
+
+        }
+
+
+        //....................................................................................
 
 
 
@@ -2027,6 +2111,12 @@ var Skeleton = (function(_) {
         path.method.removeSelectedClone = removeSelectedClone;
         path.method.findAllowPath = findAllowPath;
         path.method.loadData = loadData;
+        path.method.setCustomProperties = setCustomProperties;
+        path.method.fillData = fillData;
+        path.method.showPathDetails = showPathDetails;
+
+
+
 
     }); // MODULE
 
@@ -2272,7 +2362,8 @@ var Skeleton = (function(_) {
                 title: "Ülser (İzole)",
                 section: ['Enteroklizis', 'MREnterografi', 'MREnteroklizis', 'CiftKontrastKolonGrafi', 'OzefagusMideDuedonumGrafisi', 'Gastroskopi', 'Kolonoskopi', 'D-Balon', 'Kapsül'],
                 data: 'data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MyAzNi4yNCI+PGRlZnM+PHN0eWxlPi5jbHMtMXtmaWxsOm5vbmU7c3Ryb2tlOiMwMDA7c3Ryb2tlLW1pdGVybGltaXQ6MTA7c3Ryb2tlLXdpZHRoOjJweDt9PC9zdHlsZT48L2RlZnM+PHRpdGxlPnXMiGxzZXIgKGl6b2xlKTwvdGl0bGU+PHBvbHlsaW5lIGNsYXNzPSJjbHMtMSIgcG9pbnRzPSI2MyAxNi4wOCA0MS41IDE2LjA4IDQxLjUgMzUuMjQgMzEuNSAzNS4yNCAyMS41IDM1LjI0IDIxLjUgMTYuMDggMCAxNi4wOCIvPjxwYXRoIGQ9Ik0yMTUzLjI5LDIzNS44M2wtNy42OCwzLjI4di0xLjQybDYuMDgtMi41Mi02LjA4LTIuNXYtMS40Mmw3LjY4LDMuMjRaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMjEzNS41IC0yMjkuMjYpIi8+PHBhdGggZD0iTTIxNjAuMjEsMjQwLjloLTEuNDJ2LTkuMDdhNy4zNyw3LjM3LDAsMCwxLTEuMzUsMSw5LjU4LDkuNTgsMCwwLDEtMS41Ljc0di0xLjM4YTguNTksOC41OSwwLDAsMCwyLjA5LTEuMzYsNS4zNSw1LjM1LDAsMCwwLDEuMjctMS41NWguOTJaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMjEzNS41IC0yMjkuMjYpIi8+PHBhdGggZD0iTTIxNzQuMjQsMjM3LjgybDEuNC4xOGEzLjY0LDMuNjQsMCwwLDEtMS4xNywyLjI3LDMuNDIsMy40MiwwLDAsMS0yLjMyLjgyLDMuNjEsMy42MSwwLDAsMS0yLjc3LTEuMTMsNC41Nyw0LjU3LDAsMCwxLTEtMy4yMyw1Ljg2LDUuODYsMCwwLDEsLjQ1LTIuMzgsMy4xNCwzLjE0LDAsMCwxLDEuMzctMS41Myw0LjA3LDQuMDcsMCwwLDEsMi0uNTEsMy40OCwzLjQ4LDAsMCwxLDIuMjQuNjksMy4xNywzLjE3LDAsMCwxLDEuMTIsMmwtMS4zOC4yMWEyLjMsMi4zLDAsMCwwLS43LTEuMjcsMS44MSwxLjgxLDAsMCwwLTEuMjEtLjQzLDIuMjEsMi4yMSwwLDAsMC0xLjc1Ljc3LDMuNjYsMy42NiwwLDAsMC0uNjcsMi40NCwzLjc4LDMuNzgsMCwwLDAsLjY1LDIuNDYsMi4xMSwyLjExLDAsMCwwLDEuNjkuNzcsMiwyLDAsMCwwLDEuNC0uNTFBMi41NSwyLjU1LDAsMCwwLDIxNzQuMjQsMjM3LjgyWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTIxMzUuNSAtMjI5LjI2KSIvPjxwYXRoIGQ9Ik0yMTc2Ljg1LDI0MC45di04LjRoMS4yN3YxLjE4YTMsMywwLDAsMSwxLjA1LTEsMywzLDAsMCwxLDEuNDktLjM4LDIuNzYsMi43NiwwLDAsMSwxLjUzLjM5LDIuMDcsMi4wNywwLDAsMSwuODQsMS4wOCwzLDMsMCwwLDEsMi41OS0xLjQ3LDIuNTYsMi41NiwwLDAsMSwxLjkyLjY5LDMsMywwLDAsMSwuNjcsMi4xM3Y1Ljc2aC0xLjQydi01LjI5YTMuODgsMy44OCwwLDAsMC0uMTQtMS4yMywxLjE5LDEuMTksMCwwLDAtLjUtLjYsMS41NywxLjU3LDAsMCwwLS44NS0uMjMsMiwyLDAsMCwwLTEuNDcuNTksMi42LDIuNiwwLDAsMC0uNTgsMS44OXY0Ljg4aC0xLjQydi01LjQ2YTIuNCwyLjQsMCwwLDAtLjM1LTEuNDIsMS4zMiwxLjMyLDAsMCwwLTEuMTQtLjQ3LDIuMDcsMi4wNywwLDAsMC0xLjExLjMyLDEuNzksMS43OSwwLDAsMC0uNzQuOTIsNS4yLDUuMiwwLDAsMC0uMjMsMS43NnY0LjM2WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTIxMzUuNSAtMjI5LjI2KSIvPjwvc3ZnPg==',
-                url: '/modals/ulser.html'
+                url: '/modals/ulser.html',
+                //jsonData: 'Skeleton.jsons.analulser'
             },
             'ulser_nodularite': {
                 title: "Ülserde Nodülarite",
@@ -2710,7 +2801,11 @@ var Skeleton = (function(_) {
         var dialog = _.dialog;
 
 
+
+
         //....................................................................................
+
+
 
 
         // Menu deki bir butona tıklandığında yapılacak işlemler
@@ -2745,8 +2840,14 @@ var Skeleton = (function(_) {
                 // ID değerine ait bırakılabilecek tüm pathleri bul ve renklendir
                 var isAllow = pathMethod.findAllowPath(butonID);
 
-                // Sayfaya eklendiğinde kaldırılabilmesi için, seçme olayını ekle
-                // clone.setBind('mouseup', pathMethod.selectRemovedItem);
+                // Icon sahneye eklendiğinde, ilgili datanın detaylarının görüntülenebilmesi için tıklama ekliyoruz
+                // Tıklama yapıldığında detayları göster
+                clone.setBind('click', pathMethod.showPathDetails);
+
+                // Icon üzerine gelindiğinde görünecek mesajı görüntüleyelim
+                clone.setBind('mouseover', function(e) {
+                    tooltip.message('Detaylar için tıklayın<span style=\'font-size:11px; display:block;\'> Kaydı silmek için fare ile sağ tıklayın</span>', { ev: e });
+                });
 
                 // Sağ tuş özelliği ekleyelim
                 clone.setBind('contextmenu', function(e) {
@@ -2771,8 +2872,10 @@ var Skeleton = (function(_) {
                                             // Context menüyü gizle
                                             context.method.hide();
 
+                                            // Dialog penceresindeki butonları pasif yap
                                             dialog.passive();
 
+                                            // Pencereyi gizle
                                             dialog.hide();
                                         }
                                     },
@@ -2781,6 +2884,8 @@ var Skeleton = (function(_) {
                                         action: function() {
                                             // Context menüyü gizle
                                             context.method.hide();
+
+                                            // Pencereyi gizle
                                             dialog.hide();
                                         }
                                     }
@@ -3204,7 +3309,7 @@ var Skeleton = (function(_) {
 
 
 
-        function open(url) {
+        function open(url, success) {
 
             helper.http(url, function(data) {
 
@@ -3232,6 +3337,9 @@ var Skeleton = (function(_) {
                         .insert(popup.content.target);
 
                 }
+
+                if (success)
+                    success();
 
             });
 
@@ -3554,6 +3662,13 @@ var Skeleton = (function(_) {
                                 moveItemKey
                         });
 
+                        // Sahne üzerindeki nesneye tıklandığında detay sayfasının gelebilmesi için ilgili nesneye bazı özellikler ekliyoruz
+                        // Bu özellikler sayesinde data'da ki yerimizi bulup forma entegre edebiliriz
+                        path.method.setCustomProperties(_.selectedObject, {
+                            index: dbdataCurrent.transforms.length - 1,
+                            name: moveItemKey,
+                            root: path.selectedPath.id
+                        });
 
                         // Yeni kaydettiğimiz nesneyi diziden alalım
                         // Amacımız; eğer açılacak popup varsa, bu değerleri popup'a göndermek
@@ -3574,8 +3689,6 @@ var Skeleton = (function(_) {
                         //Bu şekilde menu nesnemiz her zaman üstte kalmaktadır.
 
                         _.content.appendChild(_.selectedObject);
-
-
 
                         //İlgili Menu butonuna ait açılması gereken bir popup varsa açtırıyoruz
                         if (menu.data[moveItemKey].url) {
@@ -3603,10 +3716,6 @@ var Skeleton = (function(_) {
 
                             popup.method.openData(doc);
                         }
-
-
-
-
 
                     }
 
@@ -4107,7 +4216,6 @@ var Skeleton = (function(_) {
             },
 
             '#modalpage input[type=text],#modalpage input[type=number]': {
-                'width': '100%',
                 'padding': '10px',
                 'border-radius': '5px',
                 'border': '2px solid #ddd',
@@ -4223,16 +4331,23 @@ var Skeleton = (function(_) {
                         } else
                             call = name;
 
+                        Object.keys(stacker.method.items).forEach(function(q) {
+                            stacker.method.triggerGetValues(stacker.method.items[q]);
+                        });
+
                         ev.items = stacker.method.items;
                         ev.data = stacker.method.data;
 
                         // Trigger methodumuz çalıştırıldığında updateWithData datasını güncelleyelim
-                        stacker.updateWithData = ev.items;
+                        stacker.updateWithData = ev.data;
+
+                        Object.keys(ev.data).forEach(function(ky) {
+                            stacker.updateWithData[ky] = ev.data[ky];
+                        });
 
                         call(ev);
-
-                        stacker.method.triggerGetValues(ev.target);
                     }
+
                     return trigger;
 
                 },
@@ -4240,14 +4355,13 @@ var Skeleton = (function(_) {
                 triggerGetValues: function(item) {
 
                     var name = item.name || item.id;
-
                     if (!name) return;
                     var data = stacker.method.data;
-
                     switch (item.type) {
                         case 'checkbox':
                         case 'radio':
                             var val = item.checked ? item.value ? item.value : true : null;
+                            console.log(val);
                             if (val)
                                 data[name] = val;
                             else if (data)
@@ -4256,13 +4370,18 @@ var Skeleton = (function(_) {
                         case 'button':
                             break;
                         default:
-                            if (item.value)
-                                data[name] = item.value;
-                            else
-                                delete data[name];
+                            if (item.tagName != "button") {
+                                if (item.value)
+                                    data[name] = item.value;
+                                else
+                                    delete data[name];
+                            }
                             break;
 
                     }
+
+
+                    console.log(stacker.method.data);
 
                 }
             };
@@ -4285,9 +4404,26 @@ var Skeleton = (function(_) {
                 function repeat(el) {
                     for (var i = 0, ch = el.children; i < ch.length; i++) {
                         var _item = ch[i];
-                        if (_item.id || _item.name) {
-                            stacker.method.items[_item.name || _item.id] = _item;
-                            stacker.elements[_item.name || _item.id] = function(eventname, action) {
+                        var sn = _item.id || _item.name;
+                        if (sn) {
+                            stacker.method.items[sn] = _item;
+
+
+                            // Buradaki amaç şu.
+                            // Skeleton.stacker({}).elements.* şeklinde çağırılır
+                            // * işareti formdaki name veya id özelliğine sahip elementlerin id veya name adıyla çağırılmasını sağlar
+                            // örnek 
+                            // 1: Skeleton.stacker({}).elements.mide(actionname,action);
+                            // 2: Skeleton.stacker({}).elements.bagirsak(actionname,action);
+                            // 3: Skeleton.stacker({}).elements.adet(actionname,action);
+                            // Formda elemente ne isim verilirse onun adıyla ulaşabiliyoruz
+                            // Element adı aslında bir method. O methodun hangi eventname'ine ne yaptırmak istiyorsak onu veriyoruz
+                            // Örneğin formda adet adında bir input elementim olsun ve ben onun change olayı tetiklendiğinde birşeyler yapmak istiyorsam kullanıyorum
+                            // Her bir element için her defasında Skeleton.stacker({}).elements tanımını kullanmam gerekmiyor.
+                            // Nokta işaretinden sonra ard arda diğer elementleri de kullanabilirim
+                            // Skeleton.stacker({}).elements.adet(name,action).dis(name,action).kulak(name,action)
+
+                            stacker.elements[sn] = function(eventname, action) {
                                 var method = new stacker.method.trigger(action);
                                 _item.setBind(eventname, method);
                                 return stacker.elements;
@@ -4313,8 +4449,6 @@ var Skeleton = (function(_) {
                         data = eval(data);
                         parseData(data, obj);
                     });
-                    //} else {
-                    //parser(obj);
                 }
 
                 // Gelen source bilgisi window altında herhangi bir yerden elişilebilen bir nesne olduğunu söylüyor
@@ -4536,17 +4670,17 @@ var Skeleton = (function(_) {
                             // Bak bakalım bu bir event mi
                             var res = addEvent(main, key, items[key]);
 
+                            if (!res) {
+                                // Eğer ID değerine sahip nesneleri ayıralım
+                                if (key == 'id')
+                                    stacker.method.items[items[key]] = main;
 
-                            // Eğer ID değerine sahip nesneleri ayıralım
-                            if (!res && key == 'id')
-                                stacker.method.items[items[key]] = main;
+                                // Bir kontrol daha koyalım işimiz düzgün olsun.
+                                // Key değeri metin dışında bir karakter içermesin
+                                if (key.indexOf('.') != -1) throw ('Nesne özellik atamasında geçersiz karakterler var. Yalnızca alpha (a-z) karakterler yazınız.');
+                                main.setAttribute(key, items[key]);
 
-
-                            // Bir kontrol daha koyalım işimiz düzgün olsun.
-                            // Key değeri metin dışında bir karakter içermesin
-                            if (!res && key.indexOf('.') != -1) throw ('Nesne özellik atamasında geçersiz karakterler var. Yalnızca alpha (a-z) karakterler yazınız.')
-                            main.setAttribute(key, items[key]);
-
+                            }
                         }
                     }
                 }

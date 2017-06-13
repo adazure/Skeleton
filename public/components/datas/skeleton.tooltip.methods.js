@@ -1,9 +1,9 @@
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON TOOLTIP METHOD
 /////////////////////////////////////////////////////////////////////////
-(function(_){
+(function(_) {
 
-    _.MODULE(function(){
+    _.MODULE(function() {
 
 
         var tooltip = _.tooltip;
@@ -19,6 +19,8 @@
 
             tooltip.container.setHTML(message);
             show();
+
+            setTimeout(hide, 2500);
         }
 
 

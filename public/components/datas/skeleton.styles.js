@@ -367,7 +367,6 @@
             },
 
             '#modalpage input[type=text],#modalpage input[type=number]': {
-                'width': '100%',
                 'padding': '10px',
                 'border-radius': '5px',
                 'border': '2px solid #ddd',

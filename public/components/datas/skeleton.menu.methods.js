@@ -17,7 +17,11 @@
         var dialog = _.dialog;
 
 
+
+
         //....................................................................................
+
+
 
 
         // Menu deki bir butona tıklandığında yapılacak işlemler
@@ -52,8 +56,14 @@
                 // ID değerine ait bırakılabilecek tüm pathleri bul ve renklendir
                 var isAllow = pathMethod.findAllowPath(butonID);
 
-                // Sayfaya eklendiğinde kaldırılabilmesi için, seçme olayını ekle
-                // clone.setBind('mouseup', pathMethod.selectRemovedItem);
+                // Icon sahneye eklendiğinde, ilgili datanın detaylarının görüntülenebilmesi için tıklama ekliyoruz
+                // Tıklama yapıldığında detayları göster
+                clone.setBind('click', pathMethod.showPathDetails);
+
+                // Icon üzerine gelindiğinde görünecek mesajı görüntüleyelim
+                clone.setBind('mouseover', function(e) {
+                    tooltip.message('Detaylar için tıklayın<span style=\'font-size:11px; display:block;\'> Kaydı silmek için fare ile sağ tıklayın</span>', { ev: e });
+                });
 
                 // Sağ tuş özelliği ekleyelim
                 clone.setBind('contextmenu', function(e) {
@@ -78,8 +88,10 @@
                                             // Context menüyü gizle
                                             context.method.hide();
 
+                                            // Dialog penceresindeki butonları pasif yap
                                             dialog.passive();
 
+                                            // Pencereyi gizle
                                             dialog.hide();
                                         }
                                     },
@@ -88,6 +100,8 @@
                                         action: function() {
                                             // Context menüyü gizle
                                             context.method.hide();
+
+                                            // Pencereyi gizle
                                             dialog.hide();
                                         }
                                     }

@@ -2,10 +2,10 @@
 //          SKELETON SVG METHOD
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
 
-    _.MODULE(function () {
+    _.MODULE(function() {
         var method = _.svg.method;
         var glob = _.svg.globals;
         //....................................................................................
@@ -22,7 +22,7 @@
 
                 return this;
             }
-            
+
             if (!this.hasClass(name)) {
                 var isAttr = this.getAttr('class');
                 var e = isAttr ? isAttr.split(' ') : [];
@@ -73,7 +73,7 @@
             //Object nesnesi
             if (arguments.length == 1 && typeof params === 'object') {
                 var self = this;
-                Object.keys(params).forEach(function (e) {
+                Object.keys(params).forEach(function(e) {
                     self.setAttributeNS(null, e, params[e]);
                 });
             }
@@ -87,6 +87,12 @@
 
 
 
+        //....................................................................................
+
+
+        function getAttr(name) {
+            return this.getAttribute(name);
+        }
 
 
         //....................................................................................
@@ -117,6 +123,7 @@
         method.setClass = setClass;
         method.remClass = remClass;
         method.setAttr = setAttr;
+        method.getAttr = getAttr;
         _.svg.matrix = matrix;
 
     }); // MODULE

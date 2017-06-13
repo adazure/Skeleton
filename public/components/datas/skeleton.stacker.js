@@ -52,16 +52,23 @@
                         } else
                             call = name;
 
+                        Object.keys(stacker.method.items).forEach(function(q) {
+                            stacker.method.triggerGetValues(stacker.method.items[q]);
+                        });
+
                         ev.items = stacker.method.items;
                         ev.data = stacker.method.data;
 
                         // Trigger methodumuz çalıştırıldığında updateWithData datasını güncelleyelim
-                        stacker.updateWithData = ev.items;
+                        stacker.updateWithData = ev.data;
+
+                        Object.keys(ev.data).forEach(function(ky) {
+                            stacker.updateWithData[ky] = ev.data[ky];
+                        });
 
                         call(ev);
-
-                        stacker.method.triggerGetValues(ev.target);
                     }
+
                     return trigger;
 
                 },
@@ -69,14 +76,13 @@
                 triggerGetValues: function(item) {
 
                     var name = item.name || item.id;
-
                     if (!name) return;
                     var data = stacker.method.data;
-
                     switch (item.type) {
                         case 'checkbox':
                         case 'radio':
                             var val = item.checked ? item.value ? item.value : true : null;
+                            console.log(val);
                             if (val)
                                 data[name] = val;
                             else if (data)
@@ -85,13 +91,18 @@
                         case 'button':
                             break;
                         default:
-                            if (item.value)
-                                data[name] = item.value;
-                            else
-                                delete data[name];
+                            if (item.tagName != "button") {
+                                if (item.value)
+                                    data[name] = item.value;
+                                else
+                                    delete data[name];
+                            }
                             break;
 
                     }
+
+
+                    console.log(stacker.method.data);
 
                 }
             };
@@ -114,9 +125,26 @@
                 function repeat(el) {
                     for (var i = 0, ch = el.children; i < ch.length; i++) {
                         var _item = ch[i];
-                        if (_item.id || _item.name) {
-                            stacker.method.items[_item.name || _item.id] = _item;
-                            stacker.elements[_item.name || _item.id] = function(eventname, action) {
+                        var sn = _item.id || _item.name;
+                        if (sn) {
+                            stacker.method.items[sn] = _item;
+
+
+                            // Buradaki amaç şu.
+                            // Skeleton.stacker({}).elements.* şeklinde çağırılır
+                            // * işareti formdaki name veya id özelliğine sahip elementlerin id veya name adıyla çağırılmasını sağlar
+                            // örnek 
+                            // 1: Skeleton.stacker({}).elements.mide(actionname,action);
+                            // 2: Skeleton.stacker({}).elements.bagirsak(actionname,action);
+                            // 3: Skeleton.stacker({}).elements.adet(actionname,action);
+                            // Formda elemente ne isim verilirse onun adıyla ulaşabiliyoruz
+                            // Element adı aslında bir method. O methodun hangi eventname'ine ne yaptırmak istiyorsak onu veriyoruz
+                            // Örneğin formda adet adında bir input elementim olsun ve ben onun change olayı tetiklendiğinde birşeyler yapmak istiyorsam kullanıyorum
+                            // Her bir element için her defasında Skeleton.stacker({}).elements tanımını kullanmam gerekmiyor.
+                            // Nokta işaretinden sonra ard arda diğer elementleri de kullanabilirim
+                            // Skeleton.stacker({}).elements.adet(name,action).dis(name,action).kulak(name,action)
+
+                            stacker.elements[sn] = function(eventname, action) {
                                 var method = new stacker.method.trigger(action);
                                 _item.setBind(eventname, method);
                                 return stacker.elements;
@@ -142,8 +170,6 @@
                         data = eval(data);
                         parseData(data, obj);
                     });
-                    //} else {
-                    //parser(obj);
                 }
 
                 // Gelen source bilgisi window altında herhangi bir yerden elişilebilen bir nesne olduğunu söylüyor
@@ -365,17 +391,17 @@
                             // Bak bakalım bu bir event mi
                             var res = addEvent(main, key, items[key]);
 
+                            if (!res) {
+                                // Eğer ID değerine sahip nesneleri ayıralım
+                                if (key == 'id')
+                                    stacker.method.items[items[key]] = main;
 
-                            // Eğer ID değerine sahip nesneleri ayıralım
-                            if (!res && key == 'id')
-                                stacker.method.items[items[key]] = main;
+                                // Bir kontrol daha koyalım işimiz düzgün olsun.
+                                // Key değeri metin dışında bir karakter içermesin
+                                if (key.indexOf('.') != -1) throw ('Nesne özellik atamasında geçersiz karakterler var. Yalnızca alpha (a-z) karakterler yazınız.');
+                                main.setAttribute(key, items[key]);
 
-
-                            // Bir kontrol daha koyalım işimiz düzgün olsun.
-                            // Key değeri metin dışında bir karakter içermesin
-                            if (!res && key.indexOf('.') != -1) throw ('Nesne özellik atamasında geçersiz karakterler var. Yalnızca alpha (a-z) karakterler yazınız.')
-                            main.setAttribute(key, items[key]);
-
+                            }
                         }
                     }
                 }

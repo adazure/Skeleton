@@ -5,31 +5,31 @@
         <div class="fgroup">
             <span class="gtitle">Formasyon</span>
             <div class="group-label-list">
-                <label><input type="checkbox" value="Aftöz"/>Aftöz</label>
-                <label><input type="checkbox" value="Oval"/>Oval</label>
-                <label><input type="checkbox" value="Yıldız"/>Yıldız</label>
-                <label><input type="checkbox" value="Sirküler"/>Sirküler</label>
+                <label><input type="checkbox" name="aftoz" value="Aftöz"/>Aftöz</label>
+                <label><input type="checkbox" name="oval" value="Oval"/>Oval</label>
+                <label><input type="checkbox" name="yildiz" value="Yıldız"/>Yıldız</label>
+                <label><input type="checkbox" name="sirkuler" value="Sirküler"/>Sirküler</label>
             </div>
         </div>
         <div class="fgroup">
             <span class="gtitle">Boyut</span>
             <div class="group-label-list">
-                <label><input type="checkbox" value="<0.5 cm"/><0.5 cm</label>
-                <label><input type="checkbox" value="0.5-1 cm"/>0.5-1 cm</label>
-                <label><input type="checkbox" value="1-2 cm"/>1-2 cm</label>
-                <label><input type="checkbox" value="3-5 cm"/>3-5 cm</label>
-                <label><input type="checkbox" value=">5 cm"/>>5 cm</label>
+                <label><input type="checkbox" name="boyut1" value="<0.5 cm"/><0.5 cm</label>
+                <label><input type="checkbox" name="boyut2" value="0.5-1 cm"/>0.5-1 cm</label>
+                <label><input type="checkbox" name="boyut3" value="1-2 cm"/>1-2 cm</label>
+                <label><input type="checkbox" name="boyut4" value="3-5 cm"/>3-5 cm</label>
+                <label><input type="checkbox" name="boyut5" value=">5 cm"/>>5 cm</label>
             </div>
         </div>
 
         <div class="fgroup">
             <span class="gtitle">Adet</span>
-            <input type="number" placeholder="Adet" title="İzole olarak kayda geçmesini istediğiniz birden fazla ülser için sayı girebilirsiniz.">
+            <input type="number" placeholder="Adet" name="adet" title="İzole olarak kayda geçmesini istediğiniz birden fazla ülser için sayı girebilirsiniz.">
         </div>
 
         <div class="fgroup">
             <span class="gtitle">Ülserde Nodülarite</span>
-            <input type="checkbox" />
+            <input type="checkbox" name="nodularite" />
         </div>
 
     </div>
@@ -44,7 +44,7 @@
             el: '#modalpage',
             // Formdaki elementler trigger edildiğinde, otomatik olarak..
             // ... Skeleton.popup.data.fields alanına dataların value değerlerini atamasını istiyoruz
-            updateWithData: Skeleton.popup.data.fields
+            updateWithData: Skeleton.popup.data.fields = {}
         })
         .elements.btnkaydet('click', Skeleton.popup.close);
 </script>

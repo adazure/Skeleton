@@ -117,6 +117,13 @@
                                 moveItemKey
                         });
 
+                        // Sahne üzerindeki nesneye tıklandığında detay sayfasının gelebilmesi için ilgili nesneye bazı özellikler ekliyoruz
+                        // Bu özellikler sayesinde data'da ki yerimizi bulup forma entegre edebiliriz
+                        path.method.setCustomProperties(_.selectedObject, {
+                            index: dbdataCurrent.transforms.length - 1,
+                            name: moveItemKey,
+                            root: path.selectedPath.id
+                        });
 
                         // Yeni kaydettiğimiz nesneyi diziden alalım
                         // Amacımız; eğer açılacak popup varsa, bu değerleri popup'a göndermek
@@ -137,8 +144,6 @@
                         //Bu şekilde menu nesnemiz her zaman üstte kalmaktadır.
 
                         _.content.appendChild(_.selectedObject);
-
-
 
                         //İlgili Menu butonuna ait açılması gereken bir popup varsa açtırıyoruz
                         if (menu.data[moveItemKey].url) {
@@ -166,10 +171,6 @@
 
                             popup.method.openData(doc);
                         }
-
-
-
-
 
                     }
 

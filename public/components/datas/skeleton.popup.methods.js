@@ -17,7 +17,7 @@
 
 
 
-        function open(url) {
+        function open(url, success) {
 
             helper.http(url, function(data) {
 
@@ -45,6 +45,9 @@
                         .insert(popup.content.target);
 
                 }
+
+                if (success)
+                    success();
 
             });
 

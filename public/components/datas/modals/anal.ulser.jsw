@@ -36,8 +36,7 @@
                                                     }
                                                 }
                                             ],
-                                            "id": "endoskopi",
-                                            "(onchange)": "formchanger(this,event)"
+                                            "id": "endoskopi"
                                         }
                                     }],
                                     "class": "group-label-list"

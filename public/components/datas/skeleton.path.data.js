@@ -85,6 +85,9 @@
             'path52': { title: '', data: ['icn3', 'icn2', 'icn3'] },
             'path53': { title: '', data: ['icn3', 'icn2', 'icn3'] },
             'path54': { title: 'Nazofarenks', data: ['icn3', 'icn2', 'icn3'] },
+            'path55': { title: 'Nazofarenks', data: ['icn3', 'icn2', 'icn3'] },
+            'path56': { title: 'Nazofarenks', data: ['icn3', 'icn2', 'icn3'] },
+            'path57': { title: 'Nazofarenks', data: ['icn3', 'icn2', 'icn3'] },
 
 
 

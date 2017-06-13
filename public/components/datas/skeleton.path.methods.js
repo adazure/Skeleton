@@ -8,10 +8,11 @@
     _.MODULE(function() {
 
         var path = _.path;
-        var menu = _.menu;
+        var menu = _.menuObject;
         var tooltip = _.tooltip;
         var context = _.contextmenu;
         var data = _.data;
+        var popup = _.popup;
 
 
         //....................................................................................
@@ -113,6 +114,77 @@
 
         //....................................................................................
 
+
+
+        function setCustomProperties(obj, args) {
+            obj.customdata = args;
+        }
+
+
+        //....................................................................................
+
+        // Sahne üzerindeki icon'a tıklandığında detayları gösteren method
+        function showPathDetails(e) {
+
+            // Eğer menu data'da açılması gereken bir URL bilgisi varsa açalım
+            // Şimdilik bu alana JSON data ile ilgili bir kontrol yapmadık. Sadece URL bilgisine göre etkileşim yapıyoruz
+            // Tıklanan Icon nesnesine ait data bilgisini alıp popup ekrana bildirelim
+            var icondata = e.target.customdata;
+            var url = menu.data[icondata.name].url;
+
+            if (url) {
+                var r = data[icondata.root];
+                // Popup'ın okuyacağı datayı verelim
+                popup.data = r.transforms[icondata.index];
+                popup.open(url, function() {
+                    // Popup'ı açtıktan sonra gerekli dataları ekrana yansıtalım
+                    fillData(popup.data);
+
+                });
+
+            }
+        }
+
+
+        // Popup olarak açtırdığımız Icon'a ait detayları bu alanda dolduruyoruz
+        function fillData(data) {
+
+
+            // Popup penceresi içerisindeki tüm HTML element nesnelerini seç
+            var el = parent.document.querySelectorAll('#skeleton-popup-content select,#skeleton-popup-content input,#skeleton-popup-content textarea');
+
+            for (var i = 0; i < el.length; i++) {
+
+                // Data içerisindeki her bir alan adı, formdaki bir elemente karşılık gelecek şekilde arıyoruz
+                // Yani isimler aynı kabul ediyoruz
+                var it = el[i];
+                switch (it.type) {
+
+                    case 'checkbox':
+                    case 'radio':
+
+                        // Detaya girmedik sadece checkbox ile ilgili yaptık. 
+                        // Radio butonun isimlerini kontrol etmedik. Daha sonradan ekleme yaparsak bu uyarı mesajını sileriz
+                        if (data[it.name || it.id]) {
+                            it.checked = true;
+                        }
+
+                        break;
+                    default:
+
+                        if (data[it.name || it.id]) {
+                            it.value = data[it.name];
+                        }
+
+                        break;
+                }
+
+            }
+
+        }
+
+
+        //....................................................................................
 
 
 
@@ -310,6 +382,12 @@
         path.method.removeSelectedClone = removeSelectedClone;
         path.method.findAllowPath = findAllowPath;
         path.method.loadData = loadData;
+        path.method.setCustomProperties = setCustomProperties;
+        path.method.fillData = fillData;
+        path.method.showPathDetails = showPathDetails;
+
+
+
 
     }); // MODULE
 
