@@ -5,14 +5,10 @@
 
         var coll = _.collection.create;
         var style = new coll('style', { id: 'skeleton-app-styles' });
-
-        //style.importLink('https://raw.github.com/daneden/animate.css/master/animate.css');
-
+        var link = new coll('link', { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css' })
+            .insert(parent.document.head);
 
         style.setSheet({
-
-
-
 
 
             // DIALOG PENCERESİ
@@ -55,7 +51,7 @@
                 'padding': '10px'
             },
             '#skeleton-dialog-button1': {
-                'background-color': '#317eb5',
+                'background-color': '#4b9c64',
                 'color': 'white'
             },
             '#skeleton-dialog-button2': {
@@ -93,10 +89,9 @@
             '#contextmenu-container': {
                 'position': 'absolute',
                 'z-index': '10000',
-                'box-shadow': '0 0 0 10px rgba(0, 0, 0, 0.42)',
+                'box-shadow': '0 0 0 3px rgba(0, 0, 0, 0.42)',
                 'background-color': '#eee',
-                'min-width': '200px',
-                'padding': '10px',
+                'padding': '2px',
                 'font-size': '14px',
                 'font-family': 'Arial',
                 'left': '0',
@@ -114,14 +109,27 @@
             },
             '#contextmenu-content > div::before': {
                 'content': "''",
-                'background-color': '#317eb5',
                 'display': 'inline-block',
-                'transition': 'width .2s linear',
-                'height': '10px',
+                'transition': 'all .2s linear',
+                'height': '0',
                 'width': '0',
+                'position': 'relative',
+                'border': '5px solid transparent',
+                'border-left-color': 'white',
+                'margin-right': '5px',
+                'opacity': '0',
+                'display': 'none',
+                'left': '0'
+            },
+
+            '#contextmenu-content > div:hover': {
+                'background-color': 'rgb(48, 57, 90)',
+                'color': 'white'
             },
             '#contextmenu-content > div:hover::before': {
-                'width': '4px'
+                'left': '10px',
+                'opacity': '1',
+                'display': 'inline-block'
             },
             '#contextmenu-content > div:last-child': {
                 'border': '0'
@@ -240,6 +248,28 @@
                 'box-shadow': ' 3px 3px 17px -3px #000',
                 'animation': 'skeleton-popup-modal .5s forwards'
             },
+            '#skeleton-popup-content': {
+                'position': 'fixed',
+                'background-color': 'white',
+                'left': '50%',
+                'top': '50%',
+                'transform': 'translate(-50%,-50%)',
+                'border': '2px solid #fff',
+                'padding': '0',
+                'box-shadow': '0px 0px 0px 8px rgba(0, 0, 0, 0.35)',
+                'min-width': '500px'
+            },
+            '#skeleton-popup-container': {
+
+                'background-color': 'rgba(0,0,0,.4)',
+                'position': 'fixed',
+                'left': '0',
+                'right': '0',
+                'top': '0',
+                'bottom': '0',
+                'display': 'none',
+                'z-zndex': '9999'
+            },
 
             '@keyframes skeleton-popup-modal': {
                 'from': "{ opacity: 0}",
@@ -265,7 +295,7 @@
                 'font-size': '14px',
                 'margin': '5px 0',
                 'padding': '5px 14px',
-                'background-color': ' #99c9d8',
+                'background-color': 'rgb(48, 57, 90)',
                 'border-radius': '4px 0 0 4px',
                 'position': 'relative',
                 'color': 'white',
@@ -327,7 +357,7 @@
             },
 
             '#modalpage-content': {
-                'max-height': '400px',
+                'max-height': '330px',
                 'overflow': 'hidden',
                 'overflow-y': 'auto',
                 'border': '1px solid #ddd',
@@ -369,7 +399,7 @@
                 'padding': '13px',
                 'font-weight': 'bold',
                 'font-size': '16px',
-                'background': '#99c9d8',
+                'background': 'rgb(48, 57, 90)',
                 'color': 'white',
                 'border': '1px solid #ddd',
                 'outline': 'none'

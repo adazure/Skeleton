@@ -21,8 +21,6 @@
             context.content.insert(context.container.target);
 
 
-
-
             // TEST
             // context.method.load([
             //    { title: 'Delete Item', action: function() { console.log('Item is deleted'); } }, { title: 'Delete Item', action: function() { console.log('Item is deleted'); } },
@@ -30,9 +28,6 @@
             //    { title: 'Item Info', action: function() { console.log('Show Item'); } }
             // ]);
 
-
-            // Context menüsünü, window sınıfımızda mouseup olayında her durumda kapatalım
-            parent.window.addEventListener('mouseup', context.hide);
 
         }
     }); // MODULE

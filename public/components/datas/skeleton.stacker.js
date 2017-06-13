@@ -365,19 +365,17 @@
                             // Bak bakalım bu bir event mi
                             var res = addEvent(main, key, items[key]);
 
-                            // Event olayı yoksa özellik olarak ata
-                            if (!res) {
 
-                                // Eğer ID değerine sahip nesneleri ayıralım
-                                if (key == 'id') {
-                                    stacker.method.items[items[key]] = main;
-                                }
+                            // Eğer ID değerine sahip nesneleri ayıralım
+                            if (!res && key == 'id')
+                                stacker.method.items[items[key]] = main;
 
-                                // Bir kontrol daha koyalım işimiz düzgün olsun.
-                                // Key değeri metin dışında bir karakter içermesin
-                                if (key.indexOf('.') != -1) throw ('Nesne özellik atamasında geçersiz karakterler var. Yalnızca alpha (a-z) karakterler yazınız.')
-                                main.setAttribute(key, items[key]);
-                            }
+
+                            // Bir kontrol daha koyalım işimiz düzgün olsun.
+                            // Key değeri metin dışında bir karakter içermesin
+                            if (!res && key.indexOf('.') != -1) throw ('Nesne özellik atamasında geçersiz karakterler var. Yalnızca alpha (a-z) karakterler yazınız.')
+                            main.setAttribute(key, items[key]);
+
                         }
                     }
                 }

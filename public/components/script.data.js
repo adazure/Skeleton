@@ -109,10 +109,10 @@ var Skeleton = (function(_) {
 //          SKELETON GLOBAL PROTOTYPES METHODS
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
 
-    _.MODULE(function () {
+    _.MODULE(function() {
         // Burada tanımlanan method tanımlamaları prototype olarak kullanılacak
         // Burada tanımlanan method tanımlamaları SVG ve HTML Elementler için ortak isim ve methodlardır
 
@@ -137,7 +137,11 @@ var Skeleton = (function(_) {
 
         function setClass(name) {
 
-            if (!this.hasClass(name)) {
+            if (arguments.length > 1) {
+                for (var i = 0; i < arguments.length; i++) {
+                    this.setClass(arguments[i]);
+                }
+            } else if (!this.hasClass(name)) {
                 var isAttr = this.getAttr('class');
                 var e = isAttr ? isAttr.split(' ') : [];
                 e.push(name);
@@ -155,7 +159,7 @@ var Skeleton = (function(_) {
         function setAttr(name) {
             var self = this;
             if (typeof name === 'object') {
-                Object.keys(name).forEach(function (e) {
+                Object.keys(name).forEach(function(e) {
                     self.setAttribute(e, name[e]);
                 });
             } else if (arguments.length == 2) {
@@ -254,7 +258,7 @@ var Skeleton = (function(_) {
         function setCSS(args) {
             var self = this;
             if (arguments.length == 1)
-                Object.keys(args).forEach(function (key) {
+                Object.keys(args).forEach(function(key) {
                     self.style[key] = args[key];
                 });
             else if (arguments.length == 2)
@@ -1193,7 +1197,11 @@ var Skeleton = (function(_) {
                 left: e.pageX + 'px',
                 top: e.pageY + 'px'
             });
+
+
             context.container.show();
+            // Context menüsünü, window sınıfımızda mouseup olayında her durumda kapatalım
+            window.addEventListener('mouseup', context.method.hide);
         }
 
 
@@ -1202,6 +1210,7 @@ var Skeleton = (function(_) {
 
 
         function hide() {
+            window.removeEventListener('mouseup', context.method.hide);
             context.container.hide();
         }
 
@@ -1245,8 +1254,6 @@ var Skeleton = (function(_) {
             context.content.insert(context.container.target);
 
 
-
-
             // TEST
             // context.method.load([
             //    { title: 'Delete Item', action: function() { console.log('Item is deleted'); } }, { title: 'Delete Item', action: function() { console.log('Item is deleted'); } },
@@ -1254,9 +1261,6 @@ var Skeleton = (function(_) {
             //    { title: 'Item Info', action: function() { console.log('Show Item'); } }
             // ]);
 
-
-            // Context menüsünü, window sınıfımızda mouseup olayında her durumda kapatalım
-            parent.window.addEventListener('mouseup', context.hide);
 
         }
     }); // MODULE
@@ -2749,7 +2753,7 @@ var Skeleton = (function(_) {
                     e.preventDefault();
                     context.method.clear(function() {
                         context.method.add({
-                            title: 'Delete Item',
+                            title: 'Bu kaydı sil',
                             action: function() {
 
                                 dialog.show({
@@ -2872,17 +2876,17 @@ var Skeleton = (function(_) {
                 top: '40px',
                 width: '300px',
                 overflow: 'hidden',
-                backgroundColor: 'rgb(49, 126, 181)',
-                border: '1px solid rgb(49, 126, 181)',
-                boxShadow: '1px 1px 5px 1px #555',
-                borderRadius: '4px',
+                backgroundColor: 'rgb(48, 57, 90)',
+                border: '3px solid rgb(255, 255, 255)',
+                boxShadow: 'rgba(0, 0, 0, 0.27) 0px 0px 0px 8px',
                 zIndex: 1000,
                 fontFamily: 'arial',
-                fontSize: '18px',
-                color: '#333'
+                fontSize: '14px',
+                color: '#333',
+                borderRadius: '7px'
             })
             //Sınıf
-            .setClass('slidetoright')
+            .setClass('slidetoright', 'animated', 'flipInY')
             .setBind('mousedown', function(e) { e.preventDefault(); return; });
 
         menu.container = displayMenu;
@@ -2899,7 +2903,7 @@ var Skeleton = (function(_) {
         });
         header.setCSS({
                 padding: '10px',
-                backgroundColor: 'rgb(49, 126, 181)',
+                backgroundColor: 'rgb(48, 57, 90)',
                 color: 'white',
                 border: 0,
                 borderBottomWidth: '1px',
@@ -3259,39 +3263,15 @@ var Skeleton = (function(_) {
 
             // Popup container 
             var container = new coll('div', {
-                    id: 'skeleton-popup-container'
-                })
-                // Style
-                .setCSS({
-                    backgroundColor: 'rgba(0,0,0,.4)',
-                    position: 'fixed',
-                    left: 0,
-                    right: 0,
-                    top: 0,
-                    bottom: 0,
-                    display: 'none',
-                    zIndex: 9999
-                });
+                id: 'skeleton-popup-container'
+            });
 
 
             // Popup Content
             var content = new coll('div', {
                     id: 'skeleton-popup-content'
                 })
-                //.setClass('animated','jello')
-                // Style
-                .setCSS({
-                    position: 'fixed',
-                    backgroundColor: 'white',
-                    left: '50%',
-                    top: '50%',
-                    transform: 'translate(-50%,-50%)',
-                    border: '2px solid #fff',
-                    padding: 0,
-                    boxShadow: '3px 3px 17px -3px #000',
-                    animation: 'skeleton-popup-modal .5s forwards',
-                    minWidth: '500px'
-                });
+                .setClass('animated', 'fadeIn');
 
             popup.container = container;
             popup.content = content;
@@ -3765,14 +3745,10 @@ var Skeleton = (function(_) {
 
         var coll = _.collection.create;
         var style = new coll('style', { id: 'skeleton-app-styles' });
-
-        //style.importLink('https://raw.github.com/daneden/animate.css/master/animate.css');
-
+        var link = new coll('link', { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css' })
+            .insert(parent.document.head);
 
         style.setSheet({
-
-
-
 
 
             // DIALOG PENCERESİ
@@ -3815,7 +3791,7 @@ var Skeleton = (function(_) {
                 'padding': '10px'
             },
             '#skeleton-dialog-button1': {
-                'background-color': '#317eb5',
+                'background-color': '#4b9c64',
                 'color': 'white'
             },
             '#skeleton-dialog-button2': {
@@ -3853,10 +3829,9 @@ var Skeleton = (function(_) {
             '#contextmenu-container': {
                 'position': 'absolute',
                 'z-index': '10000',
-                'box-shadow': '0 0 0 10px rgba(0, 0, 0, 0.42)',
+                'box-shadow': '0 0 0 3px rgba(0, 0, 0, 0.42)',
                 'background-color': '#eee',
-                'min-width': '200px',
-                'padding': '10px',
+                'padding': '2px',
                 'font-size': '14px',
                 'font-family': 'Arial',
                 'left': '0',
@@ -3874,14 +3849,27 @@ var Skeleton = (function(_) {
             },
             '#contextmenu-content > div::before': {
                 'content': "''",
-                'background-color': '#317eb5',
                 'display': 'inline-block',
-                'transition': 'width .2s linear',
-                'height': '10px',
+                'transition': 'all .2s linear',
+                'height': '0',
                 'width': '0',
+                'position': 'relative',
+                'border': '5px solid transparent',
+                'border-left-color': 'white',
+                'margin-right': '5px',
+                'opacity': '0',
+                'display': 'none',
+                'left': '0'
+            },
+
+            '#contextmenu-content > div:hover': {
+                'background-color': 'rgb(48, 57, 90)',
+                'color': 'white'
             },
             '#contextmenu-content > div:hover::before': {
-                'width': '4px'
+                'left': '10px',
+                'opacity': '1',
+                'display': 'inline-block'
             },
             '#contextmenu-content > div:last-child': {
                 'border': '0'
@@ -4000,6 +3988,28 @@ var Skeleton = (function(_) {
                 'box-shadow': ' 3px 3px 17px -3px #000',
                 'animation': 'skeleton-popup-modal .5s forwards'
             },
+            '#skeleton-popup-content': {
+                'position': 'fixed',
+                'background-color': 'white',
+                'left': '50%',
+                'top': '50%',
+                'transform': 'translate(-50%,-50%)',
+                'border': '2px solid #fff',
+                'padding': '0',
+                'box-shadow': '0px 0px 0px 8px rgba(0, 0, 0, 0.35)',
+                'min-width': '500px'
+            },
+            '#skeleton-popup-container': {
+
+                'background-color': 'rgba(0,0,0,.4)',
+                'position': 'fixed',
+                'left': '0',
+                'right': '0',
+                'top': '0',
+                'bottom': '0',
+                'display': 'none',
+                'z-zndex': '9999'
+            },
 
             '@keyframes skeleton-popup-modal': {
                 'from': "{ opacity: 0}",
@@ -4025,7 +4035,7 @@ var Skeleton = (function(_) {
                 'font-size': '14px',
                 'margin': '5px 0',
                 'padding': '5px 14px',
-                'background-color': ' #99c9d8',
+                'background-color': 'rgb(48, 57, 90)',
                 'border-radius': '4px 0 0 4px',
                 'position': 'relative',
                 'color': 'white',
@@ -4087,7 +4097,7 @@ var Skeleton = (function(_) {
             },
 
             '#modalpage-content': {
-                'max-height': '400px',
+                'max-height': '330px',
                 'overflow': 'hidden',
                 'overflow-y': 'auto',
                 'border': '1px solid #ddd',
@@ -4129,7 +4139,7 @@ var Skeleton = (function(_) {
                 'padding': '13px',
                 'font-weight': 'bold',
                 'font-size': '16px',
-                'background': '#99c9d8',
+                'background': 'rgb(48, 57, 90)',
                 'color': 'white',
                 'border': '1px solid #ddd',
                 'outline': 'none'
@@ -4526,19 +4536,17 @@ var Skeleton = (function(_) {
                             // Bak bakalım bu bir event mi
                             var res = addEvent(main, key, items[key]);
 
-                            // Event olayı yoksa özellik olarak ata
-                            if (!res) {
 
-                                // Eğer ID değerine sahip nesneleri ayıralım
-                                if (key == 'id') {
-                                    stacker.method.items[items[key]] = main;
-                                }
+                            // Eğer ID değerine sahip nesneleri ayıralım
+                            if (!res && key == 'id')
+                                stacker.method.items[items[key]] = main;
 
-                                // Bir kontrol daha koyalım işimiz düzgün olsun.
-                                // Key değeri metin dışında bir karakter içermesin
-                                if (key.indexOf('.') != -1) throw ('Nesne özellik atamasında geçersiz karakterler var. Yalnızca alpha (a-z) karakterler yazınız.')
-                                main.setAttribute(key, items[key]);
-                            }
+
+                            // Bir kontrol daha koyalım işimiz düzgün olsun.
+                            // Key değeri metin dışında bir karakter içermesin
+                            if (!res && key.indexOf('.') != -1) throw ('Nesne özellik atamasında geçersiz karakterler var. Yalnızca alpha (a-z) karakterler yazınız.')
+                            main.setAttribute(key, items[key]);
+
                         }
                     }
                 }

@@ -76,39 +76,15 @@
 
             // Popup container 
             var container = new coll('div', {
-                    id: 'skeleton-popup-container'
-                })
-                // Style
-                .setCSS({
-                    backgroundColor: 'rgba(0,0,0,.4)',
-                    position: 'fixed',
-                    left: 0,
-                    right: 0,
-                    top: 0,
-                    bottom: 0,
-                    display: 'none',
-                    zIndex: 9999
-                });
+                id: 'skeleton-popup-container'
+            });
 
 
             // Popup Content
             var content = new coll('div', {
                     id: 'skeleton-popup-content'
                 })
-                //.setClass('animated','jello')
-                // Style
-                .setCSS({
-                    position: 'fixed',
-                    backgroundColor: 'white',
-                    left: '50%',
-                    top: '50%',
-                    transform: 'translate(-50%,-50%)',
-                    border: '2px solid #fff',
-                    padding: 0,
-                    boxShadow: '3px 3px 17px -3px #000',
-                    animation: 'skeleton-popup-modal .5s forwards',
-                    minWidth: '500px'
-                });
+                .setClass('animated', 'fadeIn');
 
             popup.container = container;
             popup.content = content;

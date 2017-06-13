@@ -60,7 +60,7 @@
                     e.preventDefault();
                     context.method.clear(function() {
                         context.method.add({
-                            title: 'Delete Item',
+                            title: 'Bu kaydı sil',
                             action: function() {
 
                                 dialog.show({

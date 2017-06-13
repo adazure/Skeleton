@@ -75,7 +75,11 @@
                 left: e.pageX + 'px',
                 top: e.pageY + 'px'
             });
+
+
             context.container.show();
+            // Context menüsünü, window sınıfımızda mouseup olayında her durumda kapatalım
+            window.addEventListener('mouseup', context.method.hide);
         }
 
 
@@ -84,6 +88,7 @@
 
 
         function hide() {
+            window.removeEventListener('mouseup', context.method.hide);
             context.container.hide();
         }
 

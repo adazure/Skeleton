@@ -25,17 +25,17 @@
                 top: '40px',
                 width: '300px',
                 overflow: 'hidden',
-                backgroundColor: 'rgb(49, 126, 181)',
-                border: '1px solid rgb(49, 126, 181)',
-                boxShadow: '1px 1px 5px 1px #555',
-                borderRadius: '4px',
+                backgroundColor: 'rgb(48, 57, 90)',
+                border: '3px solid rgb(255, 255, 255)',
+                boxShadow: 'rgba(0, 0, 0, 0.27) 0px 0px 0px 8px',
                 zIndex: 1000,
                 fontFamily: 'arial',
-                fontSize: '18px',
-                color: '#333'
+                fontSize: '14px',
+                color: '#333',
+                borderRadius: '7px'
             })
             //Sınıf
-            .setClass('slidetoright')
+            .setClass('slidetoright', 'animated', 'flipInY')
             .setBind('mousedown', function(e) { e.preventDefault(); return; });
 
         menu.container = displayMenu;
@@ -52,7 +52,7 @@
         });
         header.setCSS({
                 padding: '10px',
-                backgroundColor: 'rgb(49, 126, 181)',
+                backgroundColor: 'rgb(48, 57, 90)',
                 color: 'white',
                 border: 0,
                 borderBottomWidth: '1px',

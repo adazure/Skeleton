@@ -5,21 +5,21 @@
             <tr>
                 <td>
 
-                   <div class="fgroup">
+                    <div class="fgroup">
                         <span class="gtitle">Seçin</span>
                         <div class="group-label-list">
                             <label><input type="checkbox" id="kompleks" value="Kompleks" onclick="formchanger(this,event);"/>Kompleks</label>
                             <label><input type="checkbox" id="seton" value="Seton" onclick="formchanger(this,event);"/>Seton</label>
                         </div>
                     </div>
-                 
+
                 </td>
             </tr>
 
         </table>
     </div>
     <div>
-        <input type="button" value="Kaydet" onclick="Skeleton.popup.method.close();" />
+        <input type="button" value="KAYDET" onclick="Skeleton.popup.method.close();" />
     </div>
 </div>
 
@@ -31,19 +31,18 @@
                 if (element.value)
                     Skeleton.popup.data[element.id] = element.value;
                 else
-                    if (Skeleton.popup.data[element.id])
-                        delete Skeleton.popup.data[element.id];
+                if (Skeleton.popup.data[element.id])
+                    delete Skeleton.popup.data[element.id];
                 break;
             case 'checkbox':
                 if (element.checked)
                     Skeleton.popup.data[element.id] = element.value || element.checked;
                 else
-                    if (Skeleton.popup.data[element.id])
-                        delete Skeleton.popup.data[element.id];
+                if (Skeleton.popup.data[element.id])
+                    delete Skeleton.popup.data[element.id];
                 break;
         }
 
 
     }
-
 </script>

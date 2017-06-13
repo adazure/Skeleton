@@ -2,10 +2,10 @@
 //          SKELETON GLOBAL PROTOTYPES METHODS
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
 
-    _.MODULE(function () {
+    _.MODULE(function() {
         // Burada tanımlanan method tanımlamaları prototype olarak kullanılacak
         // Burada tanımlanan method tanımlamaları SVG ve HTML Elementler için ortak isim ve methodlardır
 
@@ -30,7 +30,11 @@
 
         function setClass(name) {
 
-            if (!this.hasClass(name)) {
+            if (arguments.length > 1) {
+                for (var i = 0; i < arguments.length; i++) {
+                    this.setClass(arguments[i]);
+                }
+            } else if (!this.hasClass(name)) {
                 var isAttr = this.getAttr('class');
                 var e = isAttr ? isAttr.split(' ') : [];
                 e.push(name);
@@ -48,7 +52,7 @@
         function setAttr(name) {
             var self = this;
             if (typeof name === 'object') {
-                Object.keys(name).forEach(function (e) {
+                Object.keys(name).forEach(function(e) {
                     self.setAttribute(e, name[e]);
                 });
             } else if (arguments.length == 2) {
@@ -147,7 +151,7 @@
         function setCSS(args) {
             var self = this;
             if (arguments.length == 1)
-                Object.keys(args).forEach(function (key) {
+                Object.keys(args).forEach(function(key) {
                     self.style[key] = args[key];
                 });
             else if (arguments.length == 2)
