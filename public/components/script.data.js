@@ -1157,7 +1157,6 @@ var Skeleton = (function(_) {
         objects: []
     };
 
-
 })(Skeleton);
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON GALLERY METHOD
@@ -1169,7 +1168,13 @@ var Skeleton = (function(_) {
     _.MODULE(function() {
 
 
-        var method = _.gallery =
+        var method = _.gallery.method;
+
+
+        function add(url) {
+
+
+        }
 
 
     }); // MODULES
@@ -1188,7 +1193,6 @@ var Skeleton = (function(_) {
 
         var gall = _.gallery;
         var coll = _.collection.create;
-
 
         gall.container = new coll('div', { id: 'skeleton-upload-files' })
             .setClass('animated', 'flipInX');

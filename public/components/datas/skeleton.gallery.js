@@ -10,5 +10,4 @@
         objects: []
     };
 
-
 })(Skeleton);
