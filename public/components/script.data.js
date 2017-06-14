@@ -1169,6 +1169,8 @@ var Skeleton = (function(_) {
     _.MODULE(function() {
 
 
+        var method = _.gallery =
+
 
     }); // MODULES
 
