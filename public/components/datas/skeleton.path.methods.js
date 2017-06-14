@@ -138,7 +138,7 @@
                 popup.data = r.transforms[icondata.index];
                 popup.open(url, function() {
                     // Popup'ı açtıktan sonra gerekli dataları ekrana yansıtalım
-                    fillData(popup.data);
+                    fillData(popup.data.fields);
 
                 });
 
@@ -162,11 +162,10 @@
 
                     case 'checkbox':
                     case 'radio':
-
                         // Detaya girmedik sadece checkbox ile ilgili yaptık. 
                         // Radio butonun isimlerini kontrol etmedik. Daha sonradan ekleme yaparsak bu uyarı mesajını sileriz
                         if (data[it.name || it.id]) {
-                            it.checked = true;
+                            it.trigger('click');
                         }
 
                         break;
@@ -174,6 +173,7 @@
 
                         if (data[it.name || it.id]) {
                             it.value = data[it.name];
+                            it.trigger('change');
                         }
 
                         break;

@@ -14,12 +14,13 @@
 </div>
 
 
+
 <script>
     Skeleton.stacker({
-            el: '#modalpage',
-            // Formdaki elementler trigger edildiğinde, otomatik olarak..
-            // ... Skeleton.popup.data.fields alanına dataların value değerlerini atamasını istiyoruz
-            updateWithData: Skeleton.popup.data.fields
+            el: '#modalpage'
         })
-        .elements.btnkaydet('click', Skeleton.popup.close);
+        .elements.btnkaydet('click', function(e) {
+            Skeleton.popup.data.fields = e.data;
+            Skeleton.popup.close();
+        });
 </script>

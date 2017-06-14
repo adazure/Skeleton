@@ -268,7 +268,7 @@
                 'top': '0',
                 'bottom': '0',
                 'display': 'none',
-                'z-zndex': '9999'
+                'z-index': '9999'
             },
 
             '@keyframes skeleton-popup-modal': {
@@ -417,8 +417,32 @@
                 'font-weight': 'bold',
                 'display': 'inline-block'
             },
-
-            '#modalpage .group-label-list label.selected': {}
+            '#modalpage .group-label-list label.selected': {},
+            '#modalpage .grp-row': {
+                'overflow': 'hidden'
+            },
+            '#modalpage .grp-row::before,#modalpage .grp-row::after': {
+                'content': "''",
+                'display': 'block'
+            },
+            '#modalpage .grp-col': {
+                'list-style-type': 'none',
+                'margin': '4px 0',
+                'padding': '0'
+            },
+            '#modalpage .grp-col li': {
+                'display': 'inline-block',
+                'margin-right': '-4px',
+                'width': '33%'
+            },
+            'hr': {
+                'width': '100%',
+                'margin': '10px 0'
+            },
+            '.nonedisplay': {
+                'display': 'block',
+                'width': '100%',
+            }
 
         });
 

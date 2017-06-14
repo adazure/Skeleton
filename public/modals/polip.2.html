@@ -32,30 +32,17 @@
         </table>
     </div>
     <div>
-        <input type="button" value="KAYDET" onclick="Skeleton.popup.method.close();" />
+        <input type="button" value="KAYDET" id="btnkaydet" />
     </div>
 </div>
 
+
 <script>
-    function formchanger(element, args) {
-
-        switch (element.type) {
-            case 'number':
-                if (element.value)
-                    Skeleton.popup.data[element.id] = element.value;
-                else
-                if (Skeleton.popup.data[element.id])
-                    delete Skeleton.popup.data[element.id];
-                break;
-            case 'checkbox':
-                if (element.checked)
-                    Skeleton.popup.data[element.id] = element.value || element.checked;
-                else
-                if (Skeleton.popup.data[element.id])
-                    delete Skeleton.popup.data[element.id];
-                break;
-        }
-
-
-    }
+    Skeleton.stacker({
+            el: '#modalpage'
+        })
+        .elements.btnkaydet('click', function(e) {
+            Skeleton.popup.data.fields = e.data;
+            Skeleton.popup.close();
+        });
 </script>

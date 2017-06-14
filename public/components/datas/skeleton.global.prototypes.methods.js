@@ -87,6 +87,18 @@
 
 
 
+
+        //....................................................................................
+
+
+
+
+        function hasAttr(name) {
+            return this.hasAttribute(name);
+        }
+
+
+
         //....................................................................................
 
 
@@ -195,6 +207,20 @@
         }
 
 
+        //....................................................................................
+
+
+        function trigger(eventname) {
+            var ev = new MouseEvent(eventname, {
+                "view": parent.window,
+                "bubbles": true,
+                "cancelable": false
+            });
+
+            this.dispatchEvent(ev);
+            return this;
+        }
+
 
         //....................................................................................
 
@@ -205,11 +231,13 @@
         glob.method.setAttr = setAttr;
         glob.method.remAttr = remAttr;
         glob.method.getAttr = getAttr;
+        glob.method.hasAttr = hasAttr;
         glob.method.setBind = setBind;
         glob.method.setBinds = setBinds;
         glob.method.remBind = remBind;
         glob.method.remBinds = remBinds;
         glob.method.setCSS = setCSS;
+        glob.method.trigger = trigger;
         glob.extend = extend;
 
     }); //MODULE

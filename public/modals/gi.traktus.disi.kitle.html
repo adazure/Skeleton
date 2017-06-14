@@ -3,26 +3,57 @@
     <div id="modalpage-content">
 
         <div class="fgroup">
-            <span class="gtitle">Adet</span>
-            <input type="number" id="adet" style="width:100px;" placeholder="Adet">
+            <span class="gtitle">Çap</span>
+            <input type="number" id="cap" name="cap" step="0.1" min="0" style="width:100px;" placeholder="Çap">
         </div>
         <div class="fgroup">
-            <span class="gtitle">Tipi</span>
+            <span class="gtitle">Lokasyon</span>
             <div class="group-label-list">
-                <label><input type="checkbox" id="sapli" value="Saplı" />Saplı</label>
-                <label><input type="checkbox" id="sapsiz" value="Sapsız" />Sapsız</label>
+                <input type="checkbox" id="perivisseral" /><label for="perivisseral">Perivisseral</label>
+            </div>
+            <hr/>
+            <div class="group-label-list nonedisplay" key="perivisseral">
+                <div class="grp-row">
+                    <ul class="grp-col">
+                        <li><input type="checkbox" id="perihepatik" key/><label for="perihepatik">Perihepatik</label></li>
+                        <li><input type="checkbox" id="perisplenik" /><label for="perisplenik">Perisplenik</label></li>
+                        <li><input type="checkbox" id="pericekal" /><label for="pericekal">Periçekal</label></li>
+                    </ul>
+                    <ul class="grp-col">
+                        <li><input type="checkbox" id="retrocekal" /><label for="retrocekal">Retroçekal</label></li>
+                        <li><input type="checkbox" id="perirektal" /><label for="perirektal">Perirektal</label></li>
+                        <li><input type="checkbox" id="perianal" /><label for="perianal">Perianal</label></li>
+                    </ul>
+                    <ul class="grp-col">
+                        <li><input type="checkbox" id="peripankreatik" /><label for="peripankreatik">Peripankreatik</label></li>
+                        <li><input type="checkbox" id="retropankreatik" /><label for="retropankreatik">Retropankreatik</label></li>
+                        <li><input type="checkbox" id="retroperitoneal" /><label for="retroperitoneal">Retroperitoneal</label></li>
+                    </ul>
+                    <ul class="grp-col">
+                        <li><input type="checkbox" id="retrovajinal" /><label for="retrovajinal">Retrovajinal</label></li>
+                        <li><input type="checkbox" id="presakral" /><label for="presakral">Presakral</label></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="group-label-list">
+                <input type="checkbox" id="visseral" /><label for="visseral">Visseral</label>
+            </div>
+            <hr/>
+            <div class="group-label-list nonedisplay" key="visseral">
+                <div class="grp-row">
+                    <ul class="grp-col">
+                        <li><input type="checkbox" id="karaciger" /><label for="karaciger">Karaciğer</label></li>
+                        <li><input type="checkbox" id="dalak" /><label for="dalak">Dalak</label></li>
+                        <li><input type="checkbox" id="pankreas" /><label for="pankreas">Pankreas</label></li>
+                    </ul>
+                    <ul class="grp-col">
+                        <li><input type="checkbox" id="sagbobrek" /><label for="sagbobrek">Sağ Böbrek</label></li>
+                        <li><input type="checkbox" id="solbobrek" /><label for="solbobrek">Sol Böbrek</label></li>
+                    </ul>
+                </div>
             </div>
         </div>
 
-        <div class="fgroup">
-            <span class="gtitle">Boyut</span>
-            <div class="group-label-list">
-                <label><input type="checkbox" id="boyut1" value="<0.5 cm" /><0.5 cm</label>
-                <label><input type="checkbox" id="boyut2" value="0.5-1 cm" />0.5-1 cm</label>
-                <label><input type="checkbox" id="boyut3" value="1-2 cm" />1-2 cm</label>
-                <label><input type="checkbox" id="boyut4" value=">3 cm" />>3 cm</label>
-            </div>
-        </div>
 
     </div>
     <div>
@@ -33,10 +64,14 @@
 
 <script>
     Skeleton.stacker({
-            el: '#modalpage',
-            // Formdaki elementler trigger edildiğinde, otomatik olarak..
-            // ... Skeleton.popup.data.fields alanına dataların value değerlerini atamasını istiyoruz
-            updateWithData: Skeleton.popup.data.fields
+            el: '#modalpage'
         })
-        .elements.btnkaydet('click', Skeleton.popup.close);
+        .elements.btnkaydet('click', function(e) {
+            Skeleton.popup.data.fields = e.data;
+            console.log(e.data);
+            Skeleton.popup.close();
+        })
+        .perivisseral('click', function(e) {
+            console.log('burası', e.keys);
+        })
 </script>

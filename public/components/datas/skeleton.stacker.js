@@ -35,6 +35,7 @@
                 // function(evnt){ evnt.items } şeklinde kullanarak, form içindeki tüm nesnelere erişilebilir
                 items: {},
                 data: {},
+                keys: {},
 
                 // Form üzerindeki tüm elementlerin tetiklenmesi için ara bir method tanımlanıyor
                 trigger: function(name) {
@@ -58,13 +59,7 @@
 
                         ev.items = stacker.method.items;
                         ev.data = stacker.method.data;
-
-                        // Trigger methodumuz çalıştırıldığında updateWithData datasını güncelleyelim
-                        stacker.updateWithData = ev.data;
-
-                        Object.keys(ev.data).forEach(function(ky) {
-                            stacker.updateWithData[ky] = ev.data[ky];
-                        });
+                        ev.keys = stacker.method.keys;
 
                         call(ev);
                     }
@@ -76,13 +71,18 @@
                 triggerGetValues: function(item) {
 
                     var name = item.name || item.id;
+                    var key = item.hasAttr('key');
+                    if (key) {
+                        console.log(item);
+                        stacker.method.keys[name] = item;
+                    }
+
                     if (!name) return;
                     var data = stacker.method.data;
                     switch (item.type) {
                         case 'checkbox':
                         case 'radio':
-                            var val = item.checked ? item.value ? item.value : true : null;
-                            console.log(val);
+                            var val = item.checked ? item.value == 'on' ? true : item.value : null;
                             if (val)
                                 data[name] = val;
                             else if (data)
@@ -100,9 +100,6 @@
                             break;
 
                     }
-
-
-                    console.log(stacker.method.data);
 
                 }
             };
@@ -122,13 +119,14 @@
 
                 stacker.elements = {};
 
+
+                // İç içe sorgu ile alt nesnelerin taraması bitene kadar bir döngü oluşturuluyor.
                 function repeat(el) {
                     for (var i = 0, ch = el.children; i < ch.length; i++) {
                         var _item = ch[i];
                         var sn = _item.id || _item.name;
                         if (sn) {
                             stacker.method.items[sn] = _item;
-
 
                             // Buradaki amaç şu.
                             // Skeleton.stacker({}).elements.* şeklinde çağırılır
@@ -150,10 +148,12 @@
                                 return stacker.elements;
                             }
                         }
+                        // Gelen nesnenin alt nesnelerini tarat
                         repeat(_item);
                     }
                 }
 
+                // Taramayı başlat
                 repeat(obj);
 
             } else {

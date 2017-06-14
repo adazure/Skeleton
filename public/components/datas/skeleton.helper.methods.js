@@ -63,11 +63,21 @@
         //....................................................................................
 
 
+        function extend(root, source) {
+            Object.keys(source).forEach(function(key) {
+                root[key] = source[key];
+            });
+        }
+
+
+        //....................................................................................
+
 
 
 
         method.ismobile = ismobile;
         method.http = http;
+        method.extend = extend;
 
     }); // MODULE
 
