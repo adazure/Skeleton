@@ -7,7 +7,8 @@
     _.MODULE(function() {
 
         var method = _.menuObject.method;
-        var data = _.menuObject.data;
+        var menu = _.menuObject;
+        var data = menu.data;
         var pathMethod = _.path.method;
         var collection = _.collection.create;
         var svgGlob = _.svg.globals;
@@ -16,6 +17,40 @@
         var context = _.contextmenu;
         var dialog = _.dialog;
 
+
+
+
+        //....................................................................................
+
+
+        // Menude işaretlenecek input checkbox alanlarını belirler ve datayı günceller
+        function fillMenuItem() {
+
+            // Veritabanından gelen datayı döngüye sok
+            Object.keys(_.data).forEach(function(key) {
+
+                // Section bilgisi varsa alalım
+                var sect = '$' + _.Request.section;
+
+                // Aktif section değerine eşit bir kayıt varsa al
+                if (key.indexOf(sect) != -1) {
+
+                    // Elimize gelen data $...$... şeklinde bir data
+                    // İlk dolar işareti bizim hangi section'da olduğumuzu gösteriyor
+                    // İkinci dolar işareti menudeki checkbox nesnesinin key değerini veriyor
+
+                    var part = key.split('$');
+                    var section = part[0].substring(1);
+                    var inputchk = part[1].substring(1);
+
+                    if (menu.objects[inputchk])
+                        menu.objects[inputchk].checked = true;
+
+                }
+
+            });
+
+        }
 
 
 
@@ -166,6 +201,7 @@
 
 
         method.itemdown = itemdown;
+        method.fillMenuItem = fillMenuItem;
 
     });
 

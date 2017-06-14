@@ -8,6 +8,13 @@
         var link = new coll('link', { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css' })
             .insert(parent.document.head);
 
+
+
+        //....................................................................................
+
+
+
+
         style.setSheet({
 
 
@@ -442,7 +449,51 @@
             '.nonedisplay': {
                 'display': 'block',
                 'width': '100%',
-            }
+            },
+            '.locked': {
+                'pointer-events': 'none',
+                'opacity': '0.4'
+            },
+            'hr': {
+                'position': 'relative',
+                'border': '0',
+                'height': '2px',
+                'background-color': '#ddd'
+            },
+            'hr.downarrow': {},
+            'hr.downarrow::before': {
+                'content': "''",
+                'border': '12px solid transparent',
+                'border-top-color': '#1bc368',
+                'width': '0',
+                'height': '0',
+                'position': 'absolute',
+                'left': '38px',
+            },
+
+            // UPLOAD
+            '#skeleton-upload-files': {
+                'position': 'fixed',
+                'right': '40px',
+                'bottom': '40px',
+                'width': '250px',
+                'height': '300px',
+                'box-shadow': '0 0 0 6px rgba(0, 0, 0, 0.35)',
+                'background': '#fff',
+                'border': '3px solid #fff',
+                'border-radius': '4px',
+                'font-family': 'arial'
+            },
+            '#skeleton-upload-files-header': {
+                'padding': '10px',
+                'text-align': 'center',
+                'color': 'white',
+                'font-size': '20px',
+                'background-color': '#ce702c',
+                'border-bottom': '1px solid #a24700',
+                'border-radius': '4px 4px 0 0'
+            },
+            '#skeleton-upload-files-content': {},
 
         });
 

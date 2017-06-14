@@ -73,7 +73,6 @@
                     var name = item.name || item.id;
                     var key = item.hasAttr('key');
                     if (key) {
-                        console.log(item);
                         stacker.method.keys[name] = item;
                     }
 
@@ -125,8 +124,15 @@
                     for (var i = 0, ch = el.children; i < ch.length; i++) {
                         var _item = ch[i];
                         var sn = _item.id || _item.name;
+                        var key = _item.hasAttr('key');
+
+                        if (key) {
+                            stacker.method.keys[sn] = _item;
+                        }
+
                         if (sn) {
-                            stacker.method.items[sn] = _item;
+                            var p = _item;
+                            stacker.method.items[sn] = p;
 
                             // Buradaki amaç şu.
                             // Skeleton.stacker({}).elements.* şeklinde çağırılır
@@ -144,7 +150,7 @@
 
                             stacker.elements[sn] = function(eventname, action) {
                                 var method = new stacker.method.trigger(action);
-                                _item.setBind(eventname, method);
+                                p.setBind(eventname, method);
                                 return stacker.elements;
                             }
                         }

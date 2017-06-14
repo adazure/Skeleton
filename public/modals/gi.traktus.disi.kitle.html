@@ -8,11 +8,11 @@
         </div>
         <div class="fgroup">
             <span class="gtitle">Lokasyon</span>
-            <div class="group-label-list">
+            <div class="group-label-list nonedisplay">
                 <input type="checkbox" id="perivisseral" /><label for="perivisseral">Perivisseral</label>
             </div>
-            <hr/>
-            <div class="group-label-list nonedisplay" key="perivisseral">
+            <hr class="downarrow" />
+            <div class="group-label-list nonedisplay locked" key="perivisseral">
                 <div class="grp-row">
                     <ul class="grp-col">
                         <li><input type="checkbox" id="perihepatik" key/><label for="perihepatik">Perihepatik</label></li>
@@ -35,23 +35,25 @@
                     </ul>
                 </div>
             </div>
+
+            <hr/>
             <div class="group-label-list">
                 <input type="checkbox" id="visseral" /><label for="visseral">Visseral</label>
             </div>
-            <hr/>
-            <div class="group-label-list nonedisplay" key="visseral">
-                <div class="grp-row">
-                    <ul class="grp-col">
-                        <li><input type="checkbox" id="karaciger" /><label for="karaciger">Karaciğer</label></li>
-                        <li><input type="checkbox" id="dalak" /><label for="dalak">Dalak</label></li>
-                        <li><input type="checkbox" id="pankreas" /><label for="pankreas">Pankreas</label></li>
-                    </ul>
-                    <ul class="grp-col">
-                        <li><input type="checkbox" id="sagbobrek" /><label for="sagbobrek">Sağ Böbrek</label></li>
-                        <li><input type="checkbox" id="solbobrek" /><label for="solbobrek">Sol Böbrek</label></li>
-                    </ul>
+            <hr/ class="downarrow">
+                <div class="group-label-list nonedisplay locked" key="visseral">
+                    <div class="grp-row">
+                        <ul class="grp-col">
+                            <li><input type="checkbox" id="karaciger" /><label for="karaciger">Karaciğer</label></li>
+                            <li><input type="checkbox" id="dalak" /><label for="dalak">Dalak</label></li>
+                            <li><input type="checkbox" id="pankreas" /><label for="pankreas">Pankreas</label></li>
+                        </ul>
+                        <ul class="grp-col">
+                            <li><input type="checkbox" id="sagbobrek" /><label for="sagbobrek">Sağ Böbrek</label></li>
+                            <li><input type="checkbox" id="solbobrek" /><label for="solbobrek">Sol Böbrek</label></li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
         </div>
 
 
@@ -68,10 +70,22 @@
         })
         .elements.btnkaydet('click', function(e) {
             Skeleton.popup.data.fields = e.data;
-            console.log(e.data);
             Skeleton.popup.close();
         })
+        // İlgili checkbox nesnesine tıklandığında 
         .perivisseral('click', function(e) {
-            console.log('burası', e.keys);
+            var u = parent.document.querySelector('[key=perivisseral]');
+            if (e.target.checked)
+                u.remClass('locked');
+            else
+                u.setClass('locked');
+        })
+        // İlgili checkbox nesnesine tıklandığında 
+        .visseral('click', function(e) {
+            var u = parent.document.querySelector('[key=visseral]');
+            if (e.target.checked)
+                u.remClass('locked');
+            else
+                u.setClass('locked');
         })
 </script>

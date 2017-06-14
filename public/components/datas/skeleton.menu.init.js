@@ -8,6 +8,7 @@
 
         var collection = _.collection.create;
         var menu = _.menuObject;
+        var data = _.data;
 
 
 
@@ -191,18 +192,31 @@
                     // Children Input Checkbox
                     .create('input', {
                         type: 'checkbox',
-                        id: chkName
+                        id: chkName,
+                        'key': key
                     })
                     // Input Event
                     .setBind('click', function(ev) {
 
                         var main = ev.target.parentNode.parentNode;
                         var checkbox = main.children[1];
+
+                        var sect = '$' + _.Request.section;
+                        var resp = sect + '$';
+
                         // Eğer checkbox işaretliyle hem tabloya ekleyelim hem de image nesnesini sürüklenebilmesi için aktif yapalım
-                        if (ev.target.checked)
+                        if (ev.target.checked) {
                             checkbox.remClass('menu-item-locked');
-                        else
+                            // İşaretlenmiş input checkbox elementine göre veritabanına gidecek datayı da güncelleyelim
+                            data[resp + ev.target.getAttr('key')] = true;
+                        } else {
+                            // İşaretlenmiş input checkbox elementine göre veritabanına gidecek datayı da güncelleyelim
+                            var f = data[resp + ev.target.getAttr('key')];
+                            if (f)
+                                delete f;
+
                             checkbox.setClass('menu-item-locked');
+                        }
                     });
 
 
@@ -313,9 +327,11 @@
         });
 
 
+        // Gelen dataya göre menüdeki alanları işaretleyelim
+        menu.method.fillMenuItem();
 
 
-    });
+    }); // MODULE
 
 
 })(Skeleton);

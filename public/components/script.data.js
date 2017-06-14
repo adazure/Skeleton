@@ -1146,6 +1146,61 @@ var Skeleton = (function(_) {
 
 })(Skeleton);
 /////////////////////////////////////////////////////////////////////////
+//          SKELETON GALLERY
+/////////////////////////////////////////////////////////////////////////
+
+(function(_) {
+
+    _.gallery = {
+        container: false,
+        method: {},
+        objects: []
+    };
+
+
+})(Skeleton);
+/////////////////////////////////////////////////////////////////////////
+//          SKELETON GALLERY METHOD
+/////////////////////////////////////////////////////////////////////////
+
+(function(_) {
+
+
+    _.MODULE(function() {
+
+
+
+    }); // MODULES
+
+
+})(Skeleton);
+/////////////////////////////////////////////////////////////////////////
+//          SKELETON GALLERY INIT
+/////////////////////////////////////////////////////////////////////////
+
+(function(_) {
+
+
+    _.MODULE(function() {
+
+
+        var gall = _.gallery;
+        var coll = _.collection.create;
+
+
+        gall.container = new coll('div', { id: 'skeleton-upload-files' })
+            .setClass('animated', 'flipInX');
+        gall.container.create('div', { id: 'skeleton-upload-files-header' }).setHTML('Upload Files');
+        gall.content = new coll('div', { id: 'skeleton-upload-files-content' });
+
+        gall.content.insert(gall.container.target);
+        gall.container.insert(parent.document.body);
+
+    }); // MODULES
+
+
+})(Skeleton);
+/////////////////////////////////////////////////////////////////////////
 //          SKELETON CONTEXTMENU
 /////////////////////////////////////////////////////////////////////////
 
@@ -1937,9 +1992,9 @@ var Skeleton = (function(_) {
 
                         break;
                     default:
-
-                        if (data[it.name || it.id]) {
-                            it.value = data[it.name];
+                        var z = it.name || it.id;
+                        if (data[z]) {
+                            it.value = data[z];
                             it.trigger('change');
                         }
 
@@ -2830,7 +2885,8 @@ var Skeleton = (function(_) {
     _.MODULE(function() {
 
         var method = _.menuObject.method;
-        var data = _.menuObject.data;
+        var menu = _.menuObject;
+        var data = menu.data;
         var pathMethod = _.path.method;
         var collection = _.collection.create;
         var svgGlob = _.svg.globals;
@@ -2839,6 +2895,40 @@ var Skeleton = (function(_) {
         var context = _.contextmenu;
         var dialog = _.dialog;
 
+
+
+
+        //....................................................................................
+
+
+        // Menude işaretlenecek input checkbox alanlarını belirler ve datayı günceller
+        function fillMenuItem() {
+
+            // Veritabanından gelen datayı döngüye sok
+            Object.keys(_.data).forEach(function(key) {
+
+                // Section bilgisi varsa alalım
+                var sect = '$' + _.Request.section;
+
+                // Aktif section değerine eşit bir kayıt varsa al
+                if (key.indexOf(sect) != -1) {
+
+                    // Elimize gelen data $...$... şeklinde bir data
+                    // İlk dolar işareti bizim hangi section'da olduğumuzu gösteriyor
+                    // İkinci dolar işareti menudeki checkbox nesnesinin key değerini veriyor
+
+                    var part = key.split('$');
+                    var section = part[0].substring(1);
+                    var inputchk = part[1].substring(1);
+
+                    if (menu.objects[inputchk])
+                        menu.objects[inputchk].checked = true;
+
+                }
+
+            });
+
+        }
 
 
 
@@ -2989,6 +3079,7 @@ var Skeleton = (function(_) {
 
 
         method.itemdown = itemdown;
+        method.fillMenuItem = fillMenuItem;
 
     });
 
@@ -3003,6 +3094,7 @@ var Skeleton = (function(_) {
 
         var collection = _.collection.create;
         var menu = _.menuObject;
+        var data = _.data;
 
 
 
@@ -3186,18 +3278,31 @@ var Skeleton = (function(_) {
                     // Children Input Checkbox
                     .create('input', {
                         type: 'checkbox',
-                        id: chkName
+                        id: chkName,
+                        'key': key
                     })
                     // Input Event
                     .setBind('click', function(ev) {
 
                         var main = ev.target.parentNode.parentNode;
                         var checkbox = main.children[1];
+
+                        var sect = '$' + _.Request.section;
+                        var resp = sect + '$';
+
                         // Eğer checkbox işaretliyle hem tabloya ekleyelim hem de image nesnesini sürüklenebilmesi için aktif yapalım
-                        if (ev.target.checked)
+                        if (ev.target.checked) {
                             checkbox.remClass('menu-item-locked');
-                        else
+                            // İşaretlenmiş input checkbox elementine göre veritabanına gidecek datayı da güncelleyelim
+                            data[resp + ev.target.getAttr('key')] = true;
+                        } else {
+                            // İşaretlenmiş input checkbox elementine göre veritabanına gidecek datayı da güncelleyelim
+                            var f = data[resp + ev.target.getAttr('key')];
+                            if (f)
+                                delete f;
+
                             checkbox.setClass('menu-item-locked');
+                        }
                     });
 
 
@@ -3308,9 +3413,11 @@ var Skeleton = (function(_) {
         });
 
 
+        // Gelen dataya göre menüdeki alanları işaretleyelim
+        menu.method.fillMenuItem();
 
 
-    });
+    }); // MODULE
 
 
 })(Skeleton);
@@ -3896,6 +4003,13 @@ var Skeleton = (function(_) {
         var link = new coll('link', { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css' })
             .insert(parent.document.head);
 
+
+
+        //....................................................................................
+
+
+
+
         style.setSheet({
 
 
@@ -4330,7 +4444,51 @@ var Skeleton = (function(_) {
             '.nonedisplay': {
                 'display': 'block',
                 'width': '100%',
-            }
+            },
+            '.locked': {
+                'pointer-events': 'none',
+                'opacity': '0.4'
+            },
+            'hr': {
+                'position': 'relative',
+                'border': '0',
+                'height': '2px',
+                'background-color': '#ddd'
+            },
+            'hr.downarrow': {},
+            'hr.downarrow::before': {
+                'content': "''",
+                'border': '12px solid transparent',
+                'border-top-color': '#1bc368',
+                'width': '0',
+                'height': '0',
+                'position': 'absolute',
+                'left': '38px',
+            },
+
+            // UPLOAD
+            '#skeleton-upload-files': {
+                'position': 'fixed',
+                'right': '40px',
+                'bottom': '40px',
+                'width': '250px',
+                'height': '300px',
+                'box-shadow': '0 0 0 6px rgba(0, 0, 0, 0.35)',
+                'background': '#fff',
+                'border': '3px solid #fff',
+                'border-radius': '4px',
+                'font-family': 'arial'
+            },
+            '#skeleton-upload-files-header': {
+                'padding': '10px',
+                'text-align': 'center',
+                'color': 'white',
+                'font-size': '20px',
+                'background-color': '#ce702c',
+                'border-bottom': '1px solid #a24700',
+                'border-radius': '4px 4px 0 0'
+            },
+            '#skeleton-upload-files-content': {},
 
         });
 
@@ -4415,7 +4573,6 @@ var Skeleton = (function(_) {
                     var name = item.name || item.id;
                     var key = item.hasAttr('key');
                     if (key) {
-                        console.log(item);
                         stacker.method.keys[name] = item;
                     }
 
@@ -4467,8 +4624,15 @@ var Skeleton = (function(_) {
                     for (var i = 0, ch = el.children; i < ch.length; i++) {
                         var _item = ch[i];
                         var sn = _item.id || _item.name;
+                        var key = _item.hasAttr('key');
+
+                        if (key) {
+                            stacker.method.keys[sn] = _item;
+                        }
+
                         if (sn) {
-                            stacker.method.items[sn] = _item;
+                            var p = _item;
+                            stacker.method.items[sn] = p;
 
                             // Buradaki amaç şu.
                             // Skeleton.stacker({}).elements.* şeklinde çağırılır
@@ -4486,7 +4650,7 @@ var Skeleton = (function(_) {
 
                             stacker.elements[sn] = function(eventname, action) {
                                 var method = new stacker.method.trigger(action);
-                                _item.setBind(eventname, method);
+                                p.setBind(eventname, method);
                                 return stacker.elements;
                             }
                         }

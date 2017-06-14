@@ -170,9 +170,9 @@
 
                         break;
                     default:
-
-                        if (data[it.name || it.id]) {
-                            it.value = data[it.name];
+                        var z = it.name || it.id;
+                        if (data[z]) {
+                            it.value = data[z];
                             it.trigger('change');
                         }
 
