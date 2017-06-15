@@ -203,6 +203,32 @@
                 'box-shadow': 'none',
                 'opacity': '0.3'
             },
+            '#skeleton-menu-header': {
+                'padding': '10px',
+                'background-color': 'rgb(48, 57, 90)',
+                'color': 'white',
+                'border': '0',
+                'border-bottom-width': '1px',
+                'border-style': 'solid',
+                'border-color': '#444',
+                'animation': 'upload-colors 90s linear infinite'
+            },
+            '#skeleton-menu-footer': {
+                'padding': '10px',
+                'border': '0',
+                'border-top-width': '1px',
+                'border-style': 'solid',
+                'border-color': 'rgba(255,255,255,.5)',
+                'animation': 'upload-colors 90s linear infinite',
+                'cursor': 'pointer'
+            },
+            '#skeleton-menu-footer a': {
+                'display': 'block',
+                'padding': '4px',
+                'text-decoration': 'none',
+                'color': '#fff',
+                'font-size': '12px'
+            },
 
 
             // POPUP PENCERESİ
@@ -302,7 +328,7 @@
                 'font-size': '14px',
                 'margin': '5px 0',
                 'padding': '5px 14px',
-                'background-color': 'rgb(48, 57, 90)',
+                'background-color': '#b9b9b9',
                 'border-radius': '4px 0 0 4px',
                 'position': 'relative',
                 'color': 'white',
@@ -489,11 +515,73 @@
                 'text-align': 'center',
                 'color': 'white',
                 'font-size': '20px',
-                'background-color': '#ce702c',
-                'border-bottom': '1px solid #a24700',
-                'border-radius': '4px 4px 0 0'
+                'background-color': '#775f8c',
+                'border-bottom': '1px solid #58436b',
+                'border-radius': '4px 4px 0 0',
+                'animation': 'upload-colors 90s linear infinite'
             },
-            '#skeleton-upload-files-content': {},
+            '#skeleton-upload-files-content': {
+                'height': '211px',
+                'overflow': 'hidden',
+                'overflow-y': 'auto',
+                'background-image': "url('data: image / png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABjCAMAAABaOVXeAAAAUVBMVEUnJycAAAAAAAAAAAB + fn4nJyeFhYX ///+JiYl5eXmDg4P///98fHyEhIRDQ0NDQ0OJiYmJiYmKiop5eXn///+Dg4OEhISBgYGBgYFfX19fX1+fciHbAAAAG3RSTlMJAwYAJwA2AkUhMAEkMwwAQgBIAAAAAC0AEgDgGVynAAAEIElEQVR4Ae1Zi27bMBAjL02d59Z07/3/hw6wYkLcFfZ5LYKsG5FEVqOKoXiSrRPAaECMVwSiYSw3D9gu4FHtR3B8BRlXDDu0L6hGiDCS/SLJgeoPgSC7TigStFoDxIUAWFGC1h0RPVQ77sBGoI47MIDtaZHkrB7HAk7VlDB49YNGsMoT6x7XD0pJR8k2WJQOVjyR8aaB7RPNE5pJ0DvIYLCkRMoZCIOUwNm9XYHkwAgHQag/Ge9agC6EK8ZT7YE2DpQmYBiVsFWCmjLslHz4uIBDa8/xM9vSlLSqCFQLsKYkG2+cTUmKbC0QZRL4P4vTQxjpx7Bs/NQYUGRS3YnE549ABLb7AgkbDdgvtB7C00sl5RCwrc6T5HfjayTwAWKsXoXP7riEmJLsh1AzHpGRPBHguqskcjRFGIOmBFodTW9VCbu4FwuoZUVoRrmyzWlxxj+6Hw1oPMn4ZEvVeAQCEwcly4xnCimV1cmo5mKAapiM5zQVQd0U68bL1R6w2y98SIWykrN1m5hMyagTAUJhWFNymPMUiEbCyCiRSAmDjAwGbDKqRF9HKbpMAnsRii4EmJcdMFYocVeBgD/ciRrMd5bycxfs1zkGe+7KjpRm/NlHS0BQSgLpOYAqWIsuuN8phHcZT9315bQr4tlqBgxHxzC9h1bdfzomDPpQ1Ut91zrC5wUU1q4v8zjucFnAQ2wW8LeQnBZJzl/nMRRJ7n+43kTJt+/zWCY5vt6Tmxj/ek8Kw7VMctzfgOSyfGd8A5KHW3hyg+GqKPm/Ct96gdzfRMl78aQw4/+d6BruP7qKa9e9DNfp3Q3X/d9P5rcxT5f9bjXSdgq+lcnXvgkafqsMg3Y9eR+l4pr6BLRnhO0eq1ts+q4WQVWGHVJuEsF1u9+Duk5gTtkGg9Ml6mn0R+SNsyASB9Qe9WRBJsn5Lj/CQae8vo/3hDzBrEQ0huJJEF0K0fdGyxIh0bGmhOFAn/vTEaAxUCRlJchplWS8ki0ZXHd+4mQQiVgTWDf+RYAaLr6sg2vSgz5NdAkENVzUOVMAcK11JclWuCcIeFZVS1ntWNY5qDLNE+TsXnm4JJ/ZdyhX731DzYvHTXJQBbt06vFZufrOf6osLZDn7uxYgCc6MTnhDfFnuXqG3yvox03Iv6OsRKC5Lk/sL4Jc3JQ88bFCI8uHNExLXHuVTx18OJjWLn2j/leGsAGR5wlgzG4OSiS2quRObLiQXVm3QCIygprxoMzzw+E6iQHXuQbMPUhwarvZ1x6JXAZ1CphIMmFdCUCPMYpQJAEG7MbC+tHG1J4uht3DHTHZziypFl0IAyBBPlyySVz1EEbMAO4JQNGLbVPIpgbS2iXAlRjQ3tUDZspqn4/T/WThUKd+EjRzngTf3GT8+Jm2PdrlqKI9T9oIjQ1+ASmrFBua6fE2AAAAAElFTkSuQmCC')",
+                'animation': 'background-inf 5s linear infinite'
+            },
+            '@keyframes background-inf': {
+                'from': '{background-position:0 0;}',
+                'to': '{background-position:-100px -100px;}'
+            },
+            '#skeleton-upload-files-footer': {
+                'border-top': '1px solid #fff',
+                'padding': '4px',
+                'background-color': '#775f8c',
+                'box-shadow': '0 -10px 12px -13px #000',
+                'border-radius': '6px',
+                'animation': 'upload-colors 90s linear infinite'
+            },
+            '#skeleton-upload-button': {
+                'width': '100%',
+                '-webkit-appearance': 'button',
+                'padding': '10px',
+                'border-radius': '4px',
+                'border': '1px solid #ddd',
+                'background': 'white',
+                'box-shadow': ' 1px 1px 2px #ccc',
+                'font-weight': 'bold'
+            },
+            '@keyframes upload-colors': {
+                '0%': "{background-color:#775f8c;}",
+                '20%': "{background-color:#4f6d8e;}",
+                '40%': "{background-color:#4f8e8c;}",
+                '60%': "{background-color:#4f8e69;}",
+                '70%': "{background-color:#8e8a4f;}",
+                '80%': "{background-color:#8e4f4f;}",
+                '100%': "{background-color:#775f8c;}",
+            },
+            '#skeleton-upload-loader': {
+                'position': 'relative',
+                'margin': '40px auto',
+                'width': '70px',
+            },
+            '#skeleton-upload-loader > div': {
+                'position': 'relative',
+                'width': '70px',
+                'height': '70px',
+                'background-color': 'transparent',
+                'box-shadow': '-2px 0 5px #888',
+                'border-radius': '50%',
+                'animation': 'upload-loader 1s linear infinite'
+            },
+            '@keyframes upload-loader': {
+                'from': '{transform:rotate(0deg)}',
+                'to': '{transform:rotate(360deg)}'
+            },
+            '#skeleton-upload-loader > label': {
+                'font-size': '13px',
+                'font-weight': 'bold',
+                'margin': '19px 0',
+                'display': 'block'
+            }
 
         });
 

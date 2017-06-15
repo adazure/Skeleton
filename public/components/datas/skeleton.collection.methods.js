@@ -271,8 +271,9 @@
                 json = json.replace(/},/g, '\n');
                 json = json.replace(/\",/g, '; ');
                 json = json.replace(/},/g, '; ');
-                json = json.replace(/:{/g, '{');
                 json = json.replace(/\"/g, '');
+                json = json.replace(/};/g, '}');
+                json = json.replace(/:{/g, '{');
 
                 self.target.innerHTML += (name + json + '\n');
 
@@ -316,6 +317,17 @@
             this.target.innerHTML += '@import url(' + url + ');';
             return this;
         }
+
+
+        //....................................................................................
+
+
+        inc.createParent = function(name, attr) {
+            var t = new coll(name, attr);
+            this.target.parentNode.appendChild(t.target);
+            return t;
+        }
+
 
         //....................................................................................
 

@@ -49,16 +49,7 @@
 
         // Menü header bar
         var header = displayMenu.create('div', {
-            id: 'skeleton-menu-header'
-        });
-        header.setCSS({
-                padding: '10px',
-                backgroundColor: 'rgb(48, 57, 90)',
-                color: 'white',
-                border: 0,
-                borderBottomWidth: '1px',
-                borderStyle: 'solid',
-                borderColor: '#444'
+                id: 'skeleton-menu-header'
             })
             .setHTML('Menü');
 
@@ -95,27 +86,12 @@
             .create('div', {
                 id: 'skeleton-menu-footer'
             })
-            .setCSS({
-                padding: '10px',
-                border: 0,
-                borderTopWidth: '1px',
-                borderStyle: 'solid',
-                borderColor: 'rgba(255,255,255,.5)',
-                cursor: 'pointer'
-            })
             // Footer Click
             .setBind('click', function() {
                 content.target.style.display = content.target.style.display == 'block' ? 'none' : 'block';
             })
             // Children A
             .create('a')
-            .setCSS({
-                display: 'block',
-                padding: '4px',
-                textDecoration: 'none',
-                color: '#fff',
-                fontSize: '12px'
-            })
             // A HTML
             .setHTML('Gizle/Göster');
 
