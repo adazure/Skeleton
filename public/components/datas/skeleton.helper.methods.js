@@ -29,45 +29,40 @@
         //....................................................................................
 
 
-        function http(url, success, conf) {
-            var xhttp = new XMLHttpRequest();
-            if (!conf) {
-                conf = { data: null, method: 'GET' }
-            }
+        function http(args) {
 
-            xhttp.open(conf.method, url, true);
+            if (!args.url) throw ('URL bilgisini girmediniz');
+            var xhttp = new XMLHttpRequest();
+
+            xhttp.open(args.method || 'GET', args.url, true);
 
             // İşlem sırasındaki durumu gösterebiliriz
             function progress(e) {
                 if (e.lengthComputable) {
-                    if (conf.progress) {
-                        conf.progress(e.loaded, e.total, e.loaded / e.total);
+                    if (args.progress) {
+                        args.progress(e.loaded, e.total, e.loaded / e.total);
                     }
                 }
             }
 
-            if (conf.enctype) {
+            if (args.enctype) {
                 xhttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
             }
 
-            if (conf.data) {
-                var t = new FormData();
-                t.append('uploadfile', conf.data);
-                conf.data = t;
-            }
             // İşlem sırası
             xhttp.addEventListener("progress", progress, false);
 
             // Durum kontrolü
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
-                    success(xhttp.responseText);
+                    if (args.success)
+                        args.success(xhttp.responseText);
                 } else if (this.readyState == 4 && this.status != 200) {
-                    conf.error();
+                    if (args.error)
+                        args.error();
                 }
             }
-            console.log(conf.data);
-            xhttp.send(conf.data);
+            xhttp.send(args.data);
         }
 
 

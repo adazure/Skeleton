@@ -58,6 +58,7 @@
         // <div>{target}</div>
         inc.wrap = function(name, attr) {
             var t = new coll(name, attr);
+            t.target.__collectionData = t;
             t.target.appendChild(this.target);
             return this;
         }
@@ -73,6 +74,8 @@
         // .create(..) şeklinde çağırıldığında parent'deki nesneye name ile tanımlı yeni nesne ekler
         inc.create = function(name, attr) {
             var t = new coll(name, attr);
+            t.target.__collectionData = t;
+            this.children;
             this.target.appendChild(t.target);
             return t;
         }
@@ -112,7 +115,6 @@
 
 
 
-
         // .delete() ile çağırıldığında nesneyi siler
         inc.remove = function() {
             if (this.target);
@@ -147,11 +149,18 @@
 
         // Sınıf kaldır
         inc.remClass = function(name) {
-            if (this.target.className) {
-                var list = this.target.className.split(' ');
-                if (list.indexOf(name) != -1) {
-                    list.splice(list.indexOf(name), 1);
-                    this.target.className = list.join(' ');
+
+            if (arguments.length == 1) {
+                if (this.target.className) {
+                    var list = this.target.className.split(' ');
+                    if (list.indexOf(name) != -1) {
+                        list.splice(list.indexOf(name), 1);
+                        this.target.className = list.join(' ');
+                    }
+                }
+            } else if (arguments.length > 1) {
+                for (var n = 0; n < arguments.length; n++) {
+                    this.remClass(arguments[n]);
                 }
             }
             return this;
@@ -290,6 +299,23 @@
         //....................................................................................
 
 
+        inc.children = function() {
+            var _result = {};
+            for (var i = 0, f = this.target.children; i < f.length; i++) {
+                var zone = f[i].id || f[i].name;
+                if (zone) {
+                    zone = zone.replace(/\W/g, '');
+                    _result[zone] = f[i].__collectionData;
+                }
+            }
+            return _result;
+        }
+
+
+
+        //....................................................................................
+
+
 
         // Html metin eklemek için
         inc.setHTML = function(value) {
@@ -325,6 +351,7 @@
         // Bulunduğu elementin bir üst katmanına oluşturur
         inc.createParent = function(name, attr) {
             var t = new coll(name, attr);
+            t.target.__collectionData = t;
             this.target.parentNode.appendChild(t.target);
             return t;
         }

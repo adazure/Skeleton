@@ -50,12 +50,10 @@
             .insert(gall.content.target)
             .setClass('animated', 'bounceIn')
         gall.loaderIcon = gall.loader
-            .create('div')
-            .createParent('label')
+            .create('div', { id: 'upt-load-icon' })
+            .createParent('label', { id: 'upt-load-label' })
             .setClass('animation', 'bounceInLeft')
-            .setHTML('YÜKLENİYOR');
-
-
+            .setHTML('Yükleniyor...');
 
         //....................................................................................
 
@@ -87,32 +85,58 @@
         //....................................................................................
 
 
-
-        gall.footerForm = new coll('form', {
-                method: 'POST',
-                'url': '/upload',
-                enctype: 'multipart/form-data'
-            })
-            .insert(gall.footer.target);
-
         gall.footerInput = new coll('input', { type: 'file', name: 'uploadfile' })
             .insert(gall.footer.target)
             .setBind('change', function(e) {
                 if (e.target.value) {
+
+                    // Yükleniyor bar'ı göster
                     gall.loader.show();
 
-                    var fn = gall.footerInput.target.files[0];
+                    // Gönderilecek dataları ayala
+                    var uploadData = new FormData();
+                    uploadData.append('uploadfile', gall.footerInput.target.files[0]);
 
-                    helper.method.http('/upload', function(f) {
-                        console.log(f);
-                    }, {
-                        enctype: 'multipart/form-data',
-                        method: 'POST',
-                        data: fn,
-                        progress: function(now, total, per) {
-                            console.log(now, total, per * 100);
-                        }
-                    });
+                    var x = gall.loader.children().uptloadlabel;
+                    var icn = gall.loader.children().uptloadicon;
+
+                    icn.remClass('success', 'error').setClass('progress');
+
+                    setTimeout(function() {
+                        // Dataları gönder
+                        helper.method.http({
+                            url: '/upload',
+                            // Upload yapılacakken true olarak işaretliyoruz
+                            enctype: true,
+                            method: 'POST',
+                            data: uploadData,
+
+                            // Yükleme esnasında, yüklenen data durumunu öğreneceğiz
+                            progress: function(now, total, per) {
+                                x.setHTML(per * 100 + '%');
+                            },
+
+                            // Tüm işlemler tamamlandığında çalışacak
+                            success: function(f) {
+                                f = JSON.parse(f);
+                                if (f.number == 200) {
+                                    x.setHTML('Yüklendi :)');
+                                    icn.remClass('progress', 'error').setClass('success');
+                                    gall.footerInput.target.value = "";
+                                } else {
+                                    x.setHTML('JPG dosyası olmalı :((');
+                                    icn.remClass('success', 'progress').setClass('error');
+                                    gall.footerInput.target.value = "";
+                                }
+                            },
+
+                            // Hata durumu
+                            error: function() {
+                                icn.remClass('success', 'progress').setClass('error');
+                                gall.footerInput.target.value = "";
+                            }
+                        });
+                    }, 500);
 
                 } else {
                     gall.loader.hide();
@@ -127,7 +151,6 @@
         gall.footerButton = new coll('input', { type: 'button', id: 'skeleton-upload-button' })
             .setVal('YENİ YÜKLE')
             .insert(gall.footer.target);
-
 
 
         //....................................................................................

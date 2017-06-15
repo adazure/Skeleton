@@ -8,15 +8,6 @@
     _.MODULE(function() {
 
 
-        var method = _.gallery.method;
-
-
-        function add(url) {
-
-
-        }
-
-
     }); // MODULES
 
 

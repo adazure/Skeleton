@@ -171,10 +171,13 @@
                 if (typeof source == 'string' && source.endsWith('.json')) {
 
                     // Dosya yüklemesini yap
-                    helper.http(source, function(data) {
-                        // Gelen dataları parse et ve elementleri sayfaya yansıt
-                        data = eval(data);
-                        parseData(data, obj);
+                    helper.http({
+                        url: source,
+                        success: function(_result) {
+                            // Gelen dataları parse et ve elementleri sayfaya yansıt
+                            _result = eval(_result);
+                            parseData(_result, obj);
+                        }
                     });
                 }
 

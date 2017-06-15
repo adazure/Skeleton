@@ -573,13 +573,46 @@
             },
             '#skeleton-upload-loader > div': {
                 'position': 'relative',
+                'margin': 'auto',
+                'width': '70px',
+                'height': '70px',
+                'border-radius': '50%',
+                'box-shadow': '0px 0 5px #888',
+            },
+            '#skeleton-upload-loader > div.progress': {
+                'width': '70px',
+                'height': '70px',
+                'background-color': 'transparent',
+                'box-shadow': '-2px 0 5px #888',
+                'animation': 'upload-loader 1s linear infinite',
+            },
+            '#skeleton-upload-loader > div.error': {
                 'width': '70px',
                 'height': '70px',
                 'background-color': 'transparent',
                 'box-shadow': '-2px 0 5px #888',
                 'border-radius': '50%',
-                'animation': 'upload-loader 1s linear infinite',
-                'margin': 'auto'
+            },
+            '#skeleton-upload-loader > div.success::before,#skeleton-upload-loader > div.success::after': {
+                'content': "''",
+                'width': '6px',
+                'height': '36px',
+                'background-color': 'white',
+                'position': 'absolute'
+            },
+            '#skeleton-upload-loader > div.success': {
+                'background-color': 'green'
+            },
+            '#skeleton-upload-loader > div.success::before': {
+                'transform': 'rotate(-67deg)',
+                'height': '21px',
+                'top': '37px',
+                'left': '27px'
+            },
+            '#skeleton-upload-loader > div.success::after': {
+                'transform': 'rotate(24deg)',
+                'left': '41px',
+                'top': '18px'
             },
             '@keyframes upload-loader': {
                 'from': '{transform:rotate(0deg)}',
@@ -590,7 +623,8 @@
                 'font-weight': 'bold',
                 'margin': '19px 0',
                 'display': 'block',
-                'color': 'gray'
+                'color': 'gray',
+                'text-align': 'center'
             }
 
         });
