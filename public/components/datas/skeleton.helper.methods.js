@@ -29,16 +29,45 @@
         //....................................................................................
 
 
-        function http(url, success) {
+        function http(url, success, conf) {
             var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    success(xhttp.responseText);
+            if (!conf) {
+                conf = { data: null, method: 'GET' }
+            }
+
+            xhttp.open(conf.method, url, true);
+
+            // İşlem sırasındaki durumu gösterebiliriz
+            function progress(e) {
+                if (e.lengthComputable) {
+                    if (conf.progress) {
+                        conf.progress(e.loaded, e.total, e.loaded / e.total);
+                    }
                 }
             }
 
-            xhttp.open("GET", url, true);
-            xhttp.send();
+            if (conf.enctype) {
+                xhttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+            }
+
+            if (conf.data) {
+                var t = new FormData();
+                t.append('uploadfile', conf.data);
+                conf.data = t;
+            }
+            // İşlem sırası
+            xhttp.addEventListener("progress", progress, false);
+
+            // Durum kontrolü
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    success(xhttp.responseText);
+                } else if (this.readyState == 4 && this.status != 200) {
+                    conf.error();
+                }
+            }
+            console.log(conf.data);
+            xhttp.send(conf.data);
         }
 
 

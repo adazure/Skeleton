@@ -539,6 +539,14 @@
                 'border-radius': '6px',
                 'animation': 'upload-colors 90s linear infinite'
             },
+            '#skeleton-upload-files-footer input[type=file]': {
+                'position': 'absolute',
+                'width': '100%',
+                'background': '#333',
+                'padding': '10px 0px',
+                'height': '17px',
+                'opacity': '0'
+            },
             '#skeleton-upload-button': {
                 'width': '100%',
                 '-webkit-appearance': 'button',
@@ -561,7 +569,7 @@
             '#skeleton-upload-loader': {
                 'position': 'relative',
                 'margin': '40px auto',
-                'width': '70px',
+                'width': '86px'
             },
             '#skeleton-upload-loader > div': {
                 'position': 'relative',
@@ -570,7 +578,8 @@
                 'background-color': 'transparent',
                 'box-shadow': '-2px 0 5px #888',
                 'border-radius': '50%',
-                'animation': 'upload-loader 1s linear infinite'
+                'animation': 'upload-loader 1s linear infinite',
+                'margin': 'auto'
             },
             '@keyframes upload-loader': {
                 'from': '{transform:rotate(0deg)}',
@@ -580,7 +589,8 @@
                 'font-size': '13px',
                 'font-weight': 'bold',
                 'margin': '19px 0',
-                'display': 'block'
+                'display': 'block',
+                'color': 'gray'
             }
 
         });

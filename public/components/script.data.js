@@ -579,16 +579,45 @@ var Skeleton = (function(_) {
         //....................................................................................
 
 
-        function http(url, success) {
+        function http(url, success, conf) {
             var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    success(xhttp.responseText);
+            if (!conf) {
+                conf = { data: null, method: 'GET' }
+            }
+
+            xhttp.open(conf.method, url, true);
+
+            // İşlem sırasındaki durumu gösterebiliriz
+            function progress(e) {
+                if (e.lengthComputable) {
+                    if (conf.progress) {
+                        conf.progress(e.loaded, e.total, e.loaded / e.total);
+                    }
                 }
             }
 
-            xhttp.open("GET", url, true);
-            xhttp.send();
+            if (conf.enctype) {
+                xhttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+            }
+
+            if (conf.data) {
+                var t = new FormData();
+                t.append('uploadfile', conf.data);
+                conf.data = t;
+            }
+            // İşlem sırası
+            xhttp.addEventListener("progress", progress, false);
+
+            // Durum kontrolü
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    success(xhttp.responseText);
+                } else if (this.readyState == 4 && this.status != 200) {
+                    conf.error();
+                }
+            }
+            console.log(conf.data);
+            xhttp.send(conf.data);
         }
 
 
@@ -1123,6 +1152,7 @@ var Skeleton = (function(_) {
         //....................................................................................
 
 
+        // Bulunduğu elementin bir üst katmanına oluşturur
         inc.createParent = function(name, attr) {
             var t = new coll(name, attr);
             this.target.parentNode.appendChild(t.target);
@@ -1205,35 +1235,129 @@ var Skeleton = (function(_) {
 
         var gall = _.gallery;
         var coll = _.collection.create;
+        var helper = _.helper;
+
+
+        //....................................................................................
+
+
+
 
         gall.container = new coll('div', { id: 'skeleton-upload-files' })
             .setClass('animated', 'flipInX');
+
+
+
+        //....................................................................................
+
+
 
         gall.container
             .create('div', { id: 'skeleton-upload-files-header' })
             .setHTML('Upload Files');
 
+
+
+        //....................................................................................
+
+
+
         gall.content = new coll('div', { id: 'skeleton-upload-files-content' });
 
+
+
+        //....................................................................................
+
+
+
         gall.loader = new coll('div', { id: 'skeleton-upload-loader' })
+            .hide()
             .insert(gall.content.target)
             .setClass('animated', 'bounceIn')
+        gall.loaderIcon = gall.loader
             .create('div')
             .createParent('label')
-            .setHTML('Yükleniyor...');
+            .setClass('animation', 'bounceInLeft')
+            .setHTML('YÜKLENİYOR');
+
+
+
+        //....................................................................................
+
+
 
         gall.content
             .insert(gall.container.target);
 
+
+
+        //....................................................................................
+
+
+
         gall.container
             .insert(parent.document.body);
+
+
+
+        //....................................................................................
+
+
 
         gall.footer = new coll('div', { id: 'skeleton-upload-files-footer' })
             .insert(gall.container.target);
 
+
+
+        //....................................................................................
+
+
+
+        gall.footerForm = new coll('form', {
+                method: 'POST',
+                'url': '/upload',
+                enctype: 'multipart/form-data'
+            })
+            .insert(gall.footer.target);
+
+        gall.footerInput = new coll('input', { type: 'file', name: 'uploadfile' })
+            .insert(gall.footer.target)
+            .setBind('change', function(e) {
+                if (e.target.value) {
+                    gall.loader.show();
+
+                    var fn = gall.footerInput.target.files[0];
+
+                    helper.method.http('/upload', function(f) {
+                        console.log(f);
+                    }, {
+                        enctype: 'multipart/form-data',
+                        method: 'POST',
+                        data: fn,
+                        progress: function(now, total, per) {
+                            console.log(now, total, per * 100);
+                        }
+                    });
+
+                } else {
+                    gall.loader.hide();
+                }
+            });
+
+
+
+        //....................................................................................
+
+
         gall.footerButton = new coll('input', { type: 'button', id: 'skeleton-upload-button' })
             .setVal('YENİ YÜKLE')
             .insert(gall.footer.target);
+
+
+
+        //....................................................................................
+
+
 
 
     }); // MODULES
@@ -4550,6 +4674,14 @@ var Skeleton = (function(_) {
                 'border-radius': '6px',
                 'animation': 'upload-colors 90s linear infinite'
             },
+            '#skeleton-upload-files-footer input[type=file]': {
+                'position': 'absolute',
+                'width': '100%',
+                'background': '#333',
+                'padding': '10px 0px',
+                'height': '17px',
+                'opacity': '0'
+            },
             '#skeleton-upload-button': {
                 'width': '100%',
                 '-webkit-appearance': 'button',
@@ -4572,7 +4704,7 @@ var Skeleton = (function(_) {
             '#skeleton-upload-loader': {
                 'position': 'relative',
                 'margin': '40px auto',
-                'width': '70px',
+                'width': '86px'
             },
             '#skeleton-upload-loader > div': {
                 'position': 'relative',
@@ -4581,7 +4713,8 @@ var Skeleton = (function(_) {
                 'background-color': 'transparent',
                 'box-shadow': '-2px 0 5px #888',
                 'border-radius': '50%',
-                'animation': 'upload-loader 1s linear infinite'
+                'animation': 'upload-loader 1s linear infinite',
+                'margin': 'auto'
             },
             '@keyframes upload-loader': {
                 'from': '{transform:rotate(0deg)}',
@@ -4591,7 +4724,8 @@ var Skeleton = (function(_) {
                 'font-size': '13px',
                 'font-weight': 'bold',
                 'margin': '19px 0',
-                'display': 'block'
+                'display': 'block',
+                'color': 'gray'
             }
 
         });

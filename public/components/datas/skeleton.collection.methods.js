@@ -322,6 +322,7 @@
         //....................................................................................
 
 
+        // Bulunduğu elementin bir üst katmanına oluşturur
         inc.createParent = function(name, attr) {
             var t = new coll(name, attr);
             this.target.parentNode.appendChild(t.target);
