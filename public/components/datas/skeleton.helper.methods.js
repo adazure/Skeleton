@@ -28,29 +28,79 @@
 
         //....................................................................................
 
+        // İstediğimiz XMLHTTPREQUEST ile datalar yükleyeceğiz
+        // Basic düzeyde istek yapımız olacak
+        // Yapı gereği sorgulamada kullanılacak alanlarla beraber örnek yapı şöyledir
+        /*
+            .http({
 
+                //  İşlem yapılacak URI adresi
+                url:'',
+
+                //  Gönderme şekli
+                //  Varsayılan olarak GET işaretlidir
+                method: 'GET/POST/PUT/DELETE',
+
+                //  Dosya upload işleminde true yapıyoruz
+                //  Varsayılan olarak false işaretlidir
+                enctype:true/false,
+
+                //  POST edilmek istenen bir veri varsa eklenir
+                //  Varsayılan olarak null değer alır
+                data:null,
+
+                //  Geliştirici tarafından belirtilecek method
+                //  Methoda geri döndürülecek 3 parametre bulunur
+                //  Yüklenen boyut / toplam yüklenecek boyut / kalan boyut
+                //  progress:function(loaded,total,now){}
+                //  Varsayılan olarak null değer alır
+                progress:method,
+
+                //  İşlem tamamlandığında çalıştırılacak method
+                //  Geliştirici tarafından belirtilen bir method varsa çalıştırılır
+                //  Parametre olarak geriye dönen datayı iletir
+                //  Varsayılan olarak null değer alır
+                //  success:function(data){}
+                success:method
+
+                //  Bir hata oluştuğunda çalışır
+                //  Geliştirici tarafından belirtilen bir method varsa çalıştırılır
+                //  Varsayılan olarak null değer alır
+                //  error:function(data){}
+                error:method
+
+            });
+         */
         function http(args) {
 
-            if (!args.url) throw ('URL bilgisini girmediniz');
+            if (!args.url) throw ('URL bilgisini girmediniz yada HTTP yapısını değiştirdiniz');
+
             var xhttp = new XMLHttpRequest();
 
-            xhttp.open(args.method || 'GET', args.url, true);
+            // Varsayılan
+            var ismatch = (args.method || 'GET').match(/GET|POST|PUT|DELETE/);
+            args.method = ismatch ? ismatch[0] : 'GET';
+
+            console.log(args.method);
+            args.data = args.data || null;
+
+            xhttp.open(args.method, args.url, true);
 
             // İşlem sırasındaki durumu gösterebiliriz
             function progress(e) {
                 if (e.lengthComputable) {
-                    if (args.progress) {
-                        args.progress(e.loaded, e.total, e.loaded / e.total);
-                    }
+                    args.progress(e.loaded, e.total, e.loaded / e.total);
                 }
             }
 
-            if (args.enctype) {
+            // Upload işlemi varsa / true / false
+            if (args.enctype && typeof args.enctype == 'boolean') {
                 xhttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
             }
 
             // İşlem sırası
-            xhttp.addEventListener("progress", progress, false);
+            if (args.progress && typeof args.progress == 'function')
+                xhttp.addEventListener("progress", progress, false);
 
             // Durum kontrolü
             xhttp.onreadystatechange = function() {

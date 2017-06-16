@@ -578,29 +578,79 @@ var Skeleton = (function(_) {
 
         //....................................................................................
 
+        // İstediğimiz XMLHTTPREQUEST ile datalar yükleyeceğiz
+        // Basic düzeyde istek yapımız olacak
+        // Yapı gereği sorgulamada kullanılacak alanlarla beraber örnek yapı şöyledir
+        /*
+            .http({
 
+                //  İşlem yapılacak URI adresi
+                url:'',
+
+                //  Gönderme şekli
+                //  Varsayılan olarak GET işaretlidir
+                method: 'GET/POST/PUT/DELETE',
+
+                //  Dosya upload işleminde true yapıyoruz
+                //  Varsayılan olarak false işaretlidir
+                enctype:true/false,
+
+                //  POST edilmek istenen bir veri varsa eklenir
+                //  Varsayılan olarak null değer alır
+                data:null,
+
+                //  Geliştirici tarafından belirtilecek method
+                //  Methoda geri döndürülecek 3 parametre bulunur
+                //  Yüklenen boyut / toplam yüklenecek boyut / kalan boyut
+                //  progress:function(loaded,total,now){}
+                //  Varsayılan olarak null değer alır
+                progress:method,
+
+                //  İşlem tamamlandığında çalıştırılacak method
+                //  Geliştirici tarafından belirtilen bir method varsa çalıştırılır
+                //  Parametre olarak geriye dönen datayı iletir
+                //  Varsayılan olarak null değer alır
+                //  success:function(data){}
+                success:method
+
+                //  Bir hata oluştuğunda çalışır
+                //  Geliştirici tarafından belirtilen bir method varsa çalıştırılır
+                //  Varsayılan olarak null değer alır
+                //  error:function(data){}
+                error:method
+
+            });
+         */
         function http(args) {
 
-            if (!args.url) throw ('URL bilgisini girmediniz');
+            if (!args.url) throw ('URL bilgisini girmediniz yada HTTP yapısını değiştirdiniz');
+
             var xhttp = new XMLHttpRequest();
 
-            xhttp.open(args.method || 'GET', args.url, true);
+            // Varsayılan
+            var ismatch = (args.method || 'GET').match(/GET|POST|PUT|DELETE/);
+            args.method = ismatch ? ismatch[0] : 'GET';
+
+            console.log(args.method);
+            args.data = args.data || null;
+
+            xhttp.open(args.method, args.url, true);
 
             // İşlem sırasındaki durumu gösterebiliriz
             function progress(e) {
                 if (e.lengthComputable) {
-                    if (args.progress) {
-                        args.progress(e.loaded, e.total, e.loaded / e.total);
-                    }
+                    args.progress(e.loaded, e.total, e.loaded / e.total);
                 }
             }
 
-            if (args.enctype) {
+            // Upload işlemi varsa / true / false
+            if (args.enctype && typeof args.enctype == 'boolean') {
                 xhttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
             }
 
             // İşlem sırası
-            xhttp.addEventListener("progress", progress, false);
+            if (args.progress && typeof args.progress == 'function')
+                xhttp.addEventListener("progress", progress, false);
 
             // Durum kontrolü
             xhttp.onreadystatechange = function() {
@@ -870,6 +920,8 @@ var Skeleton = (function(_) {
                 self[ky] = inc[ky];
             });
 
+            self.target.__collectionData = self;
+
             return self;
         }
 
@@ -883,7 +935,6 @@ var Skeleton = (function(_) {
         // <div>{target}</div>
         inc.wrap = function(name, attr) {
             var t = new coll(name, attr);
-            t.target.__collectionData = t;
             t.target.appendChild(this.target);
             return this;
         }
@@ -899,7 +950,6 @@ var Skeleton = (function(_) {
         // .create(..) şeklinde çağırıldığında parent'deki nesneye name ile tanımlı yeni nesne ekler
         inc.create = function(name, attr) {
             var t = new coll(name, attr);
-            t.target.__collectionData = t;
             this.children;
             this.target.appendChild(t.target);
             return t;
@@ -1093,6 +1143,25 @@ var Skeleton = (function(_) {
         //....................................................................................
 
 
+        inc.repeat = function(count, name, attr) {
+
+            var self = this,
+                selfCount = this.target.children.count;
+
+            if (!count || !name) return self;
+
+            for (var i = 0; i < count; i++) {
+                var t = new coll(name, attr);
+                t.insert(self.target);
+            }
+
+            return self;
+        }
+
+
+        //....................................................................................
+
+
 
 
         // <Style>...</Style> nesneleri için global style tanımlamaları oluşturur
@@ -1123,8 +1192,30 @@ var Skeleton = (function(_) {
 
         //....................................................................................
 
+        inc.first = function() {
+            if (this.target.children == 0) throw ("Alt nesne bulunamadı");
+            return this.target.children[0].__collectionData;
+        }
 
-        inc.children = function() {
+
+        //....................................................................................
+
+        inc.last = function() {
+            if (this.target.children.length == 0) throw ("Alt nesne bulunamadı");
+            return this.target.children[this.target.children.length - 1].__collectionData;
+        }
+
+
+        //....................................................................................
+
+
+        // ilgili elementin altındaki tüm elementlerin collection listesini verir
+        // Gelen alt nesnelerin yalnızca ID ve Name özellikleri varsa alır, onun dışındakiler gözardı edilir
+
+        inc.children = function(index) {
+
+            if (index && typeof index == 'number') return this.target.children[index].__collectionData;
+
             var _result = {};
             for (var i = 0, f = this.target.children; i < f.length; i++) {
                 var zone = f[i].id || f[i].name;
@@ -1176,7 +1267,6 @@ var Skeleton = (function(_) {
         // Bulunduğu elementin bir üst katmanına oluşturur
         inc.createParent = function(name, attr) {
             var t = new coll(name, attr);
-            t.target.__collectionData = t;
             this.target.parentNode.appendChild(t.target);
             return t;
         }
@@ -1231,6 +1321,22 @@ var Skeleton = (function(_) {
 
     _.MODULE(function() {
 
+        var method = _.gallery.method;
+        var coll = _.collection.create;
+
+
+        //....................................................................................
+
+
+        function add(item) {
+            var galItem = new coll('div')
+                .setClass('gall-item-name')
+                .setHTML(item.desc);
+            return galItem;
+        }
+
+
+        method.add = add;
 
     }); // MODULES
 
@@ -1286,7 +1392,13 @@ var Skeleton = (function(_) {
         gall.loader = new coll('div', { id: 'skeleton-upload-loader' })
             .hide()
             .insert(gall.content.target)
-            .setClass('animated', 'bounceIn')
+            .setClass('animated', 'bounceIn');
+
+
+        //....................................................................................
+
+
+
         gall.loaderIcon = gall.loader
             .create('div', { id: 'upt-load-icon' })
             .createParent('label', { id: 'upt-load-label' })
@@ -1300,6 +1412,14 @@ var Skeleton = (function(_) {
         gall.content
             .insert(gall.container.target);
 
+
+
+        //....................................................................................
+
+
+        gall.contentList = new coll('div', { id: 'skeleton-gallery-contentlist' })
+            .setClass('animated', 'fadeInUp')
+            .insert(gall.container.target);
 
 
         //....................................................................................
@@ -1323,12 +1443,17 @@ var Skeleton = (function(_) {
         //....................................................................................
 
 
-        gall.footerInput = new coll('input', { type: 'file', name: 'uploadfile' })
+        gall.footerInput = new coll('input', { type: 'file', name: 'uploadfile', accept: 'image/x-png,image/gif,image/jpeg' })
             .insert(gall.footer.target)
             .setBind('change', function(e) {
+
+
                 if (e.target.value) {
 
                     // Yükleniyor bar'ı göster
+
+                    gall.content.show();
+                    gall.contentList.hide();
                     gall.loader.show();
 
                     // Gönderilecek dataları ayala
@@ -1355,16 +1480,40 @@ var Skeleton = (function(_) {
                             },
 
                             // Tüm işlemler tamamlandığında çalışacak
-                            success: function(f) {
-                                f = JSON.parse(f);
-                                if (f.number == 200) {
+                            success: function(result) {
+
+                                result = JSON.parse(result);
+
+                                if (result.number == 200) {
+
                                     x.setHTML('Yüklendi :)');
-                                    icn.remClass('progress', 'error').setClass('success');
+
+                                    icn.remClass('progress', 'error')
+                                        .setClass('success');
+
                                     gall.footerInput.target.value = "";
+
+                                    // Kaydedilen dosyaya ait bilgiyi ekrana yansıtalım
+                                    var __item = gall.method.add({
+                                        file: result.uploadFile,
+                                        desc: 'lorem ipsum dolor'
+                                    }).insert(gall.contentList.target);
+
+
+                                    // Son olarak 2 saniye sonra listeyi gösterelim
+                                    setTimeout(function() {
+
+                                        gall.content.hide();
+                                        gall.contentList.show();
+
+                                    }, 2000);
+
                                 } else {
-                                    x.setHTML('JPG dosyası olmalı :((');
+
+                                    x.setHTML('JPG veya PNG dosyası olmalı :((');
                                     icn.remClass('success', 'progress').setClass('error');
                                     gall.footerInput.target.value = "";
+
                                 }
                             },
 
@@ -3633,36 +3782,40 @@ var Skeleton = (function(_) {
 
         function open(url, success) {
 
-            helper.http(url, function(data) {
 
-                create();
+            helper.http({
+                url: url,
+                success: function(data) {
 
-                var text = data;
+                    create();
 
-                // Yüklenen sayfa içerisinde script tag'ı varsa çalıştır
-                var regex = _.regex.rules.scriptTag;
-                var src = text.match(regex);
-                text = text.replace(regex, '');
-                popup.content.setHTML(text);
-                popup.container.show();
+                    var text = data;
+
+                    // Yüklenen sayfa içerisinde script tag'ı varsa çalıştır
+                    var regex = _.regex.rules.scriptTag;
+                    var src = text.match(regex);
+                    text = text.replace(regex, '');
+                    popup.content.setHTML(text);
+                    popup.container.show();
 
 
-                popup.header = {
-                    title: '',
-                    url: url,
-                    html: data
-                };
+                    popup.header = {
+                        title: '',
+                        url: url,
+                        html: data
+                    };
 
-                if (src) {
-                    var _script = new coll('script')
-                        .setHTML(src[1])
-                        .insert(popup.content.target);
+                    if (src) {
+                        var _script = new coll('script')
+                            .setHTML(src[1])
+                            .insert(popup.content.target);
+
+                    }
+
+                    if (success)
+                        success();
 
                 }
-
-                if (success)
-                    success();
-
             });
 
 
@@ -4696,7 +4849,8 @@ var Skeleton = (function(_) {
                 'overflow': 'hidden',
                 'overflow-y': 'auto',
                 'background-image': "url('data: image / png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABjCAMAAABaOVXeAAAAUVBMVEUnJycAAAAAAAAAAAB + fn4nJyeFhYX ///+JiYl5eXmDg4P///98fHyEhIRDQ0NDQ0OJiYmJiYmKiop5eXn///+Dg4OEhISBgYGBgYFfX19fX1+fciHbAAAAG3RSTlMJAwYAJwA2AkUhMAEkMwwAQgBIAAAAAC0AEgDgGVynAAAEIElEQVR4Ae1Zi27bMBAjL02d59Z07/3/hw6wYkLcFfZ5LYKsG5FEVqOKoXiSrRPAaECMVwSiYSw3D9gu4FHtR3B8BRlXDDu0L6hGiDCS/SLJgeoPgSC7TigStFoDxIUAWFGC1h0RPVQ77sBGoI47MIDtaZHkrB7HAk7VlDB49YNGsMoT6x7XD0pJR8k2WJQOVjyR8aaB7RPNE5pJ0DvIYLCkRMoZCIOUwNm9XYHkwAgHQag/Ge9agC6EK8ZT7YE2DpQmYBiVsFWCmjLslHz4uIBDa8/xM9vSlLSqCFQLsKYkG2+cTUmKbC0QZRL4P4vTQxjpx7Bs/NQYUGRS3YnE549ABLb7AgkbDdgvtB7C00sl5RCwrc6T5HfjayTwAWKsXoXP7riEmJLsh1AzHpGRPBHguqskcjRFGIOmBFodTW9VCbu4FwuoZUVoRrmyzWlxxj+6Hw1oPMn4ZEvVeAQCEwcly4xnCimV1cmo5mKAapiM5zQVQd0U68bL1R6w2y98SIWykrN1m5hMyagTAUJhWFNymPMUiEbCyCiRSAmDjAwGbDKqRF9HKbpMAnsRii4EmJcdMFYocVeBgD/ciRrMd5bycxfs1zkGe+7KjpRm/NlHS0BQSgLpOYAqWIsuuN8phHcZT9315bQr4tlqBgxHxzC9h1bdfzomDPpQ1Ut91zrC5wUU1q4v8zjucFnAQ2wW8LeQnBZJzl/nMRRJ7n+43kTJt+/zWCY5vt6Tmxj/ek8Kw7VMctzfgOSyfGd8A5KHW3hyg+GqKPm/Ct96gdzfRMl78aQw4/+d6BruP7qKa9e9DNfp3Q3X/d9P5rcxT5f9bjXSdgq+lcnXvgkafqsMg3Y9eR+l4pr6BLRnhO0eq1ts+q4WQVWGHVJuEsF1u9+Duk5gTtkGg9Ml6mn0R+SNsyASB9Qe9WRBJsn5Lj/CQae8vo/3hDzBrEQ0huJJEF0K0fdGyxIh0bGmhOFAn/vTEaAxUCRlJchplWS8ki0ZXHd+4mQQiVgTWDf+RYAaLr6sg2vSgz5NdAkENVzUOVMAcK11JclWuCcIeFZVS1ntWNY5qDLNE+TsXnm4JJ/ZdyhX731DzYvHTXJQBbt06vFZufrOf6osLZDn7uxYgCc6MTnhDfFnuXqG3yvox03Iv6OsRKC5Lk/sL4Jc3JQ88bFCI8uHNExLXHuVTx18OJjWLn2j/leGsAGR5wlgzG4OSiS2quRObLiQXVm3QCIygprxoMzzw+E6iQHXuQbMPUhwarvZ1x6JXAZ1CphIMmFdCUCPMYpQJAEG7MbC+tHG1J4uht3DHTHZziypFl0IAyBBPlyySVz1EEbMAO4JQNGLbVPIpgbS2iXAlRjQ3tUDZspqn4/T/WThUKd+EjRzngTf3GT8+Jm2PdrlqKI9T9oIjQ1+ASmrFBua6fE2AAAAAElFTkSuQmCC')",
-                'animation': 'background-inf 5s linear infinite'
+                'animation': 'background-inf 5s linear infinite',
+                'display': 'none'
             },
             '@keyframes background-inf': {
                 'from': '{background-position:0 0;}',
@@ -4806,6 +4960,15 @@ var Skeleton = (function(_) {
                 'display': 'block',
                 'color': 'gray',
                 'text-align': 'center'
+            },
+            '#skeleton-gallery-contentlist': {
+                'height': '211px',
+                'overflow': 'hidden',
+                'overflow-y': 'auto'
+            },
+            '#skeleton-gallery-contentlist > div.gall-item-name': {
+                'padding': '10px'
+                'border-bottom': '1px solid #ccc'
             }
 
         });

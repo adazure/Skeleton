@@ -45,6 +45,8 @@
                 self[ky] = inc[ky];
             });
 
+            self.target.__collectionData = self;
+
             return self;
         }
 
@@ -58,7 +60,6 @@
         // <div>{target}</div>
         inc.wrap = function(name, attr) {
             var t = new coll(name, attr);
-            t.target.__collectionData = t;
             t.target.appendChild(this.target);
             return this;
         }
@@ -74,7 +75,6 @@
         // .create(..) şeklinde çağırıldığında parent'deki nesneye name ile tanımlı yeni nesne ekler
         inc.create = function(name, attr) {
             var t = new coll(name, attr);
-            t.target.__collectionData = t;
             this.children;
             this.target.appendChild(t.target);
             return t;
@@ -268,6 +268,25 @@
         //....................................................................................
 
 
+        inc.repeat = function(count, name, attr) {
+
+            var self = this,
+                selfCount = this.target.children.count;
+
+            if (!count || !name) return self;
+
+            for (var i = 0; i < count; i++) {
+                var t = new coll(name, attr);
+                t.insert(self.target);
+            }
+
+            return self;
+        }
+
+
+        //....................................................................................
+
+
 
 
         // <Style>...</Style> nesneleri için global style tanımlamaları oluşturur
@@ -298,8 +317,30 @@
 
         //....................................................................................
 
+        inc.first = function() {
+            if (this.target.children == 0) throw ("Alt nesne bulunamadı");
+            return this.target.children[0].__collectionData;
+        }
 
-        inc.children = function() {
+
+        //....................................................................................
+
+        inc.last = function() {
+            if (this.target.children.length == 0) throw ("Alt nesne bulunamadı");
+            return this.target.children[this.target.children.length - 1].__collectionData;
+        }
+
+
+        //....................................................................................
+
+
+        // ilgili elementin altındaki tüm elementlerin collection listesini verir
+        // Gelen alt nesnelerin yalnızca ID ve Name özellikleri varsa alır, onun dışındakiler gözardı edilir
+
+        inc.children = function(index) {
+
+            if (index && typeof index == 'number') return this.target.children[index].__collectionData;
+
             var _result = {};
             for (var i = 0, f = this.target.children; i < f.length; i++) {
                 var zone = f[i].id || f[i].name;
@@ -351,7 +392,6 @@
         // Bulunduğu elementin bir üst katmanına oluşturur
         inc.createParent = function(name, attr) {
             var t = new coll(name, attr);
-            t.target.__collectionData = t;
             this.target.parentNode.appendChild(t.target);
             return t;
         }

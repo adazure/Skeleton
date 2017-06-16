@@ -19,36 +19,40 @@
 
         function open(url, success) {
 
-            helper.http(url, function(data) {
 
-                create();
+            helper.http({
+                url: url,
+                success: function(data) {
 
-                var text = data;
+                    create();
 
-                // Yüklenen sayfa içerisinde script tag'ı varsa çalıştır
-                var regex = _.regex.rules.scriptTag;
-                var src = text.match(regex);
-                text = text.replace(regex, '');
-                popup.content.setHTML(text);
-                popup.container.show();
+                    var text = data;
+
+                    // Yüklenen sayfa içerisinde script tag'ı varsa çalıştır
+                    var regex = _.regex.rules.scriptTag;
+                    var src = text.match(regex);
+                    text = text.replace(regex, '');
+                    popup.content.setHTML(text);
+                    popup.container.show();
 
 
-                popup.header = {
-                    title: '',
-                    url: url,
-                    html: data
-                };
+                    popup.header = {
+                        title: '',
+                        url: url,
+                        html: data
+                    };
 
-                if (src) {
-                    var _script = new coll('script')
-                        .setHTML(src[1])
-                        .insert(popup.content.target);
+                    if (src) {
+                        var _script = new coll('script')
+                            .setHTML(src[1])
+                            .insert(popup.content.target);
+
+                    }
+
+                    if (success)
+                        success();
 
                 }
-
-                if (success)
-                    success();
-
             });
 
 
