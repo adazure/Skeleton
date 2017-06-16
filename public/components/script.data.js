@@ -4382,7 +4382,7 @@ var Skeleton = (function(_) {
                 'border-bottom-width': '1px',
                 'border-style': 'solid',
                 'border-color': '#444',
-                'animation': 'upload-colors 90s linear infinite'
+                'animation': 'upload-colors 50s linear infinite'
             },
             '#skeleton-menu-footer': {
                 'padding': '10px',
@@ -4390,7 +4390,7 @@ var Skeleton = (function(_) {
                 'border-top-width': '1px',
                 'border-style': 'solid',
                 'border-color': 'rgba(255,255,255,.5)',
-                'animation': 'upload-colors 90s linear infinite',
+                'animation': 'upload-colors 50s linear infinite',
                 'cursor': 'pointer'
             },
             '#skeleton-menu-footer a': {
@@ -4689,7 +4689,7 @@ var Skeleton = (function(_) {
                 'background-color': '#775f8c',
                 'border-bottom': '1px solid #58436b',
                 'border-radius': '4px 4px 0 0',
-                'animation': 'upload-colors 90s linear infinite'
+                'animation': 'upload-colors 50s linear infinite'
             },
             '#skeleton-upload-files-content': {
                 'height': '211px',
@@ -4708,7 +4708,7 @@ var Skeleton = (function(_) {
                 'background-color': '#775f8c',
                 'box-shadow': '0 -10px 12px -13px #000',
                 'border-radius': '6px',
-                'animation': 'upload-colors 90s linear infinite'
+                'animation': 'upload-colors 50s linear infinite'
             },
             '#skeleton-upload-files-footer input[type=file]': {
                 'position': 'absolute',
@@ -4760,7 +4760,7 @@ var Skeleton = (function(_) {
             '#skeleton-upload-loader > div.error': {
                 'width': '70px',
                 'height': '70px',
-                'background-color': 'transparent',
+                'background-color': 'red',
                 'box-shadow': '-2px 0 5px #888',
                 'border-radius': '50%',
             },
@@ -4772,18 +4772,28 @@ var Skeleton = (function(_) {
                 'position': 'absolute'
             },
             '#skeleton-upload-loader > div.success': {
-                'background-color': 'green'
+                'background-color': '#29a054'
             },
             '#skeleton-upload-loader > div.success::before': {
                 'transform': 'rotate(-67deg)',
                 'height': '21px',
                 'top': '37px',
-                'left': '27px'
+                'left': '25px'
             },
             '#skeleton-upload-loader > div.success::after': {
                 'transform': 'rotate(24deg)',
-                'left': '41px',
+                'left': '39px',
                 'top': '18px'
+            },
+            '#skeleton-upload-loader > div.error::before': {
+                'content': "''",
+                'position': 'absolute',
+                'width': '6px',
+                'height': '46px',
+                'background-color': 'white',
+                'left': '32px',
+                'top': '14px',
+                'transform': 'rotate(90deg)'
             },
             '@keyframes upload-loader': {
                 'from': '{transform:rotate(0deg)}',
