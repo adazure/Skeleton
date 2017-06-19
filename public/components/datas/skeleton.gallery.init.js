@@ -11,6 +11,7 @@
         var gall = _.gallery;
         var coll = _.collection.create;
         var helper = _.helper;
+        var menu = _.menuObject;
 
 
         //....................................................................................
@@ -61,6 +62,7 @@
             .setClass('animation', 'bounceInLeft')
             .setHTML('Yükleniyor...');
 
+
         //....................................................................................
 
 
@@ -74,7 +76,7 @@
 
 
         gall.contentList = new coll('div', { id: 'skeleton-gallery-contentlist' })
-            .setClass('animated', 'fadeInUp')
+            .setClass('animated', 'fadeInRight')
             .insert(gall.container.target);
 
 
@@ -83,6 +85,7 @@
 
 
         gall.container
+            .hide()
             .insert(parent.document.body);
 
 
@@ -103,6 +106,8 @@
             .insert(gall.footer.target)
             .setBind('change', function(e) {
 
+                gall.footer.setClass('locked');
+                menu.container.setClass('locked');
 
                 if (e.target.value) {
 
@@ -119,7 +124,7 @@
                     var x = gall.loader.children().uptloadlabel;
                     var icn = gall.loader.children().uptloadicon;
 
-                    icn.remClass('success', 'error').setClass('progress');
+                    icn.remClass('success', 'error', 'timeout').setClass('progress');
 
                     setTimeout(function() {
                         // Dataları gönder
@@ -144,16 +149,39 @@
 
                                     x.setHTML('Yüklendi :)');
 
-                                    icn.remClass('progress', 'error')
+                                    icn.remClass('progress', 'error', 'timeout')
                                         .setClass('success');
 
                                     gall.footerInput.target.value = "";
 
                                     // Kaydedilen dosyaya ait bilgiyi ekrana yansıtalım
+                                    // result.uploadFile
+                                    // result.sourceFile 
+
                                     var __item = gall.method.add({
-                                        file: result.uploadFile,
-                                        desc: 'lorem ipsum dolor'
-                                    }).insert(gall.contentList.target);
+                                        file: result.sourceFile,
+                                        title: 'lorem ipsum dolor'
+                                    });
+
+                                    // Veritabanı tablosuna kayıt yapalım
+                                    var key = menu.selectedMenuItem.getAttr('key');
+                                    var grow = helper.method.getCustomizeUpload() + key;
+                                    var dta = _.data[grow];
+
+                                    // Veritabanı tablosunda geçerli bir liste var mı 
+                                    if (!dta) {
+                                        _.data[grow] = [];
+                                    }
+
+
+                                    _.data[grow].push({ file: result.sourceFile, title: 'lorem ipsum dolor sit amet' });
+
+                                    console.log(Skeleton.data);
+                                    // Dosyanın yüklendiği menüyü işaretleyelim
+                                    var child = menu.selectedMenuItem.target.children[0].children[0];
+                                    if (!child.checked) {
+                                        child.click();
+                                    }
 
 
                                     // Son olarak 2 saniye sonra listeyi gösterelim
@@ -162,21 +190,49 @@
                                         gall.content.hide();
                                         gall.contentList.show();
 
-                                    }, 2000);
+                                        menu.selectedMenuItem.setClass('show');
+                                        gall.footer.remClass('locked');
+                                        menu.container.remClass('locked');
+
+                                    }, 1000);
+
+
 
                                 } else {
 
                                     x.setHTML('JPG veya PNG dosyası olmalı :((');
-                                    icn.remClass('success', 'progress').setClass('error');
+                                    icn.remClass('success', 'progress', 'timeout').setClass('error');
                                     gall.footerInput.target.value = "";
+
+                                    setTimeout(function() {
+
+                                        gall.content.hide();
+                                        gall.contentList.show();
+
+                                    }, 1000);
+
+
+                                    gall.footer.remClass('locked');
+                                    menu.container.remClass('locked');
 
                                 }
                             },
 
                             // Hata durumu
                             error: function() {
-                                icn.remClass('success', 'progress').setClass('error');
+                                icn.remClass('success', 'progress', 'timeout').setClass('error');
                                 gall.footerInput.target.value = "";
+                                gall.footer.remClass('locked');
+                                menu.container.remClass('locked');
+                            },
+
+                            // Zaman aşımı olduğunda
+                            timeout: function() {
+                                x.setHTML('Yükleme işlemi zaman aşımına uğradı.');
+                                icn.remClass('success', 'progress', 'error').setClass('timeout');
+                                gall.footerInput.target.value = "";
+                                gall.footer.remClass('locked');
+                                menu.container.remClass('locked');
                             }
                         });
                     }, 500);

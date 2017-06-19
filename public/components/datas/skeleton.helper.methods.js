@@ -76,12 +76,12 @@
             if (!args.url) throw ('URL bilgisini girmediniz yada HTTP yapısını değiştirdiniz');
 
             var xhttp = new XMLHttpRequest();
+            xhttp.timeout = 60000;
 
             // Varsayılan
             var ismatch = (args.method || 'GET').match(/GET|POST|PUT|DELETE/);
             args.method = ismatch ? ismatch[0] : 'GET';
 
-            console.log(args.method);
             args.data = args.data || null;
 
             xhttp.open(args.method, args.url, true);
@@ -112,6 +112,12 @@
                         args.error();
                 }
             }
+
+            xhttp.ontimeout = function(e) {
+                if (args.timeout)
+                    args.timeout();
+            };
+
             xhttp.send(args.data);
         }
 
@@ -147,11 +153,16 @@
         //....................................................................................
 
 
+        function getCustomizeUpload() {
+            return '$' + _.Request.section + '$';
+        }
+
 
 
         method.ismobile = ismobile;
         method.http = http;
         method.extend = extend;
+        method.getCustomizeUpload = getCustomizeUpload;
 
     }); // MODULE
 

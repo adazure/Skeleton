@@ -29,7 +29,9 @@
             // Veritabanından gelen datayı döngüye sok
             Object.keys(_.data).forEach(function(key) {
 
-                // Section bilgisi varsa alalım
+                if (!_.Request.section) return;
+
+                // Section bilgisini alalım
                 var sect = '$' + _.Request.section;
 
                 // Aktif section değerine eşit bir kayıt varsa al
@@ -44,7 +46,9 @@
                     var inputchk = part[1].substring(1);
 
                     if (menu.objects[inputchk])
-                        menu.objects[inputchk].checked = true;
+                        menu.objects[inputchk].trigger('click');
+
+                    console.log('Menudeki alanlar işaretlendi');
 
                 }
 
@@ -63,6 +67,8 @@
         function itemdown(a) {
 
             a.preventDefault();
+
+            console.log('Menuden bir ikon seçildi');
 
             // Tıklanan menu butonunun key değeri
             var butonID = a.target.getAttr('key');

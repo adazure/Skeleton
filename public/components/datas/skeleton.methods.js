@@ -18,6 +18,7 @@
         var menu = _.menuObject;
         var popup = _.popup;
         var dbdata = _.data;
+        var gall = _.gallery;
 
 
         //....................................................................................
@@ -89,6 +90,8 @@
             // Her ikisi de mevcutsa ilgili path üzerine nesneyi bırak
             else {
 
+                console.log('Sahne üzerine nesne bırakıldı');
+
                 if (_.selectedObject) {
 
                     // Sürüklenen nesneyi, farenin işaretlediği alana bırak
@@ -105,8 +108,6 @@
                                 transforms: []
                             }),
                             moveItemKey = _.selectedObject.getAttr('key');
-
-
 
                         // Koordinat bilgileri
                         dbdataCurrent.transforms.push({
@@ -133,8 +134,6 @@
                         _.selectedObject.setAttr({
                             rootname: path.selectedPath.id
                         });
-
-
 
 
                         //Sürüklenen nesne,sürüklenme sırasında Z-Index dolayısıyla en üstte bulunuyordu

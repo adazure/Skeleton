@@ -16,12 +16,16 @@
 
 
         function show(args) {
-            create();
+            create(args);
             dialog.content.setHTML(args.content);
-            dialog.button1.setVal(args.button1.text);
-            dialog.button2.setVal(args.button2.text);
-            dialog.button1.setBind('click', args.button1.action);
-            dialog.button2.setBind('click', args.button2.action);
+            if (dialog.button1) {
+                dialog.button1.setVal(args.button1.text);
+                dialog.button1.setBind('click', args.button1.action);
+            }
+            if (dialog.button2) {
+                dialog.button2.setVal(args.button2.text);
+                dialog.button2.setBind('click', args.button2.action);
+            }
             dialog.container.show();
             dialog.shadow.show();
         }
@@ -43,7 +47,7 @@
         //....................................................................................
 
         // Dialog penceresini oluşturur
-        function create() {
+        function create(args) {
 
 
             // Gölge katmanı
@@ -63,12 +67,13 @@
                 .insert(dialog.container.target);
 
             // Buton nesneleri
-            dialog.button1 = new coll('input', { type: 'button', id: 'skeleton-dialog-button1' })
+            if (args.button1)
+                dialog.button1 = new coll('input', { type: 'button', id: 'skeleton-dialog-button1' })
                 .setClass('skeleton-dialog-button')
                 .insert(dialog.footer.target);
 
-
-            dialog.button2 = new coll('input', { type: 'button', id: 'skeleton-dialog-button2' })
+            if (args.button2)
+                dialog.button2 = new coll('input', { type: 'button', id: 'skeleton-dialog-button2' })
                 .setClass('skeleton-dialog-button')
                 .insert(dialog.footer.target);
 

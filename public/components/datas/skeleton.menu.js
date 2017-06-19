@@ -2,17 +2,20 @@
 //          SKELETON MENU
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
-    
+(function(_) {
+
     _.menuObject = {
         // Kullanılacak methodların listesi
-        method:{},
+        method: {},
         // Menüde yer alan ikon ve metinlerin listesi
-        data:{},
+        data: {},
         // Menude ki nesneler
-        objects:[],
+        objects: [],
         // Queryden gelebilecek olan section değerine ait tanımlı bilgiler
-        sections:{}
+        sections: {},
+        // Menuden işaretlenen kayıt. Bu sayede işaretlenmiş olan kayıt'a göre upload penceresini kontrol edebileceğiz
+        // Son işaretlenen her zaman kalacaktır. 
+        selectedMenuItem: null
     };
 
 })(Skeleton);

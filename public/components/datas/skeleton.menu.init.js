@@ -9,7 +9,9 @@
         var collection = _.collection.create;
         var menu = _.menuObject;
         var data = _.data;
-
+        var dialog = _.dialog;
+        var gall = _.gallery;
+        var helper = _.helper.method;
 
 
 
@@ -184,12 +186,26 @@
                         if (ev.target.checked) {
                             checkbox.remClass('menu-item-locked');
                             // İşaretlenmiş input checkbox elementine göre veritabanına gidecek datayı da güncelleyelim
-                            data[resp + ev.target.getAttr('key')] = true;
+                            if (!data[resp + ev.target.getAttr('key')])
+                                data[resp + ev.target.getAttr('key')] = [];
                         } else {
                             // İşaretlenmiş input checkbox elementine göre veritabanına gidecek datayı da güncelleyelim
                             var f = data[resp + ev.target.getAttr('key')];
-                            if (f)
+                            if (f && f.length == 0)
                                 delete f;
+                            else {
+                                ev.target.checked = true;
+                                dialog.show({
+                                    title: 'Bir hata oluştu',
+                                    content: 'İşareti kaldırabilmeniz için, bu alan için daha önce yüklemiş olduğunuz görselleri silmeniz gerekmektedir.',
+                                    button1: {
+                                        text: 'Tamam',
+                                        action: function() {
+                                            dialog.hide();
+                                        }
+                                    }
+                                });
+                            }
 
                             checkbox.setClass('menu-item-locked');
                         }
@@ -239,6 +255,29 @@
                 // Label nesnesi
                 ul.create('li', {
                         key: key
+                    })
+                    .setBind('click', function() {
+
+                        // Seçilen menuyü işaretle
+                        menu.selectedMenuItem = ul;
+
+                        // Menunun key değerini al
+                        var nm = menu.selectedMenuItem.target.getAttr('key');
+
+                        // Key değerine ait data bilgisini veritabanından çek
+                        var fdata = data[helper.getCustomizeUpload() + nm];
+
+                        // Upload için ekranı açalım
+                        gall.method.load(fdata);
+                        gall.content.hide();
+                        gall.container.show();
+                        gall.contentList.hide();
+
+                        setTimeout(function() {
+                            gall.contentList.show();
+                        }, 100);
+
+
                     })
                     // Class
                     .setClass('menu-item-text')

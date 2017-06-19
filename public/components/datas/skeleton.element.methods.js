@@ -2,10 +2,10 @@
 //          SKELETON ELEMENT METHODS
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
 
-    _.MODULE(function () {
+    _.MODULE(function() {
         var method = _.element.method;
         var global = _.element.globals;
 
@@ -13,7 +13,10 @@
         //....................................................................................
 
 
-        var x = 0, y = 0, drag = false, self = null;
+        var x = 0,
+            y = 0,
+            drag = false,
+            self = null;
 
 
         //....................................................................................

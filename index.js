@@ -4,7 +4,6 @@ var app = express();
 
 app.use(express.static(__dirname + '/public'));
 
-
 // MULTER STORAGE
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
@@ -25,14 +24,11 @@ function getExt(file) {
 }
 
 function fileFilter(req, file, cb) {
-
     if (file.mimetype == 'image/jpeg' || file.mimetype == 'image/jpg' || file.mimetype == 'image/png') {
         cb(null, true);
     } else {
-        console.log('burası');
         cb(null, false);
     }
-
 }
 
 var upload = multer({ storage: storage, fileFilter: fileFilter }).single("uploadfile");
@@ -43,19 +39,19 @@ app.post('/upload', function(req, res) {
         if (err) {
             res.send(400, {
                 message: 'Dosya bulunamadı',
-                number: 404
+                number: 400
             });
         } else {
             if (req.file) {
                 res.send(200, {
                     message: 'Kaydedildi',
                     number: 200,
-                    uploadfile: req.file.originalname,
-                    sourceFile: req.file.filename
+                    uploadFile: req.file.originalname, // Yüklenmek istenen orijinal dosya
+                    sourceFile: req.file.filename // Yüklendikten sonraski dosya adı
                 });
             } else {
                 res.send(200, {
-                    number: 404,
+                    number: 415,
                     message: 'Geçersiz dosya uzantısı'
                 });
             }

@@ -6,6 +6,9 @@
 
     _.gallery = {
         container: false,
+        contentList: false,
+        content: false,
+        loader: false,
         method: {},
         objects: []
     };
