@@ -121,8 +121,8 @@
             </filter>
 
             <pattern id="grid" width="12" height="12" patternUnits="userSpaceOnUse"><path d="M 0 0 L 12 0 12 12 0 12 z" stroke="#fff" stroke-width="1" fill="#eee"></path></pattern>
-            <link href="script.css" rel="stylesheet" type="text/css" xmlns="http://www.w3.org/1999/xhtml" />
-            <script xlink:href="script.js"></script>
-            <script>SkeletonAction.actions.init();</script>
+
+        <link href="script.css" rel="stylesheet" type="text/css" xmlns="http://www.w3.org/1999/xhtml" />
+        <script xlink:href="components/script.data.js"></script>
 </defs>
 </svg>
