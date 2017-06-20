@@ -75,7 +75,6 @@
         // .create(..) şeklinde çağırıldığında parent'deki nesneye name ile tanımlı yeni nesne ekler
         inc.create = function(name, attr) {
             var t = new coll(name, attr);
-            this.children;
             this.target.appendChild(t.target);
             return t;
         }
@@ -130,7 +129,7 @@
         inc.setAttr = function(args) {
 
             this.target.setAttr(args);
-
+            return this;
         }
 
 
@@ -422,8 +421,8 @@
             return t;
         }
 
-
         //....................................................................................
+
 
 
 

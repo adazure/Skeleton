@@ -22,21 +22,6 @@
         var displayMenu = new collection('div', {
                 id: 'skeleton-menu'
             })
-            .setCSS({
-                position: 'fixed',
-                left: '40px',
-                top: '40px',
-                width: '300px',
-                overflow: 'hidden',
-                backgroundColor: 'rgb(48, 57, 90)',
-                border: '3px solid rgb(255, 255, 255)',
-                boxShadow: 'rgba(0, 0, 0, 0.27) 0px 0px 0px 8px',
-                zIndex: 1000,
-                fontFamily: 'arial',
-                fontSize: '14px',
-                color: '#333',
-                borderRadius: '7px'
-            })
             //Sınıf
             .setClass('slidetoright', 'animated', 'flipInY')
             .setBind('mousedown', function(e) { e.preventDefault(); return; });
@@ -64,19 +49,8 @@
 
         // Menüde listelenecek kayıtların yeri
         var content = displayMenu.create('div', {
-                id: 'skeleton-menu-content'
-            })
-            // Style
-            .setCSS({
-                padding: '10px 20px 10px 10px',
-                overflow: 'hidden',
-                overflowY: 'auto',
-                borderTop: '1px solid #ddd',
-                borderBottom: '1px solid #ddd',
-                height: '250px',
-                backgroundColor: 'white',
-                display: 'block'
-            })
+            id: 'skeleton-menu-content'
+        });
 
 
 
@@ -189,12 +163,21 @@
                             if (!data[resp + ev.target.getAttr('key')])
                                 data[resp + ev.target.getAttr('key')] = [];
                         } else {
+
+
                             // İşaretlenmiş input checkbox elementine göre veritabanına gidecek datayı da güncelleyelim
+                            // ilgili alan veritabanında var mı bakalım
                             var f = data[resp + ev.target.getAttr('key')];
+
+                            // Eğer liste var ama kayıt yoksa sil
                             if (f && f.length == 0)
                                 delete f;
-                            else {
+                            else if (f && f.length > 0) {
+
+                                // eğer kayıt varsa her durumda işaretle
                                 ev.target.checked = true;
+
+                                // Bir de uyarı penceresi gösterelim
                                 dialog.show({
                                     title: 'Bir hata oluştu',
                                     content: 'İşareti kaldırabilmeniz için, bu alan için daha önce yüklemiş olduğunuz görselleri silmeniz gerekmektedir.',
@@ -206,6 +189,7 @@
                                     }
                                 });
                             }
+
 
                             checkbox.setClass('menu-item-locked');
                         }
@@ -277,6 +261,8 @@
                             gall.contentList.show();
                         }, 100);
 
+                        // Menüde seçilmiş olan alanı işaretleyelim
+                        menu.method.selectMenuItem(menu.selectedMenuItem, true);
 
                     })
                     // Class

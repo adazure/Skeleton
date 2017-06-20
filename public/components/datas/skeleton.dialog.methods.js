@@ -32,13 +32,36 @@
 
 
 
+
+        //....................................................................................
+
+
+
+        function basic(title, message) {
+            create({
+                title: title,
+                message: message,
+                button1: {
+                    text: 'TAMAM',
+                    action: hide
+                }
+            });
+        }
+
+
         //....................................................................................
 
 
 
         function hide() {
-            dialog.shadow.remove();
-            dialog.container.remove();
+            if (dialog.shadow) {
+                dialog.shadow.remove();
+                dialog.container.remove();
+                dialog.shadow = null;
+                dialog.container = null;
+                dialog.button1 = null;
+                dialog.button2 = null;
+            }
         }
 
 
@@ -49,7 +72,7 @@
         // Dialog penceresini oluşturur
         function create(args) {
 
-
+            hide();
             // Gölge katmanı
             dialog.shadow = new coll('div', { id: 'skeleton-dialog-shadow' })
                 .insert(parent.document.body);
@@ -110,6 +133,7 @@
 
 
         dialog.show = show;
+        dialog.basic = basic;
         dialog.hide = hide;
         dialog.passive = passive;
         dialog.active = active;

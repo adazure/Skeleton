@@ -17,8 +17,6 @@
         //....................................................................................
 
 
-
-
         gall.container = new coll('div', { id: 'skeleton-upload-files' })
             .setClass('animated', 'flipInX');
 
@@ -28,9 +26,14 @@
 
 
 
-        gall.container
-            .create('div', { id: 'skeleton-upload-files-header' })
-            .setHTML('Upload Files');
+        gall.header = gall.container
+            .create('div', { id: 'skeleton-upload-files-header' });
+        gall.header.create('div', { id: 'upload-files-header-title' })
+            .setHTML('Upload Files')
+            .createParent('div', { id: 'upload-files-header-close' })
+            .setBind('click', function(e) {
+                menu.method.selectMenuItem(null);
+            });
 
 
 
@@ -78,7 +81,6 @@
         gall.contentList = new coll('div', { id: 'skeleton-gallery-contentlist' })
             .setClass('animated', 'fadeInRight')
             .insert(gall.container.target);
-
 
         //....................................................................................
 
@@ -154,14 +156,7 @@
 
                                     gall.footerInput.target.value = "";
 
-                                    // Kaydedilen dosyaya ait bilgiyi ekrana yansıtalım
-                                    // result.uploadFile
-                                    // result.sourceFile 
 
-                                    var __item = gall.method.add({
-                                        file: result.sourceFile,
-                                        title: 'lorem ipsum dolor'
-                                    });
 
                                     // Veritabanı tablosuna kayıt yapalım
                                     var key = menu.selectedMenuItem.getAttr('key');
@@ -171,12 +166,26 @@
                                     // Veritabanı tablosunda geçerli bir liste var mı 
                                     if (!dta) {
                                         _.data[grow] = [];
-                                    }
+                                        gall.method.clear();
+                                    } else if (dta.length == 0)
+                                        gall.method.clear();
+
+                                    // Kaydedilen dosyaya ait bilgiyi ekrana yansıtalım
+                                    // result.uploadFile
+                                    // result.sourceFile 
+
+                                    var src = {
+                                        file: result.sourceFile,
+                                        title: 'lorem ipsum dolor'
+                                    };
+
+                                    // Tabloya kayıt
+                                    var __item = gall.method.add(src);
+
+                                    // Veritabanına kayıt
+                                    _.data[grow].push(src);
 
 
-                                    _.data[grow].push({ file: result.sourceFile, title: 'lorem ipsum dolor sit amet' });
-
-                                    console.log(Skeleton.data);
                                     // Dosyanın yüklendiği menüyü işaretleyelim
                                     var child = menu.selectedMenuItem.target.children[0].children[0];
                                     if (!child.checked) {
@@ -222,6 +231,7 @@
                             error: function() {
                                 icn.remClass('success', 'progress', 'timeout').setClass('error');
                                 gall.footerInput.target.value = "";
+                                x.setHTML('Sistem hatası oluştu. Daha sonra tekrar deneyin.');
                                 gall.footer.remClass('locked');
                                 menu.container.remClass('locked');
                             },
@@ -248,7 +258,7 @@
 
 
         gall.footerButton = new coll('input', { type: 'button', id: 'skeleton-upload-button' })
-            .setVal('YENİ YÜKLE')
+            .setVal('DOSYA YÜKLE')
             .insert(gall.footer.target);
 
 

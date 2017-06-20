@@ -16,6 +16,7 @@
         var tooltip = _.tooltip;
         var context = _.contextmenu;
         var dialog = _.dialog;
+        var gall = _.gallery;
 
 
 
@@ -56,6 +57,81 @@
 
         }
 
+
+
+        //....................................................................................
+
+
+
+        function selectMenuItem(e, selected) {
+            for (var i = 0; i < menu.objects.length; i++) {
+                var obj = menu.objects[i];
+                obj.remClass('selected');
+            }
+            if (e && selected) {
+                e.setClass('selected');
+                var key = e.getAttr('key');
+                gall.header.children().uploadfilesheadertitle.setHTML(menu.data[key].title);
+            } else {
+                gall.container.hide();
+                menu.selectMenuItem = null;
+            }
+        }
+
+
+        //....................................................................................
+
+
+
+
+        function contextmenu(e) {
+            e.preventDefault();
+            context.method.clear(function() {
+                context.method.add({
+                    title: 'Bu kaydı sil',
+                    action: function() {
+
+                        dialog.show({
+                            title: 'Silme işlemi',
+                            content: 'Kaydı silmek istediğinize emin misiniz?',
+                            button1: {
+                                text: 'SİL',
+                                action: function() {
+                                    // Silinecek nesneyi seç
+                                    pathMethod.selectRemovedItem(e);
+
+                                    // Nesneyi sil
+                                    pathMethod.removeSelectedClone(e);
+
+                                    // Context menüyü gizle
+                                    context.method.hide();
+
+                                    // Dialog penceresindeki butonları pasif yap
+                                    dialog.passive();
+
+                                    // Pencereyi gizle
+                                    dialog.hide();
+                                }
+                            },
+                            button2: {
+                                text: 'İPTAL',
+                                action: function() {
+                                    // Context menüyü gizle
+                                    context.method.hide();
+
+                                    // Pencereyi gizle
+                                    dialog.hide();
+                                }
+                            }
+                        });
+
+                    }
+                });
+                context.method.show(e);
+            });
+
+            return;
+        }
 
 
         //....................................................................................
@@ -107,54 +183,7 @@
                 });
 
                 // Sağ tuş özelliği ekleyelim
-                clone.setBind('contextmenu', function(e) {
-                    e.preventDefault();
-                    context.method.clear(function() {
-                        context.method.add({
-                            title: 'Bu kaydı sil',
-                            action: function() {
-
-                                dialog.show({
-                                    title: 'Silme işlemi',
-                                    content: 'Kaydı silmek istediğinize emin misiniz?',
-                                    button1: {
-                                        text: 'SİL',
-                                        action: function() {
-                                            // Silinecek nesneyi seç
-                                            pathMethod.selectRemovedItem(e);
-
-                                            // Nesneyi sil
-                                            pathMethod.removeSelectedClone(e);
-
-                                            // Context menüyü gizle
-                                            context.method.hide();
-
-                                            // Dialog penceresindeki butonları pasif yap
-                                            dialog.passive();
-
-                                            // Pencereyi gizle
-                                            dialog.hide();
-                                        }
-                                    },
-                                    button2: {
-                                        text: 'İPTAL',
-                                        action: function() {
-                                            // Context menüyü gizle
-                                            context.method.hide();
-
-                                            // Pencereyi gizle
-                                            dialog.hide();
-                                        }
-                                    }
-                                });
-
-                            }
-                        });
-                        context.method.show(e);
-                    });
-
-                    return;
-                });
+                clone.setBind('contextmenu', contextmenu);
 
 
                 // Nesneyi seçilen nesne olarak işaretle
@@ -208,6 +237,8 @@
 
         method.itemdown = itemdown;
         method.fillMenuItem = fillMenuItem;
+        method.selectMenuItem = selectMenuItem;
+
 
     });
 
