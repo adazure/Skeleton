@@ -2,10 +2,10 @@
 //          SKELETON GALLERY METHOD
 /////////////////////////////////////////////////////////////////////////
 
-(function(_) {
+(function (_) {
 
 
-    _.MODULE(function() {
+    _.MODULE(function () {
 
         var gall = _.gallery;
         var method = gall.method;
@@ -79,17 +79,22 @@
                 // Sil dediğinde yapılacak işlemler
                 button1: {
                     text: 'EVET SİL',
-                    action: function() {
+                    action: function () {
 
                         // Hemen bir POST işlemi yapıp silmesini söyleyelim
                         helper.http({
 
                             method: 'POST',
                             url: '/removeFile/' + e.target.getAttr('fileitem'),
-                            success: function(result) {
+                            success: function (result) {
 
                                 // Eğer sorunsuz bir iletişim kurduysak gelen mesajı ekranda yansıtalım
                                 result = JSON.parse(result);
+
+                                if (result.number == 200) {
+                                    // Veritabanını güncelle
+                                    Skeleton.savechanges();
+                                }
 
                                 // Bir uyarı penceresi açalım 
                                 // Burada olumlu veya olumsuz bir mesaj gelmiş olacak
@@ -98,7 +103,7 @@
                                     content: result.message,
                                     button1: {
                                         text: 'TAMAM',
-                                        action: function() {
+                                        action: function () {
 
                                             // Sadece silindiyse bir takım işlemler yapalım
                                             if (result.number == 200) {
@@ -118,6 +123,7 @@
                                                     chk.trigger('click');
                                                 }
 
+
                                                 // Upload ekranındaki listeden kaydı silelim
                                                 e.target.__removeItem.remove();
                                             }
@@ -127,13 +133,13 @@
                                     }
                                 });
                             },
-                            error: function(result) {
+                            error: function (result) {
                                 dialog.show({
                                     title: 'Hata oluştu',
                                     content: 'Sistemsel bir nedenden dolayı dosyayı şuan da silemiyoruz.',
                                     button1: {
                                         text: 'TAMAM',
-                                        action: function() {
+                                        action: function () {
                                             dialog.hide();
                                         }
                                     }
@@ -145,7 +151,7 @@
                 },
                 button2: {
                     text: 'VAZGEÇ',
-                    action: function() {
+                    action: function () {
                         dialog.hide();
                     }
                 }

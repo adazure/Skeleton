@@ -2,10 +2,16 @@
 //          SKELETON
 /////////////////////////////////////////////////////////////////////////
 
-var Skeleton = (function(_) {
+var Skeleton = (function (_) {
 
+    _.datetime = new Date();
     _.method = {};
     _.globalMethod = {};
+    _.savechanges = function () {
+
+        
+        console.log(new Date() + ' Veritabanı güncellendi');
+    }
 
     // Açılacak popuplar için özel olarak tanımlandı.
     // Oluşturulacak yeni popup formları da bu değişken üzerinden dağıtılmalıdır
@@ -41,7 +47,7 @@ var Skeleton = (function(_) {
     var inits = [];
 
 
-    _.MODULE = function(action) {
+    _.MODULE = function (action) {
         if (action && typeof action === 'function') {
             inits.push(action);
         } else
@@ -1358,10 +1364,10 @@ var Skeleton = (function(_) {
 //          SKELETON GALLERY METHOD
 /////////////////////////////////////////////////////////////////////////
 
-(function(_) {
+(function (_) {
 
 
-    _.MODULE(function() {
+    _.MODULE(function () {
 
         var gall = _.gallery;
         var method = gall.method;
@@ -1435,17 +1441,22 @@ var Skeleton = (function(_) {
                 // Sil dediğinde yapılacak işlemler
                 button1: {
                     text: 'EVET SİL',
-                    action: function() {
+                    action: function () {
 
                         // Hemen bir POST işlemi yapıp silmesini söyleyelim
                         helper.http({
 
                             method: 'POST',
                             url: '/removeFile/' + e.target.getAttr('fileitem'),
-                            success: function(result) {
+                            success: function (result) {
 
                                 // Eğer sorunsuz bir iletişim kurduysak gelen mesajı ekranda yansıtalım
                                 result = JSON.parse(result);
+
+                                if (result.number == 200) {
+                                    // Veritabanını güncelle
+                                    Skeleton.savechanges();
+                                }
 
                                 // Bir uyarı penceresi açalım 
                                 // Burada olumlu veya olumsuz bir mesaj gelmiş olacak
@@ -1454,7 +1465,7 @@ var Skeleton = (function(_) {
                                     content: result.message,
                                     button1: {
                                         text: 'TAMAM',
-                                        action: function() {
+                                        action: function () {
 
                                             // Sadece silindiyse bir takım işlemler yapalım
                                             if (result.number == 200) {
@@ -1474,6 +1485,7 @@ var Skeleton = (function(_) {
                                                     chk.trigger('click');
                                                 }
 
+
                                                 // Upload ekranındaki listeden kaydı silelim
                                                 e.target.__removeItem.remove();
                                             }
@@ -1483,13 +1495,13 @@ var Skeleton = (function(_) {
                                     }
                                 });
                             },
-                            error: function(result) {
+                            error: function (result) {
                                 dialog.show({
                                     title: 'Hata oluştu',
                                     content: 'Sistemsel bir nedenden dolayı dosyayı şuan da silemiyoruz.',
                                     button1: {
                                         text: 'TAMAM',
-                                        action: function() {
+                                        action: function () {
                                             dialog.hide();
                                         }
                                     }
@@ -1501,7 +1513,7 @@ var Skeleton = (function(_) {
                 },
                 button2: {
                     text: 'VAZGEÇ',
-                    action: function() {
+                    action: function () {
                         dialog.hide();
                     }
                 }
@@ -1802,6 +1814,9 @@ var Skeleton = (function(_) {
                                                 // Şimdi listedeki alanı bulup güncelleyelim
                                                 __item.target.children[0].innerHTML = obj.target.value;
 
+                                                // Veritabanını güncelle
+                                                Skeleton.savechanges();
+                                                
                                                 dialog.hide();
 
                                             }
@@ -2111,7 +2126,6 @@ var Skeleton = (function(_) {
 
         function prompt(args) {
 
-
             show({
                 title: args.title,
                 button1: {
@@ -2126,8 +2140,9 @@ var Skeleton = (function(_) {
                 .setCSS('width', '100%')
                 .insert(dialog.content.target);
 
-
         }
+
+
 
         //....................................................................................
 
@@ -3615,9 +3630,9 @@ var Skeleton = (function(_) {
 //          SKELETON MENU METHOD
 /////////////////////////////////////////////////////////////////////////
 
-(function(_) {
+(function (_) {
 
-    _.MODULE(function() {
+    _.MODULE(function () {
 
         var method = _.menuObject.method;
         var menu = _.menuObject;
@@ -3641,7 +3656,7 @@ var Skeleton = (function(_) {
         function fillMenuItem() {
 
             // Veritabanından gelen datayı döngüye sok
-            Object.keys(_.data).forEach(function(key) {
+            Object.keys(_.data).forEach(function (key) {
 
                 if (!_.Request.section) return;
 
@@ -3699,17 +3714,17 @@ var Skeleton = (function(_) {
 
         function contextmenu(e) {
             e.preventDefault();
-            context.method.clear(function() {
+            context.method.clear(function () {
                 context.method.add({
                     title: 'Bu kaydı sil',
-                    action: function() {
+                    action: function () {
 
                         dialog.show({
                             title: 'Silme işlemi',
                             content: 'Kaydı silmek istediğinize emin misiniz?',
                             button1: {
                                 text: 'SİL',
-                                action: function() {
+                                action: function () {
                                     // Silinecek nesneyi seç
                                     pathMethod.selectRemovedItem(e);
 
@@ -3724,11 +3739,14 @@ var Skeleton = (function(_) {
 
                                     // Pencereyi gizle
                                     dialog.hide();
+
+                                    //Veritabanını güncelle
+                                    _.savechanges();
                                 }
                             },
                             button2: {
                                 text: 'İPTAL',
-                                action: function() {
+                                action: function () {
                                     // Context menüyü gizle
                                     context.method.hide();
 
@@ -3786,30 +3804,6 @@ var Skeleton = (function(_) {
                 // ID değerine ait bırakılabilecek tüm pathleri bul ve renklendir
                 var isAllow = pathMethod.findAllowPath(butonID);
 
-                // Icon sahneye eklendiğinde, ilgili datanın detaylarının görüntülenebilmesi için tıklama ekliyoruz
-                // Tıklama yapıldığında detayları göster
-                clone.setBind('click', pathMethod.showPathDetails);
-
-                // Icon üzerine gelindiğinde görünecek mesajı görüntüleyelim
-                clone.setBind('mouseover', function(e) {
-                    tooltip.message('Detaylar için tıklayın<span style=\'font-size:11px; display:block;\'> Kaydı silmek için fare ile sağ tıklayın</span>', { ev: e });
-                });
-
-                // Sağ tuş özelliği ekleyelim
-                clone.setBind('contextmenu', contextmenu);
-
-
-                // Nesneyi seçilen nesne olarak işaretle
-                _.selectedObject = clone;
-
-                // Sürüklenebileceğini belirt
-                _.objectIsDragable = true;
-
-                // Sürüklenme esnasındaki ilk konumunu ayarla
-                skeletonGlobalMethod.onPress(a);
-
-                // Nesneyi sahneye ekle
-                _.container.appendChild(clone);
 
                 // Sürükleme esnasında, eğer geçerli alanlar yoksa kullanıcıya uyarı bilgisi verelim
                 if (!isAllow) {
@@ -3836,6 +3830,36 @@ var Skeleton = (function(_) {
                     skeletonGlobalMethod.setGlobal('up', __tooltipUp);
                     skeletonGlobalMethod.setGlobal('move', __tooltipMove);
                 }
+                else {
+                    // Icon sahneye eklendiğinde, ilgili datanın detaylarının görüntülenebilmesi için tıklama ekliyoruz
+                    // Tıklama yapıldığında detayları göster
+                    clone.setBind('click', pathMethod.showPathDetails);
+
+                    // Icon üzerine gelindiğinde görünecek mesajı görüntüleyelim
+                    clone.setBind('mouseover', function (e) {
+                        tooltip.message('Detaylar için tıklayın<span style=\'font-size:11px; display:block;\'> Kaydı silmek için fare ile sağ tıklayın</span>', { ev: e });
+                    });
+
+                    // Sağ tuş özelliği ekleyelim
+                    clone.setBind('contextmenu', contextmenu);
+
+
+                    // Nesneyi seçilen nesne olarak işaretle
+                    _.selectedObject = clone;
+
+                    // Sürüklenebileceğini belirt
+                    _.objectIsDragable = true;
+
+                    // Sürüklenme esnasındaki ilk konumunu ayarla
+                    skeletonGlobalMethod.onPress(a);
+
+                    // Nesneyi sahneye ekle
+                    _.container.appendChild(clone);
+                    
+                    // Veritabanını güncelle
+                    _.savechanges();
+
+                }
 
             }
 
@@ -3860,9 +3884,9 @@ var Skeleton = (function(_) {
 //          SKELETON MENU INIT
 /////////////////////////////////////////////////////////////////////////
 
-(function(_) {
+(function (_) {
 
-    _.MODULE(function() {
+    _.MODULE(function () {
 
         var collection = _.collection.create;
         var menu = _.menuObject;
@@ -3878,11 +3902,11 @@ var Skeleton = (function(_) {
 
         // Sayfada görüntülenecek menu ekranını oluşturur. Ana katman
         var displayMenu = new collection('div', {
-                id: 'skeleton-menu'
-            })
+            id: 'skeleton-menu'
+        })
             //Sınıf
             .setClass('slidetoright', 'animated', 'flipInY')
-            .setBind('mousedown', function(e) { e.preventDefault(); return; });
+            .setBind('mousedown', function (e) { e.preventDefault(); return; });
 
         menu.container = displayMenu;
 
@@ -3894,8 +3918,8 @@ var Skeleton = (function(_) {
 
         // Menü header bar
         var header = displayMenu.create('div', {
-                id: 'skeleton-menu-header'
-            })
+            id: 'skeleton-menu-header'
+        })
             .setHTML('Menü');
 
 
@@ -3921,7 +3945,7 @@ var Skeleton = (function(_) {
                 id: 'skeleton-menu-footer'
             })
             // Footer Click
-            .setBind('click', function() {
+            .setBind('click', function () {
                 content.target.style.display = content.target.style.display == 'block' ? 'none' : 'block';
             })
             // Children A
@@ -3947,7 +3971,7 @@ var Skeleton = (function(_) {
         var ml = menu.data;
 
         // Tüm menu listesi kayıtlarını tarayalım
-        Object.keys(ml).forEach(function(key) {
+        Object.keys(ml).forEach(function (key) {
 
             // Üzerinde sorgu yapılacak nesne
             var obj = ml[key];
@@ -3975,8 +3999,8 @@ var Skeleton = (function(_) {
                 /* UL nesnesi  */
 
                 var ul = new collection('ul', {
-                        key: key
-                    })
+                    key: key
+                })
                     .setClass('skeleton-menu-item');
 
 
@@ -3991,8 +4015,8 @@ var Skeleton = (function(_) {
 
                 // Input nesnesi
                 ul.create('li', {
-                        key: key
-                    })
+                    key: key
+                })
                     // Class
                     .setClass('menu-item-chk')
                     // Style
@@ -4006,7 +4030,7 @@ var Skeleton = (function(_) {
                         'key': key
                     })
                     // Input Event
-                    .setBind('click', function(ev) {
+                    .setBind('click', function (ev) {
 
                         var main = ev.target.parentNode.parentNode;
                         var checkbox = main.children[1];
@@ -4041,17 +4065,24 @@ var Skeleton = (function(_) {
                                     content: 'İşareti kaldırabilmeniz için, bu alan için daha önce yüklemiş olduğunuz görselleri silmeniz gerekmektedir.',
                                     button1: {
                                         text: 'Tamam',
-                                        action: function() {
+                                        action: function () {
                                             dialog.hide();
                                         }
                                     }
                                 });
                             }
 
-
                             checkbox.setClass('menu-item-locked');
+
+
                         }
-                    });
+
+
+                            // Veritabanını güncelle
+                            _.savechanges();
+
+                            
+                    }); // CLICK END
 
 
 
@@ -4064,15 +4095,15 @@ var Skeleton = (function(_) {
 
                 // Image nesnesi
                 var li = ul.create('li', {
-                        key: key
-                    })
+                    key: key
+                })
                     // Class
                     .setClass('menu-item-img', 'menu-item-locked')
                     // Style
                     .setCSS({
                         width: '20%'
                     }).
-                setBind('mousedown', menu.method.itemdown);
+                    setBind('mousedown', menu.method.itemdown);
 
                 var img = li.create('img', {
                     key: key,
@@ -4080,10 +4111,10 @@ var Skeleton = (function(_) {
                     src: obj.data
                 })
 
-                .setCSS({
-                    width: '30px',
-                    height: '30px'
-                });
+                    .setCSS({
+                        width: '30px',
+                        height: '30px'
+                    });
 
 
                 //....................................................................................
@@ -4096,9 +4127,9 @@ var Skeleton = (function(_) {
 
                 // Label nesnesi
                 ul.create('li', {
-                        key: key
-                    })
-                    .setBind('click', function() {
+                    key: key
+                })
+                    .setBind('click', function () {
 
                         // Seçilen menuyü işaretle
                         menu.selectedMenuItem = ul;
@@ -4115,7 +4146,7 @@ var Skeleton = (function(_) {
                         gall.container.show();
                         gall.contentList.hide();
 
-                        setTimeout(function() {
+                        setTimeout(function () {
                             gall.contentList.show();
                         }, 100);
 

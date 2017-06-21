@@ -2,10 +2,16 @@
 //          SKELETON
 /////////////////////////////////////////////////////////////////////////
 
-var Skeleton = (function(_) {
+var Skeleton = (function (_) {
 
+    _.datetime = new Date();
     _.method = {};
     _.globalMethod = {};
+    _.savechanges = function () {
+
+        
+        console.log(new Date() + ' Veritabanı güncellendi');
+    }
 
     // Açılacak popuplar için özel olarak tanımlandı.
     // Oluşturulacak yeni popup formları da bu değişken üzerinden dağıtılmalıdır
@@ -41,7 +47,7 @@ var Skeleton = (function(_) {
     var inits = [];
 
 
-    _.MODULE = function(action) {
+    _.MODULE = function (action) {
         if (action && typeof action === 'function') {
             inits.push(action);
         } else

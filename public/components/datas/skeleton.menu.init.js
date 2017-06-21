@@ -2,9 +2,9 @@
 //          SKELETON MENU INIT
 /////////////////////////////////////////////////////////////////////////
 
-(function(_) {
+(function (_) {
 
-    _.MODULE(function() {
+    _.MODULE(function () {
 
         var collection = _.collection.create;
         var menu = _.menuObject;
@@ -20,11 +20,11 @@
 
         // Sayfada görüntülenecek menu ekranını oluşturur. Ana katman
         var displayMenu = new collection('div', {
-                id: 'skeleton-menu'
-            })
+            id: 'skeleton-menu'
+        })
             //Sınıf
             .setClass('slidetoright', 'animated', 'flipInY')
-            .setBind('mousedown', function(e) { e.preventDefault(); return; });
+            .setBind('mousedown', function (e) { e.preventDefault(); return; });
 
         menu.container = displayMenu;
 
@@ -36,8 +36,8 @@
 
         // Menü header bar
         var header = displayMenu.create('div', {
-                id: 'skeleton-menu-header'
-            })
+            id: 'skeleton-menu-header'
+        })
             .setHTML('Menü');
 
 
@@ -63,7 +63,7 @@
                 id: 'skeleton-menu-footer'
             })
             // Footer Click
-            .setBind('click', function() {
+            .setBind('click', function () {
                 content.target.style.display = content.target.style.display == 'block' ? 'none' : 'block';
             })
             // Children A
@@ -89,7 +89,7 @@
         var ml = menu.data;
 
         // Tüm menu listesi kayıtlarını tarayalım
-        Object.keys(ml).forEach(function(key) {
+        Object.keys(ml).forEach(function (key) {
 
             // Üzerinde sorgu yapılacak nesne
             var obj = ml[key];
@@ -117,8 +117,8 @@
                 /* UL nesnesi  */
 
                 var ul = new collection('ul', {
-                        key: key
-                    })
+                    key: key
+                })
                     .setClass('skeleton-menu-item');
 
 
@@ -133,8 +133,8 @@
 
                 // Input nesnesi
                 ul.create('li', {
-                        key: key
-                    })
+                    key: key
+                })
                     // Class
                     .setClass('menu-item-chk')
                     // Style
@@ -148,7 +148,7 @@
                         'key': key
                     })
                     // Input Event
-                    .setBind('click', function(ev) {
+                    .setBind('click', function (ev) {
 
                         var main = ev.target.parentNode.parentNode;
                         var checkbox = main.children[1];
@@ -183,17 +183,24 @@
                                     content: 'İşareti kaldırabilmeniz için, bu alan için daha önce yüklemiş olduğunuz görselleri silmeniz gerekmektedir.',
                                     button1: {
                                         text: 'Tamam',
-                                        action: function() {
+                                        action: function () {
                                             dialog.hide();
                                         }
                                     }
                                 });
                             }
 
-
                             checkbox.setClass('menu-item-locked');
+
+
                         }
-                    });
+
+
+                            // Veritabanını güncelle
+                            _.savechanges();
+
+                            
+                    }); // CLICK END
 
 
 
@@ -206,15 +213,15 @@
 
                 // Image nesnesi
                 var li = ul.create('li', {
-                        key: key
-                    })
+                    key: key
+                })
                     // Class
                     .setClass('menu-item-img', 'menu-item-locked')
                     // Style
                     .setCSS({
                         width: '20%'
                     }).
-                setBind('mousedown', menu.method.itemdown);
+                    setBind('mousedown', menu.method.itemdown);
 
                 var img = li.create('img', {
                     key: key,
@@ -222,10 +229,10 @@
                     src: obj.data
                 })
 
-                .setCSS({
-                    width: '30px',
-                    height: '30px'
-                });
+                    .setCSS({
+                        width: '30px',
+                        height: '30px'
+                    });
 
 
                 //....................................................................................
@@ -238,9 +245,9 @@
 
                 // Label nesnesi
                 ul.create('li', {
-                        key: key
-                    })
-                    .setBind('click', function() {
+                    key: key
+                })
+                    .setBind('click', function () {
 
                         // Seçilen menuyü işaretle
                         menu.selectedMenuItem = ul;
@@ -257,7 +264,7 @@
                         gall.container.show();
                         gall.contentList.hide();
 
-                        setTimeout(function() {
+                        setTimeout(function () {
                             gall.contentList.show();
                         }, 100);
 

@@ -221,6 +221,9 @@
                                                 // Şimdi listedeki alanı bulup güncelleyelim
                                                 __item.target.children[0].innerHTML = obj.target.value;
 
+                                                // Veritabanını güncelle
+                                                Skeleton.savechanges();
+                                                
                                                 dialog.hide();
 
                                             }

@@ -22,6 +22,7 @@
         })
         .elements.btnkaydet('click', function(e) {
             Skeleton.popup.data.fields = e.data;
+            Skeleton.savechanges();
             Skeleton.popup.close();
         });
 </script>

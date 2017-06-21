@@ -2,9 +2,9 @@
 //          SKELETON MENU METHOD
 /////////////////////////////////////////////////////////////////////////
 
-(function(_) {
+(function (_) {
 
-    _.MODULE(function() {
+    _.MODULE(function () {
 
         var method = _.menuObject.method;
         var menu = _.menuObject;
@@ -28,7 +28,7 @@
         function fillMenuItem() {
 
             // Veritabanından gelen datayı döngüye sok
-            Object.keys(_.data).forEach(function(key) {
+            Object.keys(_.data).forEach(function (key) {
 
                 if (!_.Request.section) return;
 
@@ -86,17 +86,17 @@
 
         function contextmenu(e) {
             e.preventDefault();
-            context.method.clear(function() {
+            context.method.clear(function () {
                 context.method.add({
                     title: 'Bu kaydı sil',
-                    action: function() {
+                    action: function () {
 
                         dialog.show({
                             title: 'Silme işlemi',
                             content: 'Kaydı silmek istediğinize emin misiniz?',
                             button1: {
                                 text: 'SİL',
-                                action: function() {
+                                action: function () {
                                     // Silinecek nesneyi seç
                                     pathMethod.selectRemovedItem(e);
 
@@ -111,11 +111,14 @@
 
                                     // Pencereyi gizle
                                     dialog.hide();
+
+                                    //Veritabanını güncelle
+                                    _.savechanges();
                                 }
                             },
                             button2: {
                                 text: 'İPTAL',
-                                action: function() {
+                                action: function () {
                                     // Context menüyü gizle
                                     context.method.hide();
 
@@ -173,30 +176,6 @@
                 // ID değerine ait bırakılabilecek tüm pathleri bul ve renklendir
                 var isAllow = pathMethod.findAllowPath(butonID);
 
-                // Icon sahneye eklendiğinde, ilgili datanın detaylarının görüntülenebilmesi için tıklama ekliyoruz
-                // Tıklama yapıldığında detayları göster
-                clone.setBind('click', pathMethod.showPathDetails);
-
-                // Icon üzerine gelindiğinde görünecek mesajı görüntüleyelim
-                clone.setBind('mouseover', function(e) {
-                    tooltip.message('Detaylar için tıklayın<span style=\'font-size:11px; display:block;\'> Kaydı silmek için fare ile sağ tıklayın</span>', { ev: e });
-                });
-
-                // Sağ tuş özelliği ekleyelim
-                clone.setBind('contextmenu', contextmenu);
-
-
-                // Nesneyi seçilen nesne olarak işaretle
-                _.selectedObject = clone;
-
-                // Sürüklenebileceğini belirt
-                _.objectIsDragable = true;
-
-                // Sürüklenme esnasındaki ilk konumunu ayarla
-                skeletonGlobalMethod.onPress(a);
-
-                // Nesneyi sahneye ekle
-                _.container.appendChild(clone);
 
                 // Sürükleme esnasında, eğer geçerli alanlar yoksa kullanıcıya uyarı bilgisi verelim
                 if (!isAllow) {
@@ -222,6 +201,36 @@
 
                     skeletonGlobalMethod.setGlobal('up', __tooltipUp);
                     skeletonGlobalMethod.setGlobal('move', __tooltipMove);
+                }
+                else {
+                    // Icon sahneye eklendiğinde, ilgili datanın detaylarının görüntülenebilmesi için tıklama ekliyoruz
+                    // Tıklama yapıldığında detayları göster
+                    clone.setBind('click', pathMethod.showPathDetails);
+
+                    // Icon üzerine gelindiğinde görünecek mesajı görüntüleyelim
+                    clone.setBind('mouseover', function (e) {
+                        tooltip.message('Detaylar için tıklayın<span style=\'font-size:11px; display:block;\'> Kaydı silmek için fare ile sağ tıklayın</span>', { ev: e });
+                    });
+
+                    // Sağ tuş özelliği ekleyelim
+                    clone.setBind('contextmenu', contextmenu);
+
+
+                    // Nesneyi seçilen nesne olarak işaretle
+                    _.selectedObject = clone;
+
+                    // Sürüklenebileceğini belirt
+                    _.objectIsDragable = true;
+
+                    // Sürüklenme esnasındaki ilk konumunu ayarla
+                    skeletonGlobalMethod.onPress(a);
+
+                    // Nesneyi sahneye ekle
+                    _.container.appendChild(clone);
+                    
+                    // Veritabanını güncelle
+                    _.savechanges();
+
                 }
 
             }
