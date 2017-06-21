@@ -41,6 +41,7 @@
         // keyname.section : hangi querystring adında görünecekse dizi değişken içine parametre olarak eklenmeli. Herhangi bir yere bağlı değilse "[]" ile boş bırakılmalı. 
         // keyname.data : resim dosyasının base64 formatındaki kodu. Eğer nesne/buton menüde gösterilmeyecekse data adı listeden silinmesi yeterli olacaktır
         // keyname.url : nesne sahne üzerine bırakıldığında açılacak olan html dosyanın URL adresi. Eğer URL yoksa isim tanımlanmamalı
+        // keyname.clone : bu nesne, ilgili menu sayfaya oluşturulduğunda ki nesnemiz. Bu nesneyi klonlayarak sayfada göstereceğiz. tekrar tekrar oluşturmayalım diye bu alana aktarılacak
 
         menu.data = {
 

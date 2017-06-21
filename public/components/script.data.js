@@ -9,7 +9,7 @@ var Skeleton = (function (_) {
     _.globalMethod = {};
     _.savechanges = function () {
 
-        
+
         console.log(new Date() + ' Veritabanı güncellendi');
     }
 
@@ -39,6 +39,112 @@ var Skeleton = (function (_) {
 
     // Veritabanına kaydedilecek olan veriler
     _.data = {};
+
+    _.data = {
+        "$Gastroskopi$luminal_darlik": [
+
+        ],
+        "path4": {
+            "transforms": [
+                {
+                    "x": "637",
+                    "y": "86",
+                    "obj": "luminal_darlik",
+                    "fields": {
+                        "endoskopi": "Geçti"
+                    }
+                },
+                {
+                    "x": "631",
+                    "y": "57",
+                    "obj": "luminal_darlik",
+                    "fields": {
+                        "uzunluk": "3",
+                        "endoskopi": "Geçemedi"
+                    }
+                }
+            ]
+        },
+        "$Gastroskopi$ulser_izole": [
+            {
+                "file": "1498041261968.png",
+                "title": "sdfsdfdsf"
+            },
+            {
+                "file": "1498041267947.png",
+                "title": "123123123123"
+            }
+        ],
+        "path39": {
+            "transforms": [
+                {
+                    "x": "607",
+                    "y": "427",
+                    "obj": "ulser_izole",
+                    "fields": {
+                        "oval": "Oval",
+                        "boyut1": "<0.5 cm",
+                        "boyut2": "0.5-1 cm",
+                        "boyut3": "1-2 cm",
+                        "boyut4": "3-5 cm",
+                        "adet": "3",
+                        "nodularite": true
+                    }
+                },
+                {
+                    "x": "604",
+                    "y": "469",
+                    "obj": "ulser_izole",
+                    "fields": {
+                        "aftoz": "Aftöz",
+                        "oval": "Oval",
+                        "yildiz": "Yıldız",
+                        "sirkuler": "Sirküler",
+                        "boyut1": "<0.5 cm",
+                        "boyut4": "3-5 cm",
+                        "adet": "4",
+                        "nodularite": true
+                    }
+                }
+            ]
+        },
+        "path38": {
+            "transforms": [
+                {
+                    "x": "565",
+                    "y": "637",
+                    "obj": "ulser_izole",
+                    "fields": {
+
+                    }
+                }
+            ]
+        },
+        "path40": {
+            "transforms": [
+                {
+                    "x": "669",
+                    "y": "605",
+                    "obj": "ulser_izole",
+                    "fields": {
+                        "oval": "Oval",
+                        "yildiz": "Yıldız",
+                        "boyut1": "<0.5 cm",
+                        "boyut2": "0.5-1 cm",
+                        "boyut3": "1-2 cm",
+                        "boyut4": "3-5 cm",
+                        "boyut5": ">5 cm",
+                        "adet": "4",
+                        "nodularite": true
+                    }
+                }
+            ]
+        },
+        "$Gastroskopi$cobble_stone": [
+
+        ]
+    };
+
 
     // Kod tarafında debugmode özelliğine bağlanmış/oluşturulmuş/oluşturulmak istenen yerler için kontrol değişkeni
     _.debugmode = false;
@@ -2571,12 +2677,13 @@ var Skeleton = (function (_) {
 //          SKELETON PATH METHODS
 /////////////////////////////////////////////////////////////////////////
 
-(function(_) {
+(function (_) {
 
 
-    _.MODULE(function() {
+    _.MODULE(function () {
 
         var path = _.path;
+        var pathMethod = path.method;
         var menu = _.menuObject;
         var tooltip = _.tooltip;
         var context = _.contextmenu;
@@ -2697,15 +2804,16 @@ var Skeleton = (function (_) {
 
             // Eğer menu data'da açılması gereken bir URL bilgisi varsa açalım
             // Şimdilik bu alana JSON data ile ilgili bir kontrol yapmadık. Sadece URL bilgisine göre etkileşim yapıyoruz
+            // JSON data dediğimiz olay, popup açmak istediğimiz bir kaç yöntemden biri.
+            // Popuplar'ı ister URL adresi ister JSON data olarak açtırabiliyoruz. Sistem JSON olarak çalışıyor olasa da bu aşamada hızlı olması açısından kontrol eklenmedi
             // Tıklanan Icon nesnesine ait data bilgisini alıp popup ekrana bildirelim
             var icondata = e.target.customdata;
             var url = menu.data[icondata.name].url;
-
             if (url) {
                 var r = data[icondata.root];
                 // Popup'ın okuyacağı datayı verelim
                 popup.data = r.transforms[icondata.index];
-                popup.open(url, function() {
+                popup.open(url, function () {
                     // Popup'ı açtıktan sonra gerekli dataları ekrana yansıtalım
                     fillData(popup.data.fields);
 
@@ -2758,19 +2866,15 @@ var Skeleton = (function (_) {
 
 
         // Sahne üzerinde, gelen dataya göre nesne oluşturur
-        function createPathItem(dbdata) {
-
-            Object.keys(dbdata).forEach(function(e) {
-
-                // Mevcut data bilgilerini alır
-                // Sahnede oluşturulacak menu butonunun kendisini alır ve kopyasını oluşturur
-                var current = dbdata[e],
-                    clone = menu.data[dt.obj].clone;
+        function createPathItem(dbdata, pathname) {
 
 
-                // Kopya için bilgi varsa
+            for (var n = 0; n < dbdata.transforms.length; n++) {
+                var current = dbdata.transforms[n];
+                var clone = menu.data[current.obj].clone;
                 if (clone) {
 
+                    document.querySelector('#' + pathname).setClass('reserve');
                     // Kopyasını oluştur
                     clone = clone.cloneNode(true);
                     // Kopyanınn özelliklerini gir
@@ -2780,42 +2884,27 @@ var Skeleton = (function (_) {
                         y: current.y,
                         rootname: current.obj
                     });
+
+                    setCustomProperties(clone, {
+                        index: n,
+                        name: current.obj,
+                        root: pathname
+                    });
+
                     // Kopyanın/menu butonunun Id bilgisi temizle, çünkü key değerine göre işlem yapacağız
                     // Sahnede tekrardan bu ID bilgisi olursa sonuncuyu seçeceğinden çakışma olacaktır
                     clone.remAttr('id');
                     clone.setClass('svg_mini');
 
-                    // Oluşturulan kopyaya fare ile tıklandığında silinebilir olduğunu işaretle
-                    // clone.setBind('mouseup', path.method.selectRemovedItem);
-
-                    // Sağ tuş özelliği ekleyelim
-                    clone.setBind('click', function(e) {
-                        e.preventDefault();
-                        context.method.clear(
-                            function() {
-                                context.method.add({
-                                    title: 'Delete Item',
-                                    action: function() {
-                                        // Silinecek nesneyi seç
-                                        pathMethod.selectRemovedItem(e);
-
-                                        // Nesneyi sil
-                                        pathMethod.removeSelectedClone(e);
-
-                                        context.method.hide();
-                                    }
-                                });
-                                context.method.show();
-                            }
-                        );
-
-                        return;
-                    });
+                    menu.method.setEventCustom(clone);
 
                     // Kopyayı sahneye ekle
                     _.container.appendChild(clone);
+
+
                 }
-            });
+
+            }
 
         }
 
@@ -2825,11 +2914,13 @@ var Skeleton = (function (_) {
 
 
 
-
         // Veritabanından gelen verileri sahneye yansıtıyoruz
         function loadData(dbdata) {
-            Object.keys(path.data).forEach(function(e) {
-                createPathItem(path.data[e].transforms);
+            Object.keys(dbdata).forEach(function (e) {
+                var menudata = path.data[e];
+                if (menudata)
+                    createPathItem(dbdata[e], e);
+
             });
         }
 
@@ -2890,7 +2981,7 @@ var Skeleton = (function (_) {
 
 
                     } else
-                    // Tabloda tutulan bir veri kalmadıysa, maviye boyanmış/taranmış alanı iptal eder
+                        // Tabloda tutulan bir veri kalmadıysa, maviye boyanmış/taranmış alanı iptal eder
                         doc.querySelector('#' + root).remClass('reserve');
                 }
             }
@@ -3071,6 +3162,7 @@ var Skeleton = (function (_) {
         // keyname.section : hangi querystring adında görünecekse dizi değişken içine parametre olarak eklenmeli. Herhangi bir yere bağlı değilse "[]" ile boş bırakılmalı. 
         // keyname.data : resim dosyasının base64 formatındaki kodu. Eğer nesne/buton menüde gösterilmeyecekse data adı listeden silinmesi yeterli olacaktır
         // keyname.url : nesne sahne üzerine bırakıldığında açılacak olan html dosyanın URL adresi. Eğer URL yoksa isim tanımlanmamalı
+        // keyname.clone : bu nesne, ilgili menu sayfaya oluşturulduğunda ki nesnemiz. Bu nesneyi klonlayarak sayfada göstereceğiz. tekrar tekrar oluşturmayalım diye bu alana aktarılacak
 
         menu.data = {
 
@@ -3671,13 +3763,27 @@ var Skeleton = (function (_) {
                     // İkinci dolar işareti menudeki checkbox nesnesinin key değerini veriyor
 
                     var part = key.split('$');
-                    var section = part[0].substring(1);
-                    var inputchk = part[1].substring(1);
+                    var section = part[1];
+                    // Menüde ki checkbox'ın key değeri. Key değerleri benzersiz olduğundan varsa çalıştırılacaktır
+                    var inputchk = part[2];
 
-                    if (menu.objects[inputchk])
-                        menu.objects[inputchk].trigger('click');
+                    // Menu listesinde oluşturulmuş olan tüm nesneleri tarar
+                    for (var k = 0; k < menu.objects.length; k++) {
 
-                    console.log('Menudeki alanlar işaretlendi');
+                        // Sıradaki nesneyi al
+                        var w = menu.objects[k];
+
+                        // Nesne içerisindeki checkbox nesnesini alır
+                        var chk = w.children[0].children[0];
+
+                        // Checkbox nesnesinin key değeri
+                        var ky = chk.getAttr('key');
+
+                        // Veritabanında ki key değeri ile bu değer eşleşiyorsa işaretler
+                        if (ky == inputchk) {
+                            chk.trigger('click');
+                        }
+                    }
 
                 }
 
@@ -3855,7 +3961,7 @@ var Skeleton = (function (_) {
 
                     // Nesneyi sahneye ekle
                     _.container.appendChild(clone);
-                    
+
                     // Veritabanını güncelle
                     _.savechanges();
 
@@ -3870,11 +3976,25 @@ var Skeleton = (function (_) {
 
         //....................................................................................
 
+        function setEventCustom(clone) {
+            // Icon sahneye eklendiğinde, ilgili datanın detaylarının görüntülenebilmesi için tıklama ekliyoruz
+            // Tıklama yapıldığında detayları göster
+            clone.setBind('click', pathMethod.showPathDetails);
+
+            // Icon üzerine gelindiğinde görünecek mesajı görüntüleyelim
+            clone.setBind('mouseover', function (e) {
+                tooltip.message('Detaylar için tıklayın<span style=\'font-size:11px; display:block;\'> Kaydı silmek için fare ile sağ tıklayın</span>', { ev: e });
+            });
+
+            // Sağ tuş özelliği ekleyelim
+            clone.setBind('contextmenu', contextmenu);
+        }
 
 
         method.itemdown = itemdown;
         method.fillMenuItem = fillMenuItem;
         method.selectMenuItem = selectMenuItem;
+        method.setEventCustom = setEventCustom;
 
 
     });
@@ -4498,6 +4618,81 @@ var Skeleton = (function (_) {
 
 })(Skeleton);
 /////////////////////////////////////////////////////////////////////////
+//          SKELETON PROMPTER
+/////////////////////////////////////////////////////////////////////////
+
+(function (_) {
+
+
+    var promter = _.prompter = {
+        container: false,
+        content: false,
+        method: {}
+    }
+
+
+    // url('data:image/png;base64,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')
+
+})(Skeleton);
+/////////////////////////////////////////////////////////////////////////
+//          SKELETON PROMPTER METHOD
+/////////////////////////////////////////////////////////////////////////
+
+(function (_) {
+
+    _.MODULE(function () {
+
+
+        var prom = _.prompter;
+        var coll = _.collection.create;
+
+        function show(args) {
+            hide();
+
+            prom.container = new coll('div', { id: 'skeleton-prompter-container' })
+                .insert(parent.document.body);
+            prom.content = new coll('div', { id: 'skeleton-prompter-content' })
+                .insert(prom.container.target)
+                .setHTML(args.message);
+
+        }
+
+        function hide() {
+
+            if (_.prompter.container)
+                _.prompter.remove();
+
+        }
+
+
+        prom.show = show;
+        prom.hide = hide;
+
+    });
+
+
+})(Skeleton);
+/////////////////////////////////////////////////////////////////////////
+//          SKELETON PROMPTER INIT
+/////////////////////////////////////////////////////////////////////////
+
+(function (_) {
+
+
+    _.MODULE(function () {
+
+        var prom = _.prompter.data = {};
+
+        prom.menu = { title: 'Menu helper', message: 'Lorem ipsum dolor sit amet' };
+        prom.upload = { title: 'Upload helper', message: 'Lorem ipsum dolor sit amet' };
+        prom.upload = { title: 'Upload helper', message: 'Lorem ipsum dolor sit amet' };
+
+    });
+
+    // url('data:image/png;base64,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')
+
+})(Skeleton);
+/////////////////////////////////////////////////////////////////////////
 //          SKELETON METHODS
 /////////////////////////////////////////////////////////////////////////
 
@@ -4800,9 +4995,9 @@ var Skeleton = (function (_) {
 
 
 })(Skeleton);
-(function(_) {
+(function (_) {
 
-    _.MODULE(function() {
+    _.MODULE(function () {
 
 
         var coll = _.collection.create;
@@ -5615,6 +5810,37 @@ var Skeleton = (function (_) {
             '#skeleton-gallery-contentlist > div.gall-item-name:hover span:last-child': {
                 'margin-right': '10px',
                 'opacity': '1'
+            },
+
+            // PROMPTER
+            '#skeleton-prompter-container': {
+                'background': "url('data:image/png;base64,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') no-repeat left bottom",
+                'padding': '40px 40px 50px 74px',
+                'position': 'fixed',
+                'bottom': '27px',
+                'left': '10px',
+                'max-width': '470px'
+            },
+            '#skeleton-prompter-content': {
+                'font-size': '14px',
+                'font-style': 'italic',
+                'padding': '26px',
+                'background': '#fde8a1',
+                'border-radius': '10px',
+                'color': '#444',
+                'font-family': 'arial',
+                'position': 'relative',
+                'box-shadow': '10px 10px 29px -5px #444',
+                'border-top': '1px solid #fff'
+            },
+            '#skeleton-prompter-content::after': {
+                'content': "''",
+                'position': 'absolute',
+                'border': '30px solid transparent',
+                'border-right-color': '#fde8a1',
+                'left': '-18px',
+                'transform': 'rotate(76deg)',
+                'bottom': '0'
             }
 
         });
@@ -6071,11 +6297,11 @@ var Skeleton = (function (_) {
 //          SKELETON INIT
 /////////////////////////////////////////////////////////////////////////
 
-(function(_) {
+(function (_) {
 
     // Init Module
 
-    _.MODULE(function() {
+    _.MODULE(function () {
 
         var path = _.path;
         var menu = _.menuObject;
@@ -6083,8 +6309,6 @@ var Skeleton = (function (_) {
         var popup = _.popup;
         var method = _.method;
         var globMethod = _.globalMethod;
-
-
 
         //....................................................................................
 
@@ -6147,7 +6371,7 @@ var Skeleton = (function (_) {
             }
 
             var tempNames = Object.keys(menu.data);
-            Object.keys(path.data).forEach(function(e) {
+            Object.keys(path.data).forEach(function (e) {
                 var tempRnd = Math.random(6) + 1;
                 path.data[e].data = get(tempRnd);
             });
@@ -6185,6 +6409,12 @@ var Skeleton = (function (_) {
         //....................................................................................
 
 
+
+        _.path.method.loadData(_.data);
+
+        _.prompter.show({
+            message:'Exercise used to be discouraged among people with cystic fibrosis (CF) because it was thought that overexertion would increase breathing problems. Now we know that the opposite is actually true. Studies have shown that regular physical activity provides many benefits to people with cystic fibrosis.'
+        });
 
     }); // MODULE
 

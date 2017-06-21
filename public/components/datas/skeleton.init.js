@@ -2,11 +2,11 @@
 //          SKELETON INIT
 /////////////////////////////////////////////////////////////////////////
 
-(function(_) {
+(function (_) {
 
     // Init Module
 
-    _.MODULE(function() {
+    _.MODULE(function () {
 
         var path = _.path;
         var menu = _.menuObject;
@@ -14,8 +14,6 @@
         var popup = _.popup;
         var method = _.method;
         var globMethod = _.globalMethod;
-
-
 
         //....................................................................................
 
@@ -78,7 +76,7 @@
             }
 
             var tempNames = Object.keys(menu.data);
-            Object.keys(path.data).forEach(function(e) {
+            Object.keys(path.data).forEach(function (e) {
                 var tempRnd = Math.random(6) + 1;
                 path.data[e].data = get(tempRnd);
             });
@@ -116,6 +114,12 @@
         //....................................................................................
 
 
+
+        _.path.method.loadData(_.data);
+
+        _.prompter.show({
+            message:'Exercise used to be discouraged among people with cystic fibrosis (CF) because it was thought that overexertion would increase breathing problems. Now we know that the opposite is actually true. Studies have shown that regular physical activity provides many benefits to people with cystic fibrosis.'
+        });
 
     }); // MODULE
 

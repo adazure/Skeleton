@@ -43,13 +43,27 @@
                     // İkinci dolar işareti menudeki checkbox nesnesinin key değerini veriyor
 
                     var part = key.split('$');
-                    var section = part[0].substring(1);
-                    var inputchk = part[1].substring(1);
+                    var section = part[1];
+                    // Menüde ki checkbox'ın key değeri. Key değerleri benzersiz olduğundan varsa çalıştırılacaktır
+                    var inputchk = part[2];
 
-                    if (menu.objects[inputchk])
-                        menu.objects[inputchk].trigger('click');
+                    // Menu listesinde oluşturulmuş olan tüm nesneleri tarar
+                    for (var k = 0; k < menu.objects.length; k++) {
 
-                    console.log('Menudeki alanlar işaretlendi');
+                        // Sıradaki nesneyi al
+                        var w = menu.objects[k];
+
+                        // Nesne içerisindeki checkbox nesnesini alır
+                        var chk = w.children[0].children[0];
+
+                        // Checkbox nesnesinin key değeri
+                        var ky = chk.getAttr('key');
+
+                        // Veritabanında ki key değeri ile bu değer eşleşiyorsa işaretler
+                        if (ky == inputchk) {
+                            chk.trigger('click');
+                        }
+                    }
 
                 }
 
@@ -227,7 +241,7 @@
 
                     // Nesneyi sahneye ekle
                     _.container.appendChild(clone);
-                    
+
                     // Veritabanını güncelle
                     _.savechanges();
 
@@ -242,11 +256,25 @@
 
         //....................................................................................
 
+        function setEventCustom(clone) {
+            // Icon sahneye eklendiğinde, ilgili datanın detaylarının görüntülenebilmesi için tıklama ekliyoruz
+            // Tıklama yapıldığında detayları göster
+            clone.setBind('click', pathMethod.showPathDetails);
+
+            // Icon üzerine gelindiğinde görünecek mesajı görüntüleyelim
+            clone.setBind('mouseover', function (e) {
+                tooltip.message('Detaylar için tıklayın<span style=\'font-size:11px; display:block;\'> Kaydı silmek için fare ile sağ tıklayın</span>', { ev: e });
+            });
+
+            // Sağ tuş özelliği ekleyelim
+            clone.setBind('contextmenu', contextmenu);
+        }
 
 
         method.itemdown = itemdown;
         method.fillMenuItem = fillMenuItem;
         method.selectMenuItem = selectMenuItem;
+        method.setEventCustom = setEventCustom;
 
 
     });

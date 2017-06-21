@@ -2,12 +2,13 @@
 //          SKELETON PATH METHODS
 /////////////////////////////////////////////////////////////////////////
 
-(function(_) {
+(function (_) {
 
 
-    _.MODULE(function() {
+    _.MODULE(function () {
 
         var path = _.path;
+        var pathMethod = path.method;
         var menu = _.menuObject;
         var tooltip = _.tooltip;
         var context = _.contextmenu;
@@ -128,15 +129,16 @@
 
             // Eğer menu data'da açılması gereken bir URL bilgisi varsa açalım
             // Şimdilik bu alana JSON data ile ilgili bir kontrol yapmadık. Sadece URL bilgisine göre etkileşim yapıyoruz
+            // JSON data dediğimiz olay, popup açmak istediğimiz bir kaç yöntemden biri.
+            // Popuplar'ı ister URL adresi ister JSON data olarak açtırabiliyoruz. Sistem JSON olarak çalışıyor olasa da bu aşamada hızlı olması açısından kontrol eklenmedi
             // Tıklanan Icon nesnesine ait data bilgisini alıp popup ekrana bildirelim
             var icondata = e.target.customdata;
             var url = menu.data[icondata.name].url;
-
             if (url) {
                 var r = data[icondata.root];
                 // Popup'ın okuyacağı datayı verelim
                 popup.data = r.transforms[icondata.index];
-                popup.open(url, function() {
+                popup.open(url, function () {
                     // Popup'ı açtıktan sonra gerekli dataları ekrana yansıtalım
                     fillData(popup.data.fields);
 
@@ -189,19 +191,15 @@
 
 
         // Sahne üzerinde, gelen dataya göre nesne oluşturur
-        function createPathItem(dbdata) {
-
-            Object.keys(dbdata).forEach(function(e) {
-
-                // Mevcut data bilgilerini alır
-                // Sahnede oluşturulacak menu butonunun kendisini alır ve kopyasını oluşturur
-                var current = dbdata[e],
-                    clone = menu.data[dt.obj].clone;
+        function createPathItem(dbdata, pathname) {
 
 
-                // Kopya için bilgi varsa
+            for (var n = 0; n < dbdata.transforms.length; n++) {
+                var current = dbdata.transforms[n];
+                var clone = menu.data[current.obj].clone;
                 if (clone) {
 
+                    document.querySelector('#' + pathname).setClass('reserve');
                     // Kopyasını oluştur
                     clone = clone.cloneNode(true);
                     // Kopyanınn özelliklerini gir
@@ -211,42 +209,27 @@
                         y: current.y,
                         rootname: current.obj
                     });
+
+                    setCustomProperties(clone, {
+                        index: n,
+                        name: current.obj,
+                        root: pathname
+                    });
+
                     // Kopyanın/menu butonunun Id bilgisi temizle, çünkü key değerine göre işlem yapacağız
                     // Sahnede tekrardan bu ID bilgisi olursa sonuncuyu seçeceğinden çakışma olacaktır
                     clone.remAttr('id');
                     clone.setClass('svg_mini');
 
-                    // Oluşturulan kopyaya fare ile tıklandığında silinebilir olduğunu işaretle
-                    // clone.setBind('mouseup', path.method.selectRemovedItem);
-
-                    // Sağ tuş özelliği ekleyelim
-                    clone.setBind('click', function(e) {
-                        e.preventDefault();
-                        context.method.clear(
-                            function() {
-                                context.method.add({
-                                    title: 'Delete Item',
-                                    action: function() {
-                                        // Silinecek nesneyi seç
-                                        pathMethod.selectRemovedItem(e);
-
-                                        // Nesneyi sil
-                                        pathMethod.removeSelectedClone(e);
-
-                                        context.method.hide();
-                                    }
-                                });
-                                context.method.show();
-                            }
-                        );
-
-                        return;
-                    });
+                    menu.method.setEventCustom(clone);
 
                     // Kopyayı sahneye ekle
                     _.container.appendChild(clone);
+
+
                 }
-            });
+
+            }
 
         }
 
@@ -256,11 +239,13 @@
 
 
 
-
         // Veritabanından gelen verileri sahneye yansıtıyoruz
         function loadData(dbdata) {
-            Object.keys(path.data).forEach(function(e) {
-                createPathItem(path.data[e].transforms);
+            Object.keys(dbdata).forEach(function (e) {
+                var menudata = path.data[e];
+                if (menudata)
+                    createPathItem(dbdata[e], e);
+
             });
         }
 
@@ -321,7 +306,7 @@
 
 
                     } else
-                    // Tabloda tutulan bir veri kalmadıysa, maviye boyanmış/taranmış alanı iptal eder
+                        // Tabloda tutulan bir veri kalmadıysa, maviye boyanmış/taranmış alanı iptal eder
                         doc.querySelector('#' + root).remClass('reserve');
                 }
             }
