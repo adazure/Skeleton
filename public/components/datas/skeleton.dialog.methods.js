@@ -54,7 +54,6 @@
 
         function prompt(args) {
 
-
             show({
                 title: args.title,
                 button1: {
@@ -69,8 +68,9 @@
                 .setCSS('width', '100%')
                 .insert(dialog.content.target);
 
-
         }
+
+
 
         //....................................................................................
 
