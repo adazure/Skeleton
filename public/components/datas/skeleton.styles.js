@@ -53,6 +53,13 @@
                 'padding': '30px',
                 'text-align': 'center'
             },
+            '#skeleton-dialog-title': {
+                'text-align': 'center',
+                'padding': '10px 0',
+                'border-bottom': '1px solid #ddd',
+                'background': '#eee',
+                'font-weight': 'bold'
+            },
             '#skeleton-dialog-footer': {
                 'border-top': '1px solid #ddd',
                 'text-align': 'center',

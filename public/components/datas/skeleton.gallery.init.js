@@ -12,6 +12,7 @@
         var coll = _.collection.create;
         var helper = _.helper;
         var menu = _.menuObject;
+        var dialog = _.dialog;
 
 
         //....................................................................................
@@ -159,6 +160,7 @@
 
 
                                     // Veritabanı tablosuna kayıt yapalım
+                                    // Önce gerekli bilgileri alalım
                                     var key = menu.selectedMenuItem.getAttr('key');
                                     var grow = helper.method.getCustomizeUpload() + key;
                                     var dta = _.data[grow];
@@ -170,13 +172,10 @@
                                     } else if (dta.length == 0)
                                         gall.method.clear();
 
-                                    // Kaydedilen dosyaya ait bilgiyi ekrana yansıtalım
-                                    // result.uploadFile
-                                    // result.sourceFile 
-
+                                    // Hem veritabanı hem de ekrana yansıtılacak veriler
                                     var src = {
                                         file: result.sourceFile,
-                                        title: 'lorem ipsum dolor'
+                                        title: 'Yeni Dosya'
                                     };
 
                                     // Tabloya kayıt
@@ -205,6 +204,28 @@
 
                                     }, 1000);
 
+
+                                    // Dosya yüklendi ancak bir isim yazılmadı. Kullanıcıdan dosya için başlık isteyelim
+                                    dialog.prompt({
+                                        title: 'Dosya için bir başlık yazın',
+                                        button1: {
+                                            text: 'KAYDET',
+                                            action: function(ev, obj) {
+
+
+                                                // Bu alanda; hem veritabanı hem de listedeki kaydı güncellememiz gerekiyor
+                                                // Önce veritabanında ki alanı bulalım ve güncelleyelim
+                                                // Mantık olarak yüklenen son kaydı alıp değiştiriyoruz
+                                                _.data[grow][_.data[grow].length - 1].title = obj.target.value;
+
+                                                // Şimdi listedeki alanı bulup güncelleyelim
+                                                __item.target.children[0].innerHTML = obj.target.value;
+
+                                                dialog.hide();
+
+                                            }
+                                        }
+                                    });
 
 
                                 } else {

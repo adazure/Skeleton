@@ -1422,10 +1422,15 @@ var Skeleton = (function(_) {
         // Yüklenen dosya silmek istendiğinde çalıştırılacak
         function removeFile(e) {
 
+
+            // Veritabanından bilgileri silmek için dataları alalım
+            var repo = e.target.__removeSource;
+            var indx = _.data[repo.root].indexOf(repo.item);
+
             // Silmeden önce bir uyarı penceresi çıkaralım
             dialog.show({
-                title: '',
-                content: "Dosya'yı silmek istiyor musunuz?",
+                title: 'Dosya silme işlemi',
+                content: "<b>" + repo.item.title + "</b><br/>" + repo.item.file + "<p>Dosya'yı silmek istiyor musunuz?</p>",
 
                 // Sil dediğinde yapılacak işlemler
                 button1: {
@@ -1454,9 +1459,7 @@ var Skeleton = (function(_) {
                                             // Sadece silindiyse bir takım işlemler yapalım
                                             if (result.number == 200) {
 
-                                                // Veritabanından bilgileri silmek için dataları alalım
-                                                var repo = e.target.__removeSource;
-                                                var indx = _.data[repo.root].indexOf(repo.item);
+
                                                 // Data veritabanında var sil
                                                 if (indx != -1) {
                                                     _.data[repo.root].splice(indx, 1);
@@ -1590,6 +1593,7 @@ var Skeleton = (function(_) {
         var coll = _.collection.create;
         var helper = _.helper;
         var menu = _.menuObject;
+        var dialog = _.dialog;
 
 
         //....................................................................................
@@ -1737,6 +1741,7 @@ var Skeleton = (function(_) {
 
 
                                     // Veritabanı tablosuna kayıt yapalım
+                                    // Önce gerekli bilgileri alalım
                                     var key = menu.selectedMenuItem.getAttr('key');
                                     var grow = helper.method.getCustomizeUpload() + key;
                                     var dta = _.data[grow];
@@ -1748,13 +1753,10 @@ var Skeleton = (function(_) {
                                     } else if (dta.length == 0)
                                         gall.method.clear();
 
-                                    // Kaydedilen dosyaya ait bilgiyi ekrana yansıtalım
-                                    // result.uploadFile
-                                    // result.sourceFile 
-
+                                    // Hem veritabanı hem de ekrana yansıtılacak veriler
                                     var src = {
                                         file: result.sourceFile,
-                                        title: 'lorem ipsum dolor'
+                                        title: 'Yeni Dosya'
                                     };
 
                                     // Tabloya kayıt
@@ -1783,6 +1785,28 @@ var Skeleton = (function(_) {
 
                                     }, 1000);
 
+
+                                    // Dosya yüklendi ancak bir isim yazılmadı. Kullanıcıdan dosya için başlık isteyelim
+                                    dialog.prompt({
+                                        title: 'Dosya için bir başlık yazın',
+                                        button1: {
+                                            text: 'KAYDET',
+                                            action: function(ev, obj) {
+
+
+                                                // Bu alanda; hem veritabanı hem de listedeki kaydı güncellememiz gerekiyor
+                                                // Önce veritabanında ki alanı bulalım ve güncelleyelim
+                                                // Mantık olarak yüklenen son kaydı alıp değiştiriyoruz
+                                                _.data[grow][_.data[grow].length - 1].title = obj.target.value;
+
+                                                // Şimdi listedeki alanı bulup güncelleyelim
+                                                __item.target.children[0].innerHTML = obj.target.value;
+
+                                                dialog.hide();
+
+                                            }
+                                        }
+                                    });
 
 
                                 } else {
@@ -2050,7 +2074,12 @@ var Skeleton = (function(_) {
 
         function show(args) {
             create(args);
-            dialog.content.setHTML(args.content);
+            if (args.content)
+                dialog.content.setHTML(args.content);
+
+            if (args.title)
+                dialog.title.setHTML(args.title);
+
             if (dialog.button1) {
                 dialog.button1.setVal(args.button1.text);
                 dialog.button1.setBind('click', args.button1.action);
@@ -2072,17 +2101,36 @@ var Skeleton = (function(_) {
 
         function basic(title, message) {
             create({
-                title: title,
-                message: message,
-                button1: {
-                    text: 'TAMAM',
-                    action: hide
-                }
+                button1: true
             });
         }
 
 
         //....................................................................................
+
+
+        function prompt(args) {
+
+
+            show({
+                title: args.title,
+                button1: {
+                    text: args.button1.text,
+                    action: function(e) {
+                        args.button1.action(e, inp);
+                    }
+                }
+            });
+
+            var inp = new coll('input', { type: 'text', id: 'dialog-prompt-input' })
+                .setCSS('width', '100%')
+                .insert(dialog.content.target);
+
+
+        }
+
+        //....................................................................................
+
 
 
 
@@ -2113,6 +2161,11 @@ var Skeleton = (function(_) {
             // Görünen dialog penceresi
             dialog.container = new coll('div', { id: 'skeleton-dialog' })
                 .insert(parent.document.body);
+
+            // Dialog mesajının başlık
+            if (args.title)
+                dialog.title = new coll('div', { id: 'skeleton-dialog-title' })
+                .insert(dialog.container.target);
 
             // Dialog mesajının görünen kısmı
             dialog.content = new coll('div', { id: 'skeleton-dialog-content' })
@@ -2170,6 +2223,7 @@ var Skeleton = (function(_) {
         dialog.hide = hide;
         dialog.passive = passive;
         dialog.active = active;
+        dialog.prompt = prompt;
 
 
 
@@ -4769,6 +4823,13 @@ var Skeleton = (function(_) {
             '#skeleton-dialog-content': {
                 'padding': '30px',
                 'text-align': 'center'
+            },
+            '#skeleton-dialog-title': {
+                'text-align': 'center',
+                'padding': '10px 0',
+                'border-bottom': '1px solid #ddd',
+                'background': '#eee',
+                'font-weight': 'bold'
             },
             '#skeleton-dialog-footer': {
                 'border-top': '1px solid #ddd',

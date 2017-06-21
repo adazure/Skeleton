@@ -66,10 +66,15 @@
         // Yüklenen dosya silmek istendiğinde çalıştırılacak
         function removeFile(e) {
 
+
+            // Veritabanından bilgileri silmek için dataları alalım
+            var repo = e.target.__removeSource;
+            var indx = _.data[repo.root].indexOf(repo.item);
+
             // Silmeden önce bir uyarı penceresi çıkaralım
             dialog.show({
-                title: '',
-                content: "Dosya'yı silmek istiyor musunuz?",
+                title: 'Dosya silme işlemi',
+                content: "<b>" + repo.item.title + "</b><br/>" + repo.item.file + "<p>Dosya'yı silmek istiyor musunuz?</p>",
 
                 // Sil dediğinde yapılacak işlemler
                 button1: {
@@ -98,9 +103,7 @@
                                             // Sadece silindiyse bir takım işlemler yapalım
                                             if (result.number == 200) {
 
-                                                // Veritabanından bilgileri silmek için dataları alalım
-                                                var repo = e.target.__removeSource;
-                                                var indx = _.data[repo.root].indexOf(repo.item);
+
                                                 // Data veritabanında var sil
                                                 if (indx != -1) {
                                                     _.data[repo.root].splice(indx, 1);

@@ -17,7 +17,12 @@
 
         function show(args) {
             create(args);
-            dialog.content.setHTML(args.content);
+            if (args.content)
+                dialog.content.setHTML(args.content);
+
+            if (args.title)
+                dialog.title.setHTML(args.title);
+
             if (dialog.button1) {
                 dialog.button1.setVal(args.button1.text);
                 dialog.button1.setBind('click', args.button1.action);
@@ -39,17 +44,36 @@
 
         function basic(title, message) {
             create({
-                title: title,
-                message: message,
-                button1: {
-                    text: 'TAMAM',
-                    action: hide
-                }
+                button1: true
             });
         }
 
 
         //....................................................................................
+
+
+        function prompt(args) {
+
+
+            show({
+                title: args.title,
+                button1: {
+                    text: args.button1.text,
+                    action: function(e) {
+                        args.button1.action(e, inp);
+                    }
+                }
+            });
+
+            var inp = new coll('input', { type: 'text', id: 'dialog-prompt-input' })
+                .setCSS('width', '100%')
+                .insert(dialog.content.target);
+
+
+        }
+
+        //....................................................................................
+
 
 
 
@@ -80,6 +104,11 @@
             // Görünen dialog penceresi
             dialog.container = new coll('div', { id: 'skeleton-dialog' })
                 .insert(parent.document.body);
+
+            // Dialog mesajının başlık
+            if (args.title)
+                dialog.title = new coll('div', { id: 'skeleton-dialog-title' })
+                .insert(dialog.container.target);
 
             // Dialog mesajının görünen kısmı
             dialog.content = new coll('div', { id: 'skeleton-dialog-content' })
@@ -137,6 +166,7 @@
         dialog.hide = hide;
         dialog.passive = passive;
         dialog.active = active;
+        dialog.prompt = prompt;
 
 
 
