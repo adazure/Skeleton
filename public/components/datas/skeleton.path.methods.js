@@ -199,7 +199,8 @@
                 var clone = menu.data[current.obj].clone;
                 if (clone) {
 
-                    document.querySelector('#' + pathname).setClass('reserve');
+                    var p = document.querySelector('#' + pathname);
+                    p.setClass('reserve');
                     // Kopyasını oluştur
                     clone = clone.cloneNode(true);
                     // Kopyanınn özelliklerini gir
@@ -207,14 +208,21 @@
                         key: current.obj,
                         x: current.x,
                         y: current.y,
-                        rootname: current.obj
+                        rootname: pathname
                     });
 
                     setCustomProperties(clone, {
                         index: n,
                         name: current.obj,
-                        root: pathname
+                        root: pathname,
+                        path: p,
+                        x: current.x,
+                        y: current.y
                     });
+
+
+                    // Oluşturulan nesnelerin sayısını arttıralım
+                    menu.data[current.obj].count = menu.data[current.obj].count ? menu.data[current.obj].count + 1 : 1;
 
                     // Kopyanın/menu butonunun Id bilgisi temizle, çünkü key değerine göre işlem yapacağız
                     // Sahnede tekrardan bu ID bilgisi olursa sonuncuyu seçeceğinden çakışma olacaktır
@@ -253,6 +261,30 @@
 
         //....................................................................................
 
+        // Gelen root name değerindeki alanı veritabanından siler
+        function deletePathFromDB(source) {
+            source.path.remClass('reserve');
+            delete _.data[source.root];
+        }
+
+        //....................................................................................
+
+        // Gelen bilgilere göre ilgili root name alanından sadece bir kaydı siler
+        function deleteItemFromDB(data, source) {
+            var qindex = -1;
+            for (var i = 0, f = data.transforms; i < f.length; i++) {
+                if (f[i].x == source.x && f[i].y == source.y && f[i].obj == source.name) {
+                    qindex = i;
+                    break;
+                }
+            }
+
+            if (qindex != -1)
+                data.transforms.splice(qindex, 1);
+        }
+
+
+        //....................................................................................
 
 
 
@@ -264,11 +296,12 @@
             if (path.removedPath) {
 
                 // Silinecek nesnenin key değeri ve bağlı olduğu root değeri
-                var id = path.removedPath.getAttr('key');
-                var root = path.removedPath.getAttr('rootname');
+                var custom = path.removedPath.customdata
 
                 // Mutlak key değeri olmalı
-                if (id) {
+                if (custom.name) {
+
+                    var key = path.removedPath.getAttr('key');
 
                     // Clone nesneyi sahneden temizle
                     path.removedPath.parentNode.removeChild(path.removedPath);
@@ -277,37 +310,33 @@
                     path.removedPath = null;
 
                     // Silinen nesneyi veritabanı için tutulan tablodan silme aşaması
-                    var dta = data[root];
+                    var dta = data[custom.root];
+
+                    menu.data[key].count--;
+
+                    if (menu.data[key].count == 0) {
+                        _.prompter.show({
+                            title: 'Temizlendi',
+                            message: 'İskelet üzerinde hiç ' + menu.data[key].title + ' kalmadı. Ancak menüde hala işaretli bıraktık',
+                            closeVisible: false,
+                            timer:4000
+                        });
+                    }
+
                     // Data tablosunda bir bilgi varsa
                     if (dta) {
 
-                        // Kaydın bulunacağı pozisyon index değeri
-                        var removeItem = -1;
-
-
-                        // Veriyi bul
-                        for (var i = 0; i < dta.transforms.length; i++) {
-
-                            // Transform alanı nesnenin pozisyon değerleri ve adını tuttuğu için..
-                            // ..path nesnesinin dataları içinde pozisyonunu arıyoruz
-                            if (dta.transforms[i].obj == id)
-                                removeItem = i;
-                        }
-
-
-                        // Kayıt pozisyonu varsa 0 dan büyük olacağından sil
-                        if (removeItem != -1)
-                            dta.transforms.splice(removeItem, 1);
-
+                        deleteItemFromDB(dta, custom);
 
                         // İlgili Path ID nesnesine ait transform listesinde tutulan bir veri kalmadıysa, maviye boyanmış/taranmış alanı iptal eder
                         if (dta.transforms.length == 0)
-                            document.querySelector('#' + root).remClass('reserve');
+                            deletePathFromDB(custom);
 
+                    } else {
 
-                    } else
                         // Tabloda tutulan bir veri kalmadıysa, maviye boyanmış/taranmış alanı iptal eder
-                        doc.querySelector('#' + root).remClass('reserve');
+                        deletePathFromDB(custom);
+                    }
                 }
             }
         }

@@ -398,6 +398,7 @@ var Skeleton = (function (_) {
 
         function remClass(name) {
             var e = this.getAttr('class');
+            
             if (e) {
                 var a = e.split(' '),
                     b = a.indexOf(name);
@@ -1003,10 +1004,10 @@ var Skeleton = (function (_) {
 //          SKELETON COLLECTION METHODS
 /////////////////////////////////////////////////////////////////////////
 
-(function(_) {
+(function (_) {
 
 
-    _.MODULE(function() {
+    _.MODULE(function () {
 
         var global = _.globalWindowEvents;
 
@@ -1036,13 +1037,13 @@ var Skeleton = (function (_) {
 
             // Eğer Attribute özellikleri girilmesi istenirse hepsini ekler
             if (attr)
-                Object.keys(attr).forEach(function(key) {
+                Object.keys(attr).forEach(function (key) {
                     self.target.setAttr(key, attr[key]);
                 });
 
 
             // Methodları aktaralım
-            Object.keys(inc).forEach(function(ky) {
+            Object.keys(inc).forEach(function (ky) {
                 self[ky] = inc[ky];
             });
 
@@ -1059,7 +1060,7 @@ var Skeleton = (function (_) {
         // oluşturduğu bu elementin içinde target'deki oluşturulan nesneyi ekler. 
         // Kısaca target nesnesini başka bir nesne içine ekler/kapsar
         // <div>{target}</div>
-        inc.wrap = function(name, attr) {
+        inc.wrap = function (name, attr) {
             var t = new coll(name, attr);
             t.target.appendChild(this.target);
             return this;
@@ -1074,7 +1075,7 @@ var Skeleton = (function (_) {
 
 
         // .create(..) şeklinde çağırıldığında parent'deki nesneye name ile tanımlı yeni nesne ekler
-        inc.create = function(name, attr) {
+        inc.create = function (name, attr) {
             var t = new coll(name, attr);
             this.target.appendChild(t.target);
             return t;
@@ -1089,7 +1090,7 @@ var Skeleton = (function (_) {
 
 
         // .append(..) ile çağırıldığında obj(HTMLElement) ekler
-        inc.append = function(obj) {
+        inc.append = function (obj) {
             this.target.appendChild(obj);
             return this;
         }
@@ -1103,7 +1104,7 @@ var Skeleton = (function (_) {
 
 
         // nesnenin kendinisi istenen başka bir nesneye import eder
-        inc.insert = function(target) {
+        inc.insert = function (target) {
             target.appendChild(this.target);
             return this;
         }
@@ -1116,7 +1117,7 @@ var Skeleton = (function (_) {
 
 
         // .delete() ile çağırıldığında nesneyi siler
-        inc.remove = function() {
+        inc.remove = function () {
             if (this.target);
             this.target.parentNode.removeChild(this.target);
             return this;
@@ -1127,7 +1128,7 @@ var Skeleton = (function (_) {
         //....................................................................................
 
 
-        inc.setAttr = function(args) {
+        inc.setAttr = function (args) {
 
             this.target.setAttr(args);
             return this;
@@ -1138,7 +1139,7 @@ var Skeleton = (function (_) {
         //....................................................................................
 
 
-        inc.getAttr = function(name) {
+        inc.getAttr = function (name) {
 
             return this.target.getAttr(name);
 
@@ -1151,7 +1152,7 @@ var Skeleton = (function (_) {
 
 
         // Sınıf ekleme
-        inc.setClass = function(name) {
+        inc.setClass = function (name) {
 
             for (var i = 0, n = arguments; i < n.length; i++) {
                 this.target.setClass(n[i]);
@@ -1168,7 +1169,7 @@ var Skeleton = (function (_) {
 
 
         // Sınıf kaldır
-        inc.remClass = function(name) {
+        inc.remClass = function (name) {
 
             if (arguments.length == 1) {
                 if (this.target.className) {
@@ -1191,7 +1192,7 @@ var Skeleton = (function (_) {
         //....................................................................................
 
 
-        inc.isVisible = function() {
+        inc.isVisible = function () {
             return this.target.style.display ? this.target.style.display == 'none' ? false : 'true' : true;
         }
 
@@ -1201,7 +1202,7 @@ var Skeleton = (function (_) {
 
 
         // Olay dinleyici atanır
-        inc.setBind = function(name, action) {
+        inc.setBind = function (name, action) {
             this.target.setBind(name, action);
             return this;
         }
@@ -1215,7 +1216,7 @@ var Skeleton = (function (_) {
 
 
         // Olay dinleyici kaldırılır
-        inc.remBind = function(name, action) {
+        inc.remBind = function (name, action) {
             this.target.remBind(name, action);
             return this;
         }
@@ -1229,7 +1230,7 @@ var Skeleton = (function (_) {
 
 
         // Nesneye style değerleri arguman olarak eklenebilir
-        inc.setCSS = function(args) {
+        inc.setCSS = function (args) {
             this.target.setCSS(args);
             return this;
         }
@@ -1242,11 +1243,11 @@ var Skeleton = (function (_) {
 
 
         // Ana nesnenin altında bulunan nesnelere style="" attribute ile style değerleri atar
-        inc.setCSSChildren = function(args) {
+        inc.setCSSChildren = function (args) {
 
             for (var i = 0; i < this.target.children.length; i++) {
                 var ch = this.target.children[i];
-                Object.keys(args).forEach(function(key) {
+                Object.keys(args).forEach(function (key) {
                     ch.style[key] = args[key];
                 });
             }
@@ -1262,7 +1263,7 @@ var Skeleton = (function (_) {
 
 
         // Nesnenin value değerine parametre atar
-        inc.setVal = function(value) {
+        inc.setVal = function (value) {
             this.target.value = value;
             return this;
         }
@@ -1273,7 +1274,7 @@ var Skeleton = (function (_) {
 
 
         // Sayfa üzerinde ilgili nesneyi gösterir
-        inc.show = function() {
+        inc.show = function () {
 
             this.target.setCSS('display', 'block');
 
@@ -1284,7 +1285,7 @@ var Skeleton = (function (_) {
 
 
         // Sayfa üzerinde ilgili nesneyi gizler
-        inc.hide = function() {
+        inc.hide = function () {
 
             this.target.setCSS('display', 'none');
 
@@ -1294,7 +1295,7 @@ var Skeleton = (function (_) {
         //....................................................................................
 
 
-        inc.repeat = function(count, name, attr) {
+        inc.repeat = function (count, name, attr) {
 
             var self = this,
                 selfCount = this.target.children.count;
@@ -1317,7 +1318,7 @@ var Skeleton = (function (_) {
 
         // <Style>...</Style> nesneleri için global style tanımlamaları oluşturur
         // Global olarak 
-        inc.setSheet = function(name, value) {
+        inc.setSheet = function (name, value) {
             var self = this;
             if (arguments.length == 2) {
                 if (!name || !value) return self;
@@ -1332,7 +1333,7 @@ var Skeleton = (function (_) {
                 self.target.innerHTML += (name + json + '\n');
 
             } else if (arguments.length == 1) {
-                Object.keys(name).forEach(function(t) {
+                Object.keys(name).forEach(function (t) {
                     self.setSheet(t, name[t]);
                 });
             }
@@ -1343,7 +1344,7 @@ var Skeleton = (function (_) {
 
         //....................................................................................
 
-        inc.first = function() {
+        inc.first = function () {
             if (this.target.children == 0) throw ("Alt nesne bulunamadı");
             return this.target.children[0].__collectionData;
         }
@@ -1351,7 +1352,7 @@ var Skeleton = (function (_) {
 
         //....................................................................................
 
-        inc.last = function() {
+        inc.last = function () {
             if (this.target.children.length == 0) throw ("Alt nesne bulunamadı");
             return this.target.children[this.target.children.length - 1].__collectionData;
         }
@@ -1363,7 +1364,7 @@ var Skeleton = (function (_) {
         // ilgili elementin altındaki tüm elementlerin collection listesini verir
         // Gelen alt nesnelerin yalnızca ID ve Name özellikleri varsa alır, onun dışındakiler gözardı edilir
 
-        inc.children = function(index) {
+        inc.children = function (index) {
 
             if (index && typeof index == 'number') return this.target.children[index].__collectionData;
 
@@ -1385,7 +1386,7 @@ var Skeleton = (function (_) {
 
 
         // Html metin eklemek için
-        inc.setHTML = function(value) {
+        inc.setHTML = function (value) {
             this.target.innerHTML = value;
             return this;
         }
@@ -1396,7 +1397,7 @@ var Skeleton = (function (_) {
 
 
         // Checkbox ve Radio butonlar için işaretleme yapar
-        inc.setChecked = function(param) {
+        inc.setChecked = function (param) {
             this.target.checked = param;
             return this;
         }
@@ -1406,7 +1407,7 @@ var Skeleton = (function (_) {
 
 
         // Style Dosya import etmek için
-        inc.importLink = function(url) {
+        inc.importLink = function (url) {
             this.target.innerHTML += '@import url(' + url + ');';
             return this;
         }
@@ -1416,7 +1417,7 @@ var Skeleton = (function (_) {
 
 
         // Bulunduğu elementin bir üst katmanına oluşturur
-        inc.createParent = function(name, attr) {
+        inc.createParent = function (name, attr) {
             var t = new coll(name, attr);
             this.target.parentNode.appendChild(t.target);
             return t;
@@ -1425,6 +1426,13 @@ var Skeleton = (function (_) {
         //....................................................................................
 
 
+        inc.toggleClass = function (name) {
+            if (this.target.hasClass(name))
+                this.remClass(name);
+            else
+                this.setClass(name);
+            return this;
+        }
 
 
         _.collection.create = coll;
@@ -1526,6 +1534,30 @@ var Skeleton = (function (_) {
 
 
 
+
+        //....................................................................................
+
+
+
+        function show(nm) {
+
+            // Key değerine ait data bilgisini veritabanından çek
+            var fdata = _.data[helper.getCustomizeUpload() + nm];
+
+            // Upload için ekranı açalım
+            load(fdata);
+            gall.content.hide();
+            gall.container.show();
+            gall.contentList.hide();
+
+            setTimeout(function () {
+                gall.contentList.show();
+            }, 100);
+
+        }
+
+
+
         //....................................................................................
 
 
@@ -1577,19 +1609,36 @@ var Skeleton = (function (_) {
                                             if (result.number == 200) {
 
 
-                                                // Data veritabanında var sil
+                                                //console.log(repo.root);
+
+                                                // Data, veritabanında var ozaman sil
                                                 if (indx != -1) {
+                                                    // $Gastroskopi$cobble_stone
                                                     _.data[repo.root].splice(indx, 1);
                                                 }
 
-                                                // Eğer data da bir veri kalmadıysa silelim ve seçili menüyü sıfırlayalım
-                                                if (_.data[repo.root].length == 0) {
-                                                    delete _.data[repo.root];
+                                                // Checkbox'ı al
+                                                var chk = menu.selectedMenuItem.target.children[0].children[0];
 
-                                                    menu.selectedMenuItem.remClass('show', 'selected');
-                                                    var chk = menu.selectedMenuItem.target.children[0].children[0];
-                                                    chk.trigger('click');
+                                                // Checkbox'ın yanındaki ikon nesnesini al
+                                                var icon = menu.selectedMenuItem.target.children[1];
+
+                                                var key = chk.getAttr('key');
+
+                                                // Eğer data da bir veri kalmadıysa silelim ve seçili menüyü sıfırlayalım
+                                                if (_.data[repo.root].length == 0 && menu.data[key].count == 0) {
+                                                    delete _.data[repo.root];
+                                                    icon.remClass('menu-item-locked');
+                                                    _.prompter.show({
+                                                        message: [
+                                                            menu.data[key].title + ' için yüklenen dosyalar tamamen temizlendi. Bu alan için menüde hala aktif durumda. Dilerseniz işareti kaldırabilirsiniz ',
+                                                        ],
+                                                        timer: 6000,
+                                                        closeVisible: false
+                                                    });
                                                 }
+
+                                                menu.selectedMenuItem.remClass('show', 'selected');
 
 
                                                 // Upload ekranındaki listeden kaydı silelim
@@ -1663,7 +1712,6 @@ var Skeleton = (function (_) {
 
             // Tüm listeyi başlangıçta temizle
             clear();
-
             // Items Array nesnesi varsa işleme al
             if (items && items.length > 0) {
 
@@ -1691,6 +1739,7 @@ var Skeleton = (function (_) {
         method.add = add;
         method.clear = clear;
         method.load = load;
+        method.show = show;
 
 
     }); // MODULES
@@ -1911,7 +1960,7 @@ var Skeleton = (function (_) {
                                             text: 'KAYDET',
                                             action: function(ev, obj) {
 
-
+                                                if(!obj.target.value) return;
                                                 // Bu alanda; hem veritabanı hem de listedeki kaydı güncellememiz gerekiyor
                                                 // Önce veritabanında ki alanı bulalım ve güncelleyelim
                                                 // Mantık olarak yüklenen son kaydı alıp değiştiriyoruz
@@ -2389,20 +2438,21 @@ var Skeleton = (function (_) {
 
 
         var tooltip = _.tooltip;
-
+        var time = 0;
         function message(message, opts) {
 
             if (!message) return;
             opts = opts || { x: null, y: null, ev: parent.window.event };
             tooltip.container.target.setCSS({
-                left: (opts.x || opts.ev.pageX || parent.window.event.pageX) + 'px',
-                top: (opts.y || opts.ev.pageY || parent.window.event.pageY) + 'px'
+                left: (opts.x || opts.ev.pageX || parent.window.event.pageX) + 20 + 'px',
+                top: (opts.y || opts.ev.pageY || parent.window.event.pageY) + 20 + 'px'
             });
 
             tooltip.container.setHTML(message);
             show();
-
-            setTimeout(hide, 2500);
+            if(time)
+            clearTimeout(time);
+            time = setTimeout(hide, 2500);
         }
 
 
@@ -2450,8 +2500,8 @@ var Skeleton = (function (_) {
 
         //....................................................................................
 
-
-        tooltip.container = new collection('div', { id: 'skeleton-tooltip' });
+        tooltip.container = new collection('div', { id: 'skeleton-tooltip' })
+        .setClass('animated','flipInX');
 
         tooltip.container.insert(parent.document.body);
 
@@ -2568,9 +2618,9 @@ var Skeleton = (function (_) {
             'path51': { title: '', data: ['icn3', 'icn2', 'icn3'] },
             'path52': { title: '', data: ['icn3', 'icn2', 'icn3'] },
             'path53': { title: '', data: ['icn3', 'icn2', 'icn3'] },
-            'path54': { title: 'Nazofarenks', data: ['icn3', 'icn2', 'icn3'] },
-            'path55': { title: 'Nazofarenks', data: ['icn3', 'icn2', 'icn3'] },
-            'path56': { title: 'Nazofarenks', data: ['icn3', 'icn2', 'icn3'] },
+            'path54': { title: 'Distal Rektum', data: ['icn3', 'icn2', 'icn3'] },
+            'path55': { title: 'Anal kanal', data: ['icn3', 'icn2', 'icn3'] },
+            'path56': { title: 'Proksimal Rektum', data: ['icn3', 'icn2', 'icn3'] },
             'path57': { title: 'Nazofarenks', data: ['icn3', 'icn2', 'icn3'] },
 
 
@@ -2874,7 +2924,8 @@ var Skeleton = (function (_) {
                 var clone = menu.data[current.obj].clone;
                 if (clone) {
 
-                    document.querySelector('#' + pathname).setClass('reserve');
+                    var p = document.querySelector('#' + pathname);
+                    p.setClass('reserve');
                     // Kopyasını oluştur
                     clone = clone.cloneNode(true);
                     // Kopyanınn özelliklerini gir
@@ -2882,14 +2933,21 @@ var Skeleton = (function (_) {
                         key: current.obj,
                         x: current.x,
                         y: current.y,
-                        rootname: current.obj
+                        rootname: pathname
                     });
 
                     setCustomProperties(clone, {
                         index: n,
                         name: current.obj,
-                        root: pathname
+                        root: pathname,
+                        path: p,
+                        x: current.x,
+                        y: current.y
                     });
+
+
+                    // Oluşturulan nesnelerin sayısını arttıralım
+                    menu.data[current.obj].count = menu.data[current.obj].count ? menu.data[current.obj].count + 1 : 1;
 
                     // Kopyanın/menu butonunun Id bilgisi temizle, çünkü key değerine göre işlem yapacağız
                     // Sahnede tekrardan bu ID bilgisi olursa sonuncuyu seçeceğinden çakışma olacaktır
@@ -2928,6 +2986,30 @@ var Skeleton = (function (_) {
 
         //....................................................................................
 
+        // Gelen root name değerindeki alanı veritabanından siler
+        function deletePathFromDB(source) {
+            source.path.remClass('reserve');
+            delete _.data[source.root];
+        }
+
+        //....................................................................................
+
+        // Gelen bilgilere göre ilgili root name alanından sadece bir kaydı siler
+        function deleteItemFromDB(data, source) {
+            var qindex = -1;
+            for (var i = 0, f = data.transforms; i < f.length; i++) {
+                if (f[i].x == source.x && f[i].y == source.y && f[i].obj == source.name) {
+                    qindex = i;
+                    break;
+                }
+            }
+
+            if (qindex != -1)
+                data.transforms.splice(qindex, 1);
+        }
+
+
+        //....................................................................................
 
 
 
@@ -2939,11 +3021,12 @@ var Skeleton = (function (_) {
             if (path.removedPath) {
 
                 // Silinecek nesnenin key değeri ve bağlı olduğu root değeri
-                var id = path.removedPath.getAttr('key');
-                var root = path.removedPath.getAttr('rootname');
+                var custom = path.removedPath.customdata
 
                 // Mutlak key değeri olmalı
-                if (id) {
+                if (custom.name) {
+
+                    var key = path.removedPath.getAttr('key');
 
                     // Clone nesneyi sahneden temizle
                     path.removedPath.parentNode.removeChild(path.removedPath);
@@ -2952,37 +3035,33 @@ var Skeleton = (function (_) {
                     path.removedPath = null;
 
                     // Silinen nesneyi veritabanı için tutulan tablodan silme aşaması
-                    var dta = data[root];
+                    var dta = data[custom.root];
+
+                    menu.data[key].count--;
+
+                    if (menu.data[key].count == 0) {
+                        _.prompter.show({
+                            title: 'Temizlendi',
+                            message: 'İskelet üzerinde hiç ' + menu.data[key].title + ' kalmadı. Ancak menüde hala işaretli bıraktık',
+                            closeVisible: false,
+                            timer:4000
+                        });
+                    }
+
                     // Data tablosunda bir bilgi varsa
                     if (dta) {
 
-                        // Kaydın bulunacağı pozisyon index değeri
-                        var removeItem = -1;
-
-
-                        // Veriyi bul
-                        for (var i = 0; i < dta.transforms.length; i++) {
-
-                            // Transform alanı nesnenin pozisyon değerleri ve adını tuttuğu için..
-                            // ..path nesnesinin dataları içinde pozisyonunu arıyoruz
-                            if (dta.transforms[i].obj == id)
-                                removeItem = i;
-                        }
-
-
-                        // Kayıt pozisyonu varsa 0 dan büyük olacağından sil
-                        if (removeItem != -1)
-                            dta.transforms.splice(removeItem, 1);
-
+                        deleteItemFromDB(dta, custom);
 
                         // İlgili Path ID nesnesine ait transform listesinde tutulan bir veri kalmadıysa, maviye boyanmış/taranmış alanı iptal eder
                         if (dta.transforms.length == 0)
-                            document.querySelector('#' + root).remClass('reserve');
+                            deletePathFromDB(custom);
 
+                    } else {
 
-                    } else
                         // Tabloda tutulan bir veri kalmadıysa, maviye boyanmış/taranmış alanı iptal eder
-                        doc.querySelector('#' + root).remClass('reserve');
+                        deletePathFromDB(custom);
+                    }
                 }
             }
         }
@@ -3781,7 +3860,9 @@ var Skeleton = (function (_) {
 
                         // Veritabanında ki key değeri ile bu değer eşleşiyorsa işaretler
                         if (ky == inputchk) {
-                            chk.trigger('click');
+                            chk.checked = true;
+                            w.children[1].remClass('menu-item-locked');
+                            
                         }
                     }
 
@@ -3821,6 +3902,7 @@ var Skeleton = (function (_) {
         function contextmenu(e) {
             e.preventDefault();
             context.method.clear(function () {
+
                 context.method.add({
                     title: 'Bu kaydı sil',
                     action: function () {
@@ -3864,6 +3946,25 @@ var Skeleton = (function (_) {
 
                     }
                 });
+
+
+                // Key değerine göre, ilgili hastalağın açılacak bir popup formu varsa "detayları göster" butonunu aktif yapacağız
+                var key = e.target.getAttr('key');
+                if (key) {
+                    var q = data[key].url || data[key].jsonData;
+                    context.method.add({
+                        title: 'Detayları göster',
+                        action: function () {
+                            e.target.trigger('click');
+                            // Context menüyü gizle
+                            context.method.hide();
+                        }
+                    });
+                }
+
+
+
+
                 context.method.show(e);
             });
 
@@ -3914,7 +4015,7 @@ var Skeleton = (function (_) {
                 // Sürükleme esnasında, eğer geçerli alanlar yoksa kullanıcıya uyarı bilgisi verelim
                 if (!isAllow) {
 
-                    tooltip.message('Bırakabileceğiniz geçerli bir alan bulunamadı');
+                    tooltip.message('Bu ikonu bırakabileceğiniz bir alan tanımlı değil');
                     tooltip.container.setClass('no-animate');
 
                     // MouseUp olduğunda uyarı mesajını silelim
@@ -4042,6 +4143,19 @@ var Skeleton = (function (_) {
         })
             .setHTML('Menü');
 
+        var info = header.create('div')
+            .setClass('information-woman')
+            .setBind('click', function () {
+                _.prompter.show({
+                    title: 'Bunları biliyor musunuz?',
+                    message: [
+                        '<i class="ichk_x182 ichk"></i> İlgili hastalıkların en solundaki kutucuğu işaretlediğinizde, o hastalık iskelet üzerinde aktif olur',
+                        '<i class="ichk_x182 ichk"></i>-<i class="ichk_x183 ichk"></i> Kutucuğu işaretlediğinizde sağ tarafındaki görsel aktifleşir ve fare ile sürükleyerek iskelet üzerinde kırmızı olarak renklendirilen alanlara bırakabilirsiniz.',
+                        '<i class="ichk_x184 ichk"></i> Yeşil ikonun ve hastalık adının bulunduğu alana fare ile tıkladığınızda, ilgili hastalık için dosya yükleyebileceğiniz pencereyi açabilirsiniz'
+                    ]
+                });
+            });
+
 
 
 
@@ -4066,7 +4180,7 @@ var Skeleton = (function (_) {
             })
             // Footer Click
             .setBind('click', function () {
-                content.target.style.display = content.target.style.display == 'block' ? 'none' : 'block';
+                displayMenu.toggleClass('showhide');
             })
             // Children A
             .create('a')
@@ -4124,7 +4238,8 @@ var Skeleton = (function (_) {
                     .setClass('skeleton-menu-item');
 
 
-
+                menu.data[key].count = 0;
+                menu.data.mainObject = ul;
 
                 //....................................................................................
 
@@ -4149,59 +4264,122 @@ var Skeleton = (function (_) {
                         id: chkName,
                         'key': key
                     })
+                    /*  .setBind('mouseover', function () {
+                          _.prompter.show({
+                              title: 'What is this?',
+                              message: 'Callback prompt....'
+                          });
+                      })*/
                     // Input Event
                     .setBind('click', function (ev) {
 
                         var main = ev.target.parentNode.parentNode;
                         var checkbox = main.children[1];
 
-                        var sect = '$' + _.Request.section;
-                        var resp = sect + '$';
+                        var key = ev.target.getAttr('key');
+                        var resp = helper.getCustomizeUpload() + key;
 
                         // Eğer checkbox işaretliyle hem tabloya ekleyelim hem de image nesnesini sürüklenebilmesi için aktif yapalım
                         if (ev.target.checked) {
+
+                            // Sürüklenebilmesi için kilidi kaldır
                             checkbox.remClass('menu-item-locked');
-                            // İşaretlenmiş input checkbox elementine göre veritabanına gidecek datayı da güncelleyelim
-                            if (!data[resp + ev.target.getAttr('key')])
-                                data[resp + ev.target.getAttr('key')] = [];
-                        } else {
 
+                            menu.selectedMenuItem = ul;
 
-                            // İşaretlenmiş input checkbox elementine göre veritabanına gidecek datayı da güncelleyelim
-                            // ilgili alan veritabanında var mı bakalım
-                            var f = data[resp + ev.target.getAttr('key')];
+                            // Menüde seçilmiş olan alanı işaretleyelim
+                            menu.method.selectMenuItem(ul, true);
 
-                            // Eğer liste var ama kayıt yoksa sil
-                            if (f && f.length == 0)
-                                delete f;
-                            else if (f && f.length > 0) {
+                            // İşaretlenmiş elementin veritabanında karşılığı yoksa oluştur
+                            if (!data[resp])
+                                data[resp] = [];
 
-                                // eğer kayıt varsa her durumda işaretle
-                                ev.target.checked = true;
+                            // Upload penceresini açalım
+                            _.gallery.method.show(key);
 
-                                // Bir de uyarı penceresi gösterelim
-                                dialog.show({
-                                    title: 'Bir hata oluştu',
-                                    content: 'İşareti kaldırabilmeniz için, bu alan için daha önce yüklemiş olduğunuz görselleri silmeniz gerekmektedir.',
-                                    button1: {
-                                        text: 'Tamam',
-                                        action: function () {
-                                            dialog.hide();
-                                        }
-                                    }
+                            // İşaretlendikten sonra eğer iskelet üzerinde ilgili hastalık hiç yoksa, kullanıcıya bir kereliğine ekranda mesaj gösterelim
+                            if (menu.data[key].count == 0) {
+                                _.prompter.show({
+                                    message: '<b>' + menu.data[key].title + '</b> için iskelet üzerinde hiç nesne yok. İsterseniz sürükleyerek belirli noktalara işaretleme yapabilirsiniz',
+                                    closeVisible: false,
+                                    timer: 5000
                                 });
                             }
 
-                            checkbox.setClass('menu-item-locked');
+                        } else {
+
+                            // Else kısmı bizim için, kullanıcı tiki kaldırdı ve artık bu nesne ile ilgili sahnede hiç bir şey bırakmak istemiyor demektir
+                            // Ama tiki gerçekten kaldırabilmemiz için iskelet üzerinde ve nesneye ait dosyalar yüklenmemiş olmalı
+                            // Bunun için iskelet üzerinde bırakılmış ikonlar var mı ve dosya upload yapılmış mı kontrol edelim
+
+                            // Veritabanında dosya yüklenmiş kayıt var mı
+                            var isData = data[resp];
+                            var length = isData ? isData.length : 0;
+
+                            // Sahne üzerinde ilgili nesneden hiç var mı bakalım
+                            var isAnyPath = menu.data[key].count;
+
+                            // Adı var ama dizin içeriği boş işe; yani dosya yoksa kaydı da yok ve iskelet üzerinde de hiç bir şey yoksa
+                            if (isData && length == 0 && isAnyPath == 0) {
+                                delete isData;
+
+                                menu.selectedMenuItem = null;
+
+                                // Menüde seçilmiş olan alanı sıfırlayalım
+                                menu.method.selectMenuItem(null);
+
+                                // Icon/Görsel'i pasif yapalım
+                                checkbox.setClass('menu-item-locked');
+                            }
+                            // Yok eğer hem dizin var hem de kayıt bulunuyorsa yada dosya yok ama ikonlar varsa işlemi iptal edip uyarı vereceğiz 
+                            else if (isData && length || isAnyPath > 0) {
+
+                                // İşareti hiç kaldırma. Kullanıcı söyleyeceğimiz işlemleri yapsın önce
+                                ev.target.checked = true;
+
+                                checkbox.remClass('menu-item-locked');
+
+                                //console.log(isData);
+                                // Bir de uyarı penceresi gösterelim
+                                // Önce hangi alanla ilgili konuşacaksak onun adını tablodan alalım
+                                var nm = menu.data[key].title; // Luminal Darlık gibi
+
+                                // Kullanıcıya gösterilecek text alanı oluşturuluyor
+
+                                var textForPath = isAnyPath > 0 ? '- İskelet üzerinde bırakılmış ' + isAnyPath + ' adet ' + nm + ' nesnesi var<br/>' : '';
+                                var textForFile = length > 0 ? '- ' + nm + ' için eklemiş olduğunuz ' + length + ' adet dosya var' : '';
+
+                                // Eğer dosya varsa upload ekranını açalım
+                                if (length > 0)
+                                    ul.target.children[2].trigger('click');
+
+                                _.prompter.show({
+                                    title: 'Yardımınıza ihtiyacım var',
+                                    message: nm + ' işaretini kaldırabilmem için aşağıdaki kayıtları kaldırmanız gerekiyor <br/><br/>' + textForPath + textForFile
+                                });
+
+                                /* dialog.show({
+                                     title: 'Dikkat',
+                                     content: 'İşareti kaldırabilmeniz için, bu alan için daha önce yüklemiş olduğunuz görselleri silmeniz gerekmektedir.',
+                                     button1: {
+                                         text: 'Tamam',
+                                         action: function () {
+                                             dialog.hide();
+                                         }
+                                     }
+                                 });*/
+                            }
+                            else
+                                checkbox.setClass('menu-item-locked');
 
 
                         }
 
 
-                            // Veritabanını güncelle
-                            _.savechanges();
+                        // Veritabanını güncelle
+                        _.savechanges();
 
-                            
+
                     }); // CLICK END
 
 
@@ -4257,18 +4435,7 @@ var Skeleton = (function (_) {
                         // Menunun key değerini al
                         var nm = menu.selectedMenuItem.target.getAttr('key');
 
-                        // Key değerine ait data bilgisini veritabanından çek
-                        var fdata = data[helper.getCustomizeUpload() + nm];
-
-                        // Upload için ekranı açalım
-                        gall.method.load(fdata);
-                        gall.content.hide();
-                        gall.container.show();
-                        gall.contentList.hide();
-
-                        setTimeout(function () {
-                            gall.contentList.show();
-                        }, 100);
+                        gall.method.show(nm);
 
                         // Menüde seçilmiş olan alanı işaretleyelim
                         menu.method.selectMenuItem(menu.selectedMenuItem, true);
@@ -4625,13 +4792,8 @@ var Skeleton = (function (_) {
 
 
     var promter = _.prompter = {
-        container: false,
-        content: false,
         method: {}
     }
-
-
-    // url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAABuwAAAbsBOuzj4gAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAqVSURBVHja1VvpVxNZFufT/AVzzszXnj9g5syZ+dCzfZ5zZs7Q7dYq7sgqiuLWiN2iSLcsgoBgQFBw9KDigrYKiiAiuLDIvkMIhJBAyFpJZalKcqdexZSEqiJF6qFOnXM9SPFe3d+v7n13ea8iACBiLcU+Vf4b21RhJjmZVeuYON3uGEtVuUaTTa7haDc1uMmHBP2Mfofuob9Bf4vGoLFrrd+aTErOlP/Jrsyudo6l6N0D64Dq/09YgsaiOdBcaM4vmgDtWNmvSeW5R66RRDvVHxk2aHGJBDQ3egZ61pdDwFDNr8jJ3Gvu4e0e/KBFLIN5FnomevZnJYBUFZxxDce4PhXw5YKejXT45AQ4pi//1TWWbP5cwHlEMLognT4JAaSyZJ97KMr7pYDn3ILRCem2pgSQyvNXKRmrOhLDu2/g+Y0tcCFzFyhydsKtS9ug4foW6H28Edx9MolgdEM64icALXQT6e/lKNf9y0Y4n7Eb4uPjIC5OWH44Hg0dtZtkWwPSVeoCKQm8Y/SoLlxl7N2RcK1wuyhoIblbFgVumSQgnaWQENrsZb75y+d3rAp8QJ5UbcVjCXIIYH1ehgIttzYHgTqcHCuZgMSEOJhqWi+fhBBrwoqrvdwF78TRvRygBAaQqvEslOUkSSahsmC7/AjBLozi0UE0zssNdarm9UFgHpQng6+/FNzdlyA7PUESAQcPxICzJxJLiBTLEwQJwJHkPLyylQNyJi0W6F4FSwASsqsEzp6Ml0TCRON6bMmSJAJQaonjgRfP7eRA9D8+zYEPiL2zBCovpIQkoLXmO2zJklDazAt5uHL7rPTdLAAU9x1dxTwCAtL/KAuOHxZ3iTulUVhrh+WhMfjtMxUWroehpAYBSE+NFQW/1CWabpyFgswUJlIkQNK+eIj/QACyJJwpM1tFChGAamycJe0hZgFDAKoKEkMSICQPK/zR4iRDJO5Semk/YUnYO/cIm6kxOT16gw/L02ChNScsAmabz8Oz/6ZCAnKhHrwNFoSVR4C/k4PnAcb2b9i3R3QUhwV+qaQwydN08zq85TODNYgA1G/D2cZSv1zHErDQWiCbgOT9sfDu/ibs7bVAj9HfuVVmV+N8wPDTDSwB9VWpssCP1mf5k6iKrdj7BwgzRwDqvOKcvPPBJn/ufzAWump/CAs8Cp2pR/yRoDR3B3YCEGaWANR7dw/g9bHmm5uDagDD67xVE/Dk6uGPmeSJPfg7SAxmhD0CbUDgnvxx5dagZKZGkbQq8N5+BVNIxXDjk/bFyu4PCAnCHoF2YXBPfFuxLYgABEDbkiuZgPZ7x3gZof7tt9gJQNgj0FYU7omv5PObIBlpCUD1KEKCt7ZfZNeO5eOH6jdgJwBhj0D7cbgnLvp5l3BerzgckoDSnETBsai5gp0ABnsE2pTEPfG5U3sEQaDscLjujCj4zvvHVuwTYt9PYLBHsLu0mCc+eSxavNdXvg/o90U88O72fLhXIl4WoxY6/p2laHcEu0WNeeJAISQkfTUHwdLwIzjasoDuKgKqswCIFxns7zqq94uOO5OGPxQi7NgJCBRCgi7AFDb6+jQWrJDMPflelIADSbFrQwBuFwgUQkKSnrpXFHxAUo+IWw/aVcLuArgXQXXLOk7hPXv2wLZtURC3dyvU3LgIo63XQxKg/OUo1N2/whARDVFRW2DXro8RZeTZBvyLIO4wOPJsI5xKjYPkpF1Qfukn0M0pwUV5wGRzAmHQhCTA1lUJ6KJoD6hnlVBRmgmH9u+E4ykx8Or2d/jDIJ5EKBI8M9ngtbwGwqKFvLw80Ol0LBCv1wdmu5MlwELYQhLg0PRA4LI7KXbchGoWMn8+B8rJDrBp7oJzIg1fIiQvFWaAq3PA51JzSt+6dQs0Gg33f8LhZkEExPLipxUJoEgzN9bnQ+S52HGT0xooKCrm5rEaBmQTwabCcoohr/4uLL+Ki4u5nwOmv1SI/nviBDxPZ0EvvZArBMaWlV+BKbU2eL75Rgi3mcMWQ+GWw/RoHHpHPAJKS0v9pu/7aPpBCs/2ivt/700QugKu0NnTD/cfPubNSU4Xh18Oh9sQ8WiKBZWtqqoCl8sFHsb33czbQ4IswUr6TZkwzYsS4NQNfTB9v/U43DQ4GXG4aHaskXDAhcIiHgFW/dvwGyLhtsS8C9U88JNqNZzIPw9J6acgMf1HOJSbDc3d7zk/ZtcAGylKAO0klvg/sAQst6ILhRd5BFhMKnktsXCaot7FWk5Zj8cDKdlZcLToAnSNDHN+rDcaIaOqEnanfg+dYxMf31hLLp+AxjM8/xdyIyELMJs18pqi4bTFvcY6DnxS5ll40v5O0CUQqIHxKdgcGwOLFrvfDYbreATYB2t5Y21ONw9sfoEAAZZ5eW3xcDZGvOZmVsmMygqofdkMK13In9MVCqhuamIV7l9QQ0VrGdS9LITbr0qguK0CxoxzQWPcND+CiFqA1Sh/Y2S1W2Ne6xtW0R37EoEgCAh1KWc1cPhSiT+mMwnRV72tQWKiKMH4L4UAE/N82Vtjq90c9dm6WWV3H0wGKRfl8YJCM+NfzRm/Xgr+9wNvgwJqIOwJiZALmGwO+Zujq90e95EjrLIJzGov9bqsVXNK/3PkPUdAxuxkEFFi4JG8ansj+Htq4Fv52+OrOSDhc06xCl9f1IJXIgF3DPOgsZKswnlzKo6Ad4SZC30WUtj0b3cPwNcF5VDS1gF1Q+O8++7B0NtnoQ9IrOKIjM+tZZV+Y7PAuJOURMCI0w6vTEZW4RaTgSOAoGn2fiDhWS5qowX+nF8KJJNgLVoJ+EOuQoCAKDxHZKQekgLa5C92PDTUmhYkEeBhXnG1QcsucDNMQoTAfz3Uzt6jVzD9eSZ8/qPoCrs4upnF8ndnCxgiyGAChnbiOyQl5ZgceB0csGuLWkkEGGgKHpj0/iLpw0KYPzfN3rOKmH5AMhta4N9l1+FvhRWgYNxg+X3XcDS+Y3JSDkouLYSqFj/GcB+l5wFPunEPUp4+hzvGedYKAoC3jPdBr41g8/2VwAdkXDsLug/JFI+AkXi8ByVXPCo7uCEIYA9JwE2DDioGBiHxmoJHwIzBJFDmeqFcNwsGt1sSeH/R8070nmt0P/6jsqKHpYe38dNWJiVu0+mgu69cclhsMhvA6pBOgH22WpyAsUNrc1ha6Lg8PbpXfKFT5zH/EJII6LETksEjcSgzRe85x4+t0XF5gQ8m6PEkUVC06jT4HBOSCOgjpRNgthpQF1ecANQeW7MPJpZFB3rqlGjuQ08eYZujuAmwGAaZhS5G9D6pzPKt+SczXKKkr/+X1z5ICRIwGhvUK8BFAKFrRPFceHE0dFPkfEPkJ/9szm1ouOpzKIOsgRraAp65UuwE2GevsyYeBNw44iV09ZWf/cNJarGx2edikiGfl+220KoM7AQ4pnLYBQ6VvmaTCghtQ/Nn/3ByqehVNb+lDI3dqNtCjx/AToBz7AjbybFqn3armGd90R9POxZq/kIRfYO0c4aifL7wCSDsYDGNU4yPDxLamr//33w9vlSuTT//Y5PudVObYVT/xjLrem9b9E44CZ+ecjF5gBW0BAnjZjP0Gxd8nXq1p0OvJN/oBnVPZ1pfzM8/+2qt9fsfKtCfFLapCIkAAAAASUVORK5CYII=')
 
 })(Skeleton);
 /////////////////////////////////////////////////////////////////////////
@@ -4642,31 +4804,115 @@ var Skeleton = (function (_) {
 
     _.MODULE(function () {
 
-
         var prom = _.prompter;
         var coll = _.collection.create;
+        var isRemoved = true;
+        var time = 0;
+
+        function removeContainer(ev, action) {
+
+            isRemoved = false;
+            prom.container.setClass('prev');
+            prom.content.setClass('prev');
+
+            if (time)
+                clearTimeout(time);
+
+            time = setTimeout(function () {
+
+                // kaldır
+                prom.container.remove();
+                // Sıfırla
+                prom.container = null;
+
+                // Sayfada animasyon ve silme işlemi tamamlandı
+                isRemoved = true;
+
+            }, 1000);
+        }
+
 
         function show(args) {
-            hide();
+            // Sahnede işlemi bitmemiş bir şey varsa  iptal et
+            if (!isRemoved) return;
 
-            prom.container = new coll('div', { id: 'skeleton-prompter-container' })
-                .insert(parent.document.body);
-            prom.content = new coll('div', { id: 'skeleton-prompter-content' })
-                .insert(prom.container.target)
-                .setHTML(args.message);
+            function setting() { }
+            setting.close = removeContainer;
+
+            isRemoved = false;
+            time = setTimeout(function () {
+
+                if (!prom.container)
+                    prom.container = new coll('div', { id: 'skeleton-prompter-container' })
+                        .insert(parent.document.body);
+
+                change(args);
+                isRemoved = true;
+            }, args.delay || 0);
+
+
+            return setting;
+        }
+
+        function removeContent(action) {
+
+            if (prom.content)
+                prom.content.remove();
+
+            if (action)
+                action();
 
         }
 
-        function hide() {
+        // Prompter'in mesajının görüntülendiği alan
+        // Burada mesaj alanı oluşturuluyor
+        function change(args) {
 
-            if (_.prompter.container)
-                _.prompter.remove();
+            // Önce var olan mesaj alanını kaldır
+            removeContent(function () {
+
+                // Mesajın görüneceği container nesnesini oluştur
+                prom.content = new coll('div', { id: 'skeleton-prompter-content' })
+                    .insert(prom.container.target);
+
+                // Başlık metni varsa başlığın görüneceği nesneyi oluştur ve başlığı ekle
+                if (args.title)
+                    prom.title = prom.content.create('div', { id: 'skeleton-prompter-title' })
+                        .setHTML(args.title);
+
+                // Metnin görüneceği nesneyi oluştur
+                prom.text = prom.content.create('div', { id: 'skeleton-prompter-text' });
+
+                // Görünecek metnin öncesinde gelen datanın array mi yoksa normal string mi olduğuna göre işlem yapılacak
+                if (typeof args.message === 'object')
+                    for (var i = 0, y = ""; i < args.message.length; i++) {
+                        var o = new coll('label')
+                        .setCSS({'display':'block','margin-bottom':'7px'})
+                            .setHTML(args.message[i])
+                            .insert(prom.text.target);
+                    }
+                else
+                {
+                    prom.text.setHTML(args.message);
+                }
+
+                if (args.closeVisible == undefined || args.closeVisible === true)
+                    prom.close = prom.content.create('div', { id: 'skeleton-prompter-close' })
+                        .setBind('click', args.close || removeContainer);
+                else {
+                    setTimeout(removeContainer, args.timer || 3000);
+                }
+
+            });
 
         }
+
 
 
         prom.show = show;
-        prom.hide = hide;
+        prom.close = removeContainer;
+        prom.change = change;
+
 
     });
 
@@ -4681,25 +4927,19 @@ var Skeleton = (function (_) {
 
     _.MODULE(function () {
 
-        var prom = _.prompter.data = {};
-
-        prom.menu = { title: 'Menu helper', message: 'Lorem ipsum dolor sit amet' };
-        prom.upload = { title: 'Upload helper', message: 'Lorem ipsum dolor sit amet' };
-        prom.upload = { title: 'Upload helper', message: 'Lorem ipsum dolor sit amet' };
 
     });
 
-    // url('data:image/png;base64,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')
 
 })(Skeleton);
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON METHODS
 /////////////////////////////////////////////////////////////////////////
 
-(function(_) {
+(function (_) {
 
 
-    _.MODULE(function() {
+    _.MODULE(function () {
 
         //SVG için method tutucu
         var method = _.method;
@@ -4760,6 +5000,39 @@ var Skeleton = (function (_) {
 
         //....................................................................................
 
+        function openerPopup(moveItemKey, newItem) {
+
+            //İlgili Menu butonuna ait açılması gereken bir popup varsa açtırıyoruz
+            if (menu.data[moveItemKey].url) {
+                var url = menu.data[moveItemKey].url;
+
+                // Üzerinde değişiklik yapılacak datayı bildirelim
+                popup.data = newItem;
+
+                popup.method.open(url);
+            }
+
+            //Stacker ile açtırabilmek için özel tanımlandı
+            else if (menu.data[moveItemKey].jsonData) {
+                var datas = eval(menu.data[moveItemKey].jsonData);
+                // Üzerinde değişiklik yapılacak datayı bildirelim
+                popup.data = newItem;
+
+                var doc = parent.document.createElement('div');
+                doc.id = "modalpage";
+
+                Skeleton.stacker({
+                    el: doc,
+                    source: datas
+                });
+
+                popup.method.openData(doc);
+            }
+
+        }
+
+
+        //....................................................................................
 
 
         // Fare tıklaması bitirildiğinde yapılacak işlemler.
@@ -4799,17 +5072,19 @@ var Skeleton = (function (_) {
                         //Eğer tabloda bir veri yoksa oluşturuyoruz, varsa üzerine yazıyoruz
 
                         var dbdataCurrent = _.data[path.selectedPath.id] || (_.data[path.selectedPath.id] = {
-                                transforms: []
-                            }),
+                            transforms: []
+                        }),
                             moveItemKey = _.selectedObject.getAttr('key');
 
                         // Koordinat bilgileri
+                        var _x = _.selectedObject.getAttr('x'),
+                            _y = _.selectedObject.getAttr('y');
                         dbdataCurrent.transforms.push({
-                            x: _.selectedObject.getAttr('x'),
-                            y: _.selectedObject.getAttr('y'),
+                            x: _x,
+                            y: _y,
                             obj:
                             //Sürüklenen nesnenin key ve root bilgisi
-                                moveItemKey
+                            moveItemKey
                         });
 
                         // Sahne üzerindeki nesneye tıklandığında detay sayfasının gelebilmesi için ilgili nesneye bazı özellikler ekliyoruz
@@ -4817,13 +5092,15 @@ var Skeleton = (function (_) {
                         path.method.setCustomProperties(_.selectedObject, {
                             index: dbdataCurrent.transforms.length - 1,
                             name: moveItemKey,
-                            root: path.selectedPath.id
+                            root: path.selectedPath.id,
+                            path: path.selectedPath,
+                            x: _x,
+                            y: _y
                         });
 
                         // Yeni kaydettiğimiz nesneyi diziden alalım
                         // Amacımız; eğer açılacak popup varsa, bu değerleri popup'a göndermek
                         var newItem = dbdataCurrent.transforms[dbdataCurrent.transforms.length - 1];
-
 
                         _.selectedObject.setAttr({
                             rootname: path.selectedPath.id
@@ -4838,32 +5115,10 @@ var Skeleton = (function (_) {
 
                         _.content.appendChild(_.selectedObject);
 
-                        //İlgili Menu butonuna ait açılması gereken bir popup varsa açtırıyoruz
-                        if (menu.data[moveItemKey].url) {
-                            var url = menu.data[moveItemKey].url;
+                        // Eklenen nesnenin sayısını tutacağız
+                        menu.data[moveItemKey].count = menu.data[moveItemKey].count ? menu.data[moveItemKey].count + 1 : 1;
 
-                            // Üzerinde değişiklik yapılacak datayı bildirelim
-                            popup.data = newItem;
-
-                            popup.method.open(url);
-                        }
-
-                        //Stacker ile açtırabilmek için özel tanımlandı
-                        else if (menu.data[moveItemKey].jsonData) {
-                            var datas = eval(menu.data[moveItemKey].jsonData);
-                            // Üzerinde değişiklik yapılacak datayı bildirelim
-                            popup.data = newItem;
-
-                            var doc = parent.document.createElement('div');
-                            doc.id = "modalpage";
-
-                            Skeleton.stacker({
-                                el: doc,
-                                source: datas
-                            });
-
-                            popup.method.openData(doc);
-                        }
+                        openerPopup(moveItemKey, newItem);
 
                     }
 
@@ -4972,6 +5227,7 @@ var Skeleton = (function (_) {
         method.windowMouseUp = windowMouseUp;
         method.windowMouseMove = windowMouseMove;
         method.windowMouseDown = windowMouseDown;
+        method.openerPopup = openerPopup;
         method.contextmenu = contextmenu;
 
         globMethod.onRelease = onRelease;
@@ -5108,12 +5364,21 @@ var Skeleton = (function (_) {
                 'font-family': 'Arial',
                 'left': '0',
                 'top': '0',
-                'display': 'none'
+                'display': 'none',
+                'width':'200px'
+            },
+            '#contextmenu-container::before':{
+                'content':"'Yönetin'",
+                'background-color':'gray',
+                'color':'white',
+                'display':'block',
+                'padding':'4px 10px',
+                'text-align':'center'
             },
             '#contextmenu-content': {},
             '#contextmenu-content > div': {
                 'border-bottom': '1px solid #ddd',
-                'transition': 'all .3s linear'
+                'transition': 'all .2s linear'
             },
             '#contextmenu-content > div > label': {
                 'display': 'inline-block',
@@ -5127,21 +5392,17 @@ var Skeleton = (function (_) {
                 'width': '0',
                 'position': 'relative',
                 'border': '5px solid transparent',
-                'border-left-color': 'white',
+                'border-left-color': '#444',
                 'margin-right': '5px',
-                'opacity': '0',
-                'display': 'none',
-                'left': '0'
+                'left': '10px'
             },
 
             '#contextmenu-content > div:hover': {
-                'background-color': 'rgb(48, 57, 90)',
-                'color': 'white'
+                'background-color': '#d5d5d5',
+                'color': '#444'
             },
             '#contextmenu-content > div:hover::before': {
-                'left': '10px',
-                'opacity': '1',
-                'display': 'inline-block'
+                'border-left-color': 'orange'
             },
             '#contextmenu-content > div:last-child': {
                 'border': '0'
@@ -5165,7 +5426,14 @@ var Skeleton = (function (_) {
                 'font-family': 'arial',
                 'font-size': '14px',
                 'color': '#333',
-                'border-radius': '7px'
+                'border-radius': '7px',
+                'transition': 'width .3s cubic-bezier(0.1,0.1,0.1,1.0)'
+            },
+            '#skeleton-menu.showhide #skeleton-menu-content': {
+                'display': 'none'
+            },
+            '#skeleton-menu.showhide': {
+                'width': '100px'
             },
             '#skeleton-menu-content': {
                 'padding': '10px 20px 10px 10px',
@@ -5231,7 +5499,7 @@ var Skeleton = (function (_) {
 
             },
             '.skeleton-menu-item .menu-item-img': {
-                'box-shadow': 'inset 0px 0px 4px #777, 1px 1px 3px #ccc',
+                'box-shadow': 'inset 0px -28px 0px rgba(171, 171, 171, 0.12), 0px 0px 0px 3px #606ca9',
                 'background': '#fff',
                 'border-radius': '5px',
                 'transition': 'all .3s linear',
@@ -5241,7 +5509,7 @@ var Skeleton = (function (_) {
                 'box-shadow': '1px 1px 3px #000'
             },
             '.skeleton-menu-item .menu-item-text': {
-
+                'cursor':'pointer'
             },
             '.skeleton-menu-item .menu-item-chk': {
 
@@ -5256,6 +5524,7 @@ var Skeleton = (function (_) {
                 'opacity': '0.3'
             },
             '#skeleton-menu-header': {
+                'position':'relative',
                 'padding': '10px',
                 'background-color': 'rgb(48, 57, 90)',
                 'color': 'white',
@@ -5298,13 +5567,13 @@ var Skeleton = (function (_) {
                 'border-color': '#ffd383',
                 'border-radius': '4px',
                 'box-shadow': '1px 1px 3px #777',
-                'font-size': '16px',
+                'font-size': '13px',
                 'font-family': 'Arial',
-                'transition': 'all .2s linear',
                 'display': 'none',
                 'padding': '10px',
                 'pointer-events': 'none',
-                'z-index': '9999'
+                'z-index': '9999',
+                'opacity':'.9'
             },
             '.no-animate': {
                 'transition': 'none !important'
@@ -5819,30 +6088,123 @@ var Skeleton = (function (_) {
                 'position': 'fixed',
                 'bottom': '27px',
                 'left': '10px',
-                'max-width': '470px'
+                'max-width': '470px',
+                'animation': 'prompter-container .3s forwards',
+                'z-index': '1001',
             },
+            '@keyframes prompter-container': {
+                'from': '{background-position:-200px bottom}',
+                'to': '{background-position:0 bottom}'
+            },
+            '#skeleton-prompter-container.prev': {
+                'animation': 'prompter-container-prev .3s forwards',
+                'animation-delay': '.5s'
+            },
+            '@keyframes prompter-container-prev': {
+                'from': '{background-position:0 bottom}',
+                'to': '{background-position:-200px bottom}'
+            },
+
             '#skeleton-prompter-content': {
                 'font-size': '14px',
                 'font-style': 'italic',
                 'padding': '26px',
                 'background': '#fde8a1',
-                'border-radius': '10px',
-                'color': '#444',
+                'border-radius': '34px 3px',
+                'color': '#bd8b53',
                 'font-family': 'arial',
                 'position': 'relative',
-                'box-shadow': '10px 10px 29px -5px #444',
-                'border-top': '1px solid #fff'
+                'box-shadow': '10px 10px 29px -5px #444, inset -40px -13px 54px -42px rgb(255, 189, 88)',
+                'border-top': '1px solid #fff',
+                'transform': 'scale(0)',
+                'animation': 'prompter .8s forwards',
+                'animation-delay': '.3s',
+
+            },
+            '@keyframes prompter': {
+                '0%': '{transform:scale(0) rotate(-40deg) translate3d(-100px,-150px,-100px); opacity:0;}',
+                '50%': '{transform:scale(1.1) rotate(-4deg) translate3d(0,0,10px); opacity:1;}',
+                '100%': '{transform:scale(1) rotate(0deg) translate3d(0,0,0); opacity:1;}'
+            },
+            '#skeleton-prompter-content.prev': {
+                'animation-delay': '0s',
+                'animation': 'prompter-prev .4s forwards',
+            },
+
+            '@keyframes prompter-prev': {
+                '0%': '{transform:scale(1) rotate(0deg) translate3d(0,0,0);opacity:1}',
+                '50%': '{transform:scale(1.1) rotate(-4deg) translate3d(0,0,10px);opacity:1;}',
+                '100%': '{transform:scale(0) rotate(-40deg) translate3d(-500px,-150px,-100px); opacity:0;}'
             },
             '#skeleton-prompter-content::after': {
                 'content': "''",
                 'position': 'absolute',
-                'border': '30px solid transparent',
+                'border': '37px solid transparent',
                 'border-right-color': '#fde8a1',
-                'left': '-18px',
+                'left': '-34px',
                 'transform': 'rotate(76deg)',
                 'bottom': '0'
-            }
+            },
+            '#skeleton-prompter-close': {
+                'position': 'absolute',
+                'right': '0',
+                'top': '0',
+                'width': '20px',
+                'height': '20px',
+                'border-radius': '0 0 0 30px',
+                'background': '#e6d69d url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDIxLjkgMjEuOSIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMjEuOSAyMS45IiB3aWR0aD0iMjRweCIgaGVpZ2h0PSIyNHB4Ij4KICA8cGF0aCBkPSJNMTQuMSwxMS4zYy0wLjItMC4yLTAuMi0wLjUsMC0wLjdsNy41LTcuNWMwLjItMC4yLDAuMy0wLjUsMC4zLTAuN3MtMC4xLTAuNS0wLjMtMC43bC0xLjQtMS40QzIwLDAuMSwxOS43LDAsMTkuNSwwICBjLTAuMywwLTAuNSwwLjEtMC43LDAuM2wtNy41LDcuNWMtMC4yLDAuMi0wLjUsMC4yLTAuNywwTDMuMSwwLjNDMi45LDAuMSwyLjYsMCwyLjQsMFMxLjksMC4xLDEuNywwLjNMMC4zLDEuN0MwLjEsMS45LDAsMi4yLDAsMi40ICBzMC4xLDAuNSwwLjMsMC43bDcuNSw3LjVjMC4yLDAuMiwwLjIsMC41LDAsMC43bC03LjUsNy41QzAuMSwxOSwwLDE5LjMsMCwxOS41czAuMSwwLjUsMC4zLDAuN2wxLjQsMS40YzAuMiwwLjIsMC41LDAuMywwLjcsMC4zICBzMC41LTAuMSwwLjctMC4zbDcuNS03LjVjMC4yLTAuMiwwLjUtMC4yLDAuNywwbDcuNSw3LjVjMC4yLDAuMiwwLjUsMC4zLDAuNywwLjNzMC41LTAuMSwwLjctMC4zbDEuNC0xLjRjMC4yLTAuMiwwLjMtMC41LDAuMy0wLjcgIHMtMC4xLTAuNS0wLjMtMC43TDE0LjEsMTEuM3oiIGZpbGw9IiNGRkZGRkYiLz4KPC9zdmc+Cg==) no-repeat',
+                'background-position': '64% 5px',
+                'color': 'white',
+                'padding': '3px 3px 10px 13px',
+                'background-size': '50%',
+                'box-shadow': 'inset 4px -3px 6px -5px #6d6d6d'
+            },
+            '#skeleton-prompter-close:hover':{
+                'background-color':'#bd8b53'
+            },
+            '#skeleton-prompter-title':{
+                'font-size':'17px',
+                'margin-bottom':'10px',
+                'font-weight':'bold'
+            },
+            '.information-woman':{
+                'width':'24px',
+                'height':'24px',
+                'position':'absolute',
+                'right':'5px',
+                'top':'0',
+                'bottom':'0',
+                'margin':'auto 0',
+                'background-image':'url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTYuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjI0cHgiIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAwIDYxMiA2MTIiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDYxMiA2MTI7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPGc+Cgk8Zz4KCQk8cGF0aCBkPSJNMjMwLjcyNCwxODEuMjA4Yy0yLjM5MywyLjU4Ny0zLjk1LDQuMjU2LTUuMTE5LDUuNTA4QzIyNy43NzUsMTg0LjM3OSwyMzAuNzI0LDE4MS4yMDgsMjMwLjcyNCwxODEuMjA4eiIgZmlsbD0iI0ZGREE0NCIvPgoJCTxwYXRoIGQ9Ik0zMzYuOTYyLDIwMC44NzVjNy45NTYsOS43OTIsMTEuOTA2LDIxLjMzNywxMS45MDYsMzQuNjM0YzAsOS41MTQtMi43MjcsMTguNjY2LTguMTUxLDI3LjUxMiAgICBjLTIuOTc3LDUuMDA3LTYuODk4LDkuODQ4LTExLjc5NSwxNC40NjVsLTE2LjMwMSwxNi4xMDdjLTE1LjYzNCwxNS4zNTYtMjUuNzMyLDI4Ljk1OC0zMC4zNSw0MC44NjUgICAgYy00LjYxOCwxMS44NzgtNi45MjcsMjcuNTQtNi45MjcsNDYuOTU3aDM2LjI3NWMwLTE3LjEwOCwxLjk0Ny0zMC4wNDQsNS44MTQtMzguODA3YzMuODY2LTguNzYzLDEyLjMyMy0xOS40NDQsMjUuMzctMzIuMTAyICAgIGMxNy45NDItMTcuMzg3LDI5Ljg0OS0zMC41NzIsMzUuNzQ2LTM5LjUzczguODc0LTIwLjY0MSw4Ljg3NC0zNS4wNTFjMC0yMy43NTYtOC4wMzktNDMuMjg1LTI0LjE0Ni01OC41ODUgICAgYy0xNi4xMDYtMTUuMy0zNy41MjYtMjIuOTIyLTY0LjI4OC0yMi45MjJjLTI4LjkzMSwwLTUxLjY4Niw4LjkyOS02OC4yNjYsMjYuNzg5cy0yNC44Nyw0MS40NDktMjQuODcsNzAuNzk3aDM2LjI3NSAgICBjMC42NjctMTcuNjY1LDMuNDc4LTMxLjE4NCw4LjM0Ni00MC41NTljOC42NzktMTYuODMsMjQuMzY5LTI1LjI1OSw0Ny4wNjgtMjUuMjU5ICAgIEMzMTUuODc1LDE4Ni4xODcsMzI5LjAzMywxOTEuMDgzLDMzNi45NjIsMjAwLjg3NXoiIGZpbGw9IiNGRkRBNDQiLz4KCQk8cGF0aCBkPSJNNjEyLDMwNkM2MTIsMTM3LjAwNCw0NzQuOTk1LDAsMzA2LDBDMTM3LjAwNCwwLDAsMTM3LjAwNCwwLDMwNmMwLDE2OC45OTUsMTM3LjAwNCwzMDYsMzA2LDMwNiAgICBDNDc0Ljk5NSw2MTIsNjEyLDQ3NC45OTUsNjEyLDMwNnogTTI3LjgxOCwzMDZDMjcuODE4LDE1Mi4zNiwxNTIuMzYsMjcuODE4LDMwNiwyNy44MThTNTg0LjE4MiwxNTIuMzYsNTg0LjE4MiwzMDYgICAgUzQ1OS42NCw1ODQuMTgyLDMwNiw1ODQuMTgyUzI3LjgxOCw0NTkuNjQsMjcuODE4LDMwNnoiIGZpbGw9IiNGRkRBNDQiLz4KCQk8cmVjdCB4PSIyNzQuNTEiIHk9IjQxNS4yMTQiIHdpZHRoPSI0MC41NTkiIGhlaWdodD0iNDIuMzY3IiBmaWxsPSIjRkZEQTQ0Ii8+Cgk8L2c+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPC9zdmc+Cg==)',
+                'background-repeat':'no-repeat',
+                'background-position':'center center',
+                'background-size':'100%',
+                'border-radius':'50%'
+            },
+            '.information-woman:hover':{
+                'background-color':'#222'
+            },
+            'i.ichk':{
+                'display':'inline-block',
+                'background-size':'cover',
+                'vertical-align':'middle'
+            },
+            'i.ichk::after':{
+                'content':"''",
+                'display':'block',
+                'padding':'7px',
+                'background-size':'cover'
+            },
+            'i.ichk_x182':{
+                'background-image':"url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4QYXBjsAa31riwAAALRJREFUKM+1jzGLhDAYRN8XrjOiplMEwdJ/4P8vbKzFShDElAqJ2ATcYrlO97a5qd/MY8R7fw3DwDRNbNvGXbIso65rmqZB+r6/juOgLEvSNL0t7PvOsixEUcSPtZa2bTHGICKPhiRJ6LoOFUL4CAOICMYYQggopRTfRimF+rR8Z/p+/tfy/wWtNc65P0HnHFprZBzHCyDPc+I4foStte/j53le8zyzrive+9uC1pqiKKiqihfDLkJ0kVzlOQAAAABJRU5ErkJggg==')",
 
+            },
+            'i.ichk_x183':{
+                'background-image':"url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4QYXBxQH5sescgAAAUxJREFUKM9tkrFOwmAUhb//p8VCQCAawaXRhM1BmDTGhcFNHoCBGB9BVx9AN1/AMApv4Eji4uAgiSYmhkVMJOCAJSZt2r+tQ6GG4B1vvntycs4Vw2kYtnvQ7cPAAsHihICZg1oZGhXQ2j24fQJDg5yxfOAHMLEjBkB2+xGckMswARyaAbqImG4f5MACKVkapaBZ9bg8luyWPCCyLAXLykEA5qrLyZ7G84fN/ZsTO4i1Ax+2cz6+Al8pLo4kAjjrjElnsrGYNlc8MH2u6glaDx6WHbCzucL13YhvUSSTYPFASui+/vBSTXK6n8L1Q/ojh9ajoLBuLNiV4SxrPZ2jeTNiPPVIJgTnnS/yaxtxIHNO1FthOLGjWF03QFnvFDOCT1Ukm00t9FFIgayVwVHRQk9K9PwWQ78Uw+EMdlTUttaoRAp/ryFAM7Cc/1/jF76IfO/GTNe2AAAAAElFTkSuQmCC')"
+            },
+            'i.ichk_x184':{
+                'background-image':"url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAACcFBMVEWdyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXcAAADnalsEAAAAAXRSTlMAQObYZgAAAAFiS0dEAIgFHUgAAAAJcEhZcwAADdcAAA3XAUIom3gAAAAHdElNRQfhBhcHGQYkbuKpAAAAX0lEQVQoz52SAQoAIQgE9wf3yr7rm46SzvVaKVoi3EYUUmDKhvCTkap3JmaahM+EXRUn94W9lALcI+KnZ4yDNgtEMwdg4I7vBFL1CwANsAHrDLAS8XH1QHYjPFkGsT4vJpoj0M6qwRkAAAAASUVORK5CYII=')"
+            }
         });
 
         style.insert(parent.document.body);
@@ -6409,12 +6771,9 @@ var Skeleton = (function (_) {
         //....................................................................................
 
 
-
         _.path.method.loadData(_.data);
 
-        _.prompter.show({
-            message:'Exercise used to be discouraged among people with cystic fibrosis (CF) because it was thought that overexertion would increase breathing problems. Now we know that the opposite is actually true. Studies have shown that regular physical activity provides many benefits to people with cystic fibrosis.'
-        });
+
 
     }); // MODULE
 

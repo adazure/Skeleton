@@ -61,7 +61,9 @@
 
                         // Veritabanında ki key değeri ile bu değer eşleşiyorsa işaretler
                         if (ky == inputchk) {
-                            chk.trigger('click');
+                            chk.checked = true;
+                            w.children[1].remClass('menu-item-locked');
+                            
                         }
                     }
 
@@ -101,6 +103,7 @@
         function contextmenu(e) {
             e.preventDefault();
             context.method.clear(function () {
+
                 context.method.add({
                     title: 'Bu kaydı sil',
                     action: function () {
@@ -144,6 +147,25 @@
 
                     }
                 });
+
+
+                // Key değerine göre, ilgili hastalağın açılacak bir popup formu varsa "detayları göster" butonunu aktif yapacağız
+                var key = e.target.getAttr('key');
+                if (key) {
+                    var q = data[key].url || data[key].jsonData;
+                    context.method.add({
+                        title: 'Detayları göster',
+                        action: function () {
+                            e.target.trigger('click');
+                            // Context menüyü gizle
+                            context.method.hide();
+                        }
+                    });
+                }
+
+
+
+
                 context.method.show(e);
             });
 
@@ -194,7 +216,7 @@
                 // Sürükleme esnasında, eğer geçerli alanlar yoksa kullanıcıya uyarı bilgisi verelim
                 if (!isAllow) {
 
-                    tooltip.message('Bırakabileceğiniz geçerli bir alan bulunamadı');
+                    tooltip.message('Bu ikonu bırakabileceğiniz bir alan tanımlı değil');
                     tooltip.container.setClass('no-animate');
 
                     // MouseUp olduğunda uyarı mesajını silelim

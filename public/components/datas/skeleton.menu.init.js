@@ -40,6 +40,19 @@
         })
             .setHTML('Menü');
 
+        var info = header.create('div')
+            .setClass('information-woman')
+            .setBind('click', function () {
+                _.prompter.show({
+                    title: 'Bunları biliyor musunuz?',
+                    message: [
+                        '<i class="ichk_x182 ichk"></i> İlgili hastalıkların en solundaki kutucuğu işaretlediğinizde, o hastalık iskelet üzerinde aktif olur',
+                        '<i class="ichk_x182 ichk"></i>-<i class="ichk_x183 ichk"></i> Kutucuğu işaretlediğinizde sağ tarafındaki görsel aktifleşir ve fare ile sürükleyerek iskelet üzerinde kırmızı olarak renklendirilen alanlara bırakabilirsiniz.',
+                        '<i class="ichk_x184 ichk"></i> Yeşil ikonun ve hastalık adının bulunduğu alana fare ile tıkladığınızda, ilgili hastalık için dosya yükleyebileceğiniz pencereyi açabilirsiniz'
+                    ]
+                });
+            });
+
 
 
 
@@ -64,7 +77,7 @@
             })
             // Footer Click
             .setBind('click', function () {
-                content.target.style.display = content.target.style.display == 'block' ? 'none' : 'block';
+                displayMenu.toggleClass('showhide');
             })
             // Children A
             .create('a')
@@ -122,7 +135,8 @@
                     .setClass('skeleton-menu-item');
 
 
-
+                menu.data[key].count = 0;
+                menu.data.mainObject = ul;
 
                 //....................................................................................
 
@@ -147,59 +161,122 @@
                         id: chkName,
                         'key': key
                     })
+                    /*  .setBind('mouseover', function () {
+                          _.prompter.show({
+                              title: 'What is this?',
+                              message: 'Callback prompt....'
+                          });
+                      })*/
                     // Input Event
                     .setBind('click', function (ev) {
 
                         var main = ev.target.parentNode.parentNode;
                         var checkbox = main.children[1];
 
-                        var sect = '$' + _.Request.section;
-                        var resp = sect + '$';
+                        var key = ev.target.getAttr('key');
+                        var resp = helper.getCustomizeUpload() + key;
 
                         // Eğer checkbox işaretliyle hem tabloya ekleyelim hem de image nesnesini sürüklenebilmesi için aktif yapalım
                         if (ev.target.checked) {
+
+                            // Sürüklenebilmesi için kilidi kaldır
                             checkbox.remClass('menu-item-locked');
-                            // İşaretlenmiş input checkbox elementine göre veritabanına gidecek datayı da güncelleyelim
-                            if (!data[resp + ev.target.getAttr('key')])
-                                data[resp + ev.target.getAttr('key')] = [];
-                        } else {
 
+                            menu.selectedMenuItem = ul;
 
-                            // İşaretlenmiş input checkbox elementine göre veritabanına gidecek datayı da güncelleyelim
-                            // ilgili alan veritabanında var mı bakalım
-                            var f = data[resp + ev.target.getAttr('key')];
+                            // Menüde seçilmiş olan alanı işaretleyelim
+                            menu.method.selectMenuItem(ul, true);
 
-                            // Eğer liste var ama kayıt yoksa sil
-                            if (f && f.length == 0)
-                                delete f;
-                            else if (f && f.length > 0) {
+                            // İşaretlenmiş elementin veritabanında karşılığı yoksa oluştur
+                            if (!data[resp])
+                                data[resp] = [];
 
-                                // eğer kayıt varsa her durumda işaretle
-                                ev.target.checked = true;
+                            // Upload penceresini açalım
+                            _.gallery.method.show(key);
 
-                                // Bir de uyarı penceresi gösterelim
-                                dialog.show({
-                                    title: 'Bir hata oluştu',
-                                    content: 'İşareti kaldırabilmeniz için, bu alan için daha önce yüklemiş olduğunuz görselleri silmeniz gerekmektedir.',
-                                    button1: {
-                                        text: 'Tamam',
-                                        action: function () {
-                                            dialog.hide();
-                                        }
-                                    }
+                            // İşaretlendikten sonra eğer iskelet üzerinde ilgili hastalık hiç yoksa, kullanıcıya bir kereliğine ekranda mesaj gösterelim
+                            if (menu.data[key].count == 0) {
+                                _.prompter.show({
+                                    message: '<b>' + menu.data[key].title + '</b> için iskelet üzerinde hiç nesne yok. İsterseniz sürükleyerek belirli noktalara işaretleme yapabilirsiniz',
+                                    closeVisible: false,
+                                    timer: 5000
                                 });
                             }
 
-                            checkbox.setClass('menu-item-locked');
+                        } else {
+
+                            // Else kısmı bizim için, kullanıcı tiki kaldırdı ve artık bu nesne ile ilgili sahnede hiç bir şey bırakmak istemiyor demektir
+                            // Ama tiki gerçekten kaldırabilmemiz için iskelet üzerinde ve nesneye ait dosyalar yüklenmemiş olmalı
+                            // Bunun için iskelet üzerinde bırakılmış ikonlar var mı ve dosya upload yapılmış mı kontrol edelim
+
+                            // Veritabanında dosya yüklenmiş kayıt var mı
+                            var isData = data[resp];
+                            var length = isData ? isData.length : 0;
+
+                            // Sahne üzerinde ilgili nesneden hiç var mı bakalım
+                            var isAnyPath = menu.data[key].count;
+
+                            // Adı var ama dizin içeriği boş işe; yani dosya yoksa kaydı da yok ve iskelet üzerinde de hiç bir şey yoksa
+                            if (isData && length == 0 && isAnyPath == 0) {
+                                delete isData;
+
+                                menu.selectedMenuItem = null;
+
+                                // Menüde seçilmiş olan alanı sıfırlayalım
+                                menu.method.selectMenuItem(null);
+
+                                // Icon/Görsel'i pasif yapalım
+                                checkbox.setClass('menu-item-locked');
+                            }
+                            // Yok eğer hem dizin var hem de kayıt bulunuyorsa yada dosya yok ama ikonlar varsa işlemi iptal edip uyarı vereceğiz 
+                            else if (isData && length || isAnyPath > 0) {
+
+                                // İşareti hiç kaldırma. Kullanıcı söyleyeceğimiz işlemleri yapsın önce
+                                ev.target.checked = true;
+
+                                checkbox.remClass('menu-item-locked');
+
+                                //console.log(isData);
+                                // Bir de uyarı penceresi gösterelim
+                                // Önce hangi alanla ilgili konuşacaksak onun adını tablodan alalım
+                                var nm = menu.data[key].title; // Luminal Darlık gibi
+
+                                // Kullanıcıya gösterilecek text alanı oluşturuluyor
+
+                                var textForPath = isAnyPath > 0 ? '- İskelet üzerinde bırakılmış ' + isAnyPath + ' adet ' + nm + ' nesnesi var<br/>' : '';
+                                var textForFile = length > 0 ? '- ' + nm + ' için eklemiş olduğunuz ' + length + ' adet dosya var' : '';
+
+                                // Eğer dosya varsa upload ekranını açalım
+                                if (length > 0)
+                                    ul.target.children[2].trigger('click');
+
+                                _.prompter.show({
+                                    title: 'Yardımınıza ihtiyacım var',
+                                    message: nm + ' işaretini kaldırabilmem için aşağıdaki kayıtları kaldırmanız gerekiyor <br/><br/>' + textForPath + textForFile
+                                });
+
+                                /* dialog.show({
+                                     title: 'Dikkat',
+                                     content: 'İşareti kaldırabilmeniz için, bu alan için daha önce yüklemiş olduğunuz görselleri silmeniz gerekmektedir.',
+                                     button1: {
+                                         text: 'Tamam',
+                                         action: function () {
+                                             dialog.hide();
+                                         }
+                                     }
+                                 });*/
+                            }
+                            else
+                                checkbox.setClass('menu-item-locked');
 
 
                         }
 
 
-                            // Veritabanını güncelle
-                            _.savechanges();
+                        // Veritabanını güncelle
+                        _.savechanges();
 
-                            
+
                     }); // CLICK END
 
 
@@ -255,18 +332,7 @@
                         // Menunun key değerini al
                         var nm = menu.selectedMenuItem.target.getAttr('key');
 
-                        // Key değerine ait data bilgisini veritabanından çek
-                        var fdata = data[helper.getCustomizeUpload() + nm];
-
-                        // Upload için ekranı açalım
-                        gall.method.load(fdata);
-                        gall.content.hide();
-                        gall.container.show();
-                        gall.contentList.hide();
-
-                        setTimeout(function () {
-                            gall.contentList.show();
-                        }, 100);
+                        gall.method.show(nm);
 
                         // Menüde seçilmiş olan alanı işaretleyelim
                         menu.method.selectMenuItem(menu.selectedMenuItem, true);

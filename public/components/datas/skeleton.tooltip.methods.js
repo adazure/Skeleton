@@ -7,20 +7,21 @@
 
 
         var tooltip = _.tooltip;
-
+        var time = 0;
         function message(message, opts) {
 
             if (!message) return;
             opts = opts || { x: null, y: null, ev: parent.window.event };
             tooltip.container.target.setCSS({
-                left: (opts.x || opts.ev.pageX || parent.window.event.pageX) + 'px',
-                top: (opts.y || opts.ev.pageY || parent.window.event.pageY) + 'px'
+                left: (opts.x || opts.ev.pageX || parent.window.event.pageX) + 20 + 'px',
+                top: (opts.y || opts.ev.pageY || parent.window.event.pageY) + 20 + 'px'
             });
 
             tooltip.container.setHTML(message);
             show();
-
-            setTimeout(hide, 2500);
+            if(time)
+            clearTimeout(time);
+            time = setTimeout(hide, 2500);
         }
 
 

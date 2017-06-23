@@ -114,12 +114,9 @@
         //....................................................................................
 
 
-
         _.path.method.loadData(_.data);
 
-        _.prompter.show({
-            message:'Exercise used to be discouraged among people with cystic fibrosis (CF) because it was thought that overexertion would increase breathing problems. Now we know that the opposite is actually true. Studies have shown that regular physical activity provides many benefits to people with cystic fibrosis.'
-        });
+
 
     }); // MODULE
 

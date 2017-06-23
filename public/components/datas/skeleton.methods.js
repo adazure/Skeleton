@@ -2,10 +2,10 @@
 //          SKELETON METHODS
 /////////////////////////////////////////////////////////////////////////
 
-(function(_) {
+(function (_) {
 
 
-    _.MODULE(function() {
+    _.MODULE(function () {
 
         //SVG için method tutucu
         var method = _.method;
@@ -66,6 +66,39 @@
 
         //....................................................................................
 
+        function openerPopup(moveItemKey, newItem) {
+
+            //İlgili Menu butonuna ait açılması gereken bir popup varsa açtırıyoruz
+            if (menu.data[moveItemKey].url) {
+                var url = menu.data[moveItemKey].url;
+
+                // Üzerinde değişiklik yapılacak datayı bildirelim
+                popup.data = newItem;
+
+                popup.method.open(url);
+            }
+
+            //Stacker ile açtırabilmek için özel tanımlandı
+            else if (menu.data[moveItemKey].jsonData) {
+                var datas = eval(menu.data[moveItemKey].jsonData);
+                // Üzerinde değişiklik yapılacak datayı bildirelim
+                popup.data = newItem;
+
+                var doc = parent.document.createElement('div');
+                doc.id = "modalpage";
+
+                Skeleton.stacker({
+                    el: doc,
+                    source: datas
+                });
+
+                popup.method.openData(doc);
+            }
+
+        }
+
+
+        //....................................................................................
 
 
         // Fare tıklaması bitirildiğinde yapılacak işlemler.
@@ -105,17 +138,19 @@
                         //Eğer tabloda bir veri yoksa oluşturuyoruz, varsa üzerine yazıyoruz
 
                         var dbdataCurrent = _.data[path.selectedPath.id] || (_.data[path.selectedPath.id] = {
-                                transforms: []
-                            }),
+                            transforms: []
+                        }),
                             moveItemKey = _.selectedObject.getAttr('key');
 
                         // Koordinat bilgileri
+                        var _x = _.selectedObject.getAttr('x'),
+                            _y = _.selectedObject.getAttr('y');
                         dbdataCurrent.transforms.push({
-                            x: _.selectedObject.getAttr('x'),
-                            y: _.selectedObject.getAttr('y'),
+                            x: _x,
+                            y: _y,
                             obj:
                             //Sürüklenen nesnenin key ve root bilgisi
-                                moveItemKey
+                            moveItemKey
                         });
 
                         // Sahne üzerindeki nesneye tıklandığında detay sayfasının gelebilmesi için ilgili nesneye bazı özellikler ekliyoruz
@@ -123,13 +158,15 @@
                         path.method.setCustomProperties(_.selectedObject, {
                             index: dbdataCurrent.transforms.length - 1,
                             name: moveItemKey,
-                            root: path.selectedPath.id
+                            root: path.selectedPath.id,
+                            path: path.selectedPath,
+                            x: _x,
+                            y: _y
                         });
 
                         // Yeni kaydettiğimiz nesneyi diziden alalım
                         // Amacımız; eğer açılacak popup varsa, bu değerleri popup'a göndermek
                         var newItem = dbdataCurrent.transforms[dbdataCurrent.transforms.length - 1];
-
 
                         _.selectedObject.setAttr({
                             rootname: path.selectedPath.id
@@ -144,32 +181,10 @@
 
                         _.content.appendChild(_.selectedObject);
 
-                        //İlgili Menu butonuna ait açılması gereken bir popup varsa açtırıyoruz
-                        if (menu.data[moveItemKey].url) {
-                            var url = menu.data[moveItemKey].url;
+                        // Eklenen nesnenin sayısını tutacağız
+                        menu.data[moveItemKey].count = menu.data[moveItemKey].count ? menu.data[moveItemKey].count + 1 : 1;
 
-                            // Üzerinde değişiklik yapılacak datayı bildirelim
-                            popup.data = newItem;
-
-                            popup.method.open(url);
-                        }
-
-                        //Stacker ile açtırabilmek için özel tanımlandı
-                        else if (menu.data[moveItemKey].jsonData) {
-                            var datas = eval(menu.data[moveItemKey].jsonData);
-                            // Üzerinde değişiklik yapılacak datayı bildirelim
-                            popup.data = newItem;
-
-                            var doc = parent.document.createElement('div');
-                            doc.id = "modalpage";
-
-                            Skeleton.stacker({
-                                el: doc,
-                                source: datas
-                            });
-
-                            popup.method.openData(doc);
-                        }
+                        openerPopup(moveItemKey, newItem);
 
                     }
 
@@ -278,6 +293,7 @@
         method.windowMouseUp = windowMouseUp;
         method.windowMouseMove = windowMouseMove;
         method.windowMouseDown = windowMouseDown;
+        method.openerPopup = openerPopup;
         method.contextmenu = contextmenu;
 
         globMethod.onRelease = onRelease;

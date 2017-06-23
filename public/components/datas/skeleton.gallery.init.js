@@ -212,7 +212,7 @@
                                             text: 'KAYDET',
                                             action: function(ev, obj) {
 
-
+                                                if(!obj.target.value) return;
                                                 // Bu alanda; hem veritabanı hem de listedeki kaydı güncellememiz gerekiyor
                                                 // Önce veritabanında ki alanı bulalım ve güncelleyelim
                                                 // Mantık olarak yüklenen son kaydı alıp değiştiriyoruz

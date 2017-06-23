@@ -179,6 +179,7 @@
 
         function remClass(name) {
             var e = this.getAttr('class');
+            
             if (e) {
                 var a = e.split(' '),
                     b = a.indexOf(name);

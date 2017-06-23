@@ -10,8 +10,8 @@
 
         //....................................................................................
 
-
-        tooltip.container = new collection('div', { id: 'skeleton-tooltip' });
+        tooltip.container = new collection('div', { id: 'skeleton-tooltip' })
+        .setClass('animated','flipInX');
 
         tooltip.container.insert(parent.document.body);
 

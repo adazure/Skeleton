@@ -58,6 +58,30 @@
 
 
 
+
+        //....................................................................................
+
+
+
+        function show(nm) {
+
+            // Key değerine ait data bilgisini veritabanından çek
+            var fdata = _.data[helper.getCustomizeUpload() + nm];
+
+            // Upload için ekranı açalım
+            load(fdata);
+            gall.content.hide();
+            gall.container.show();
+            gall.contentList.hide();
+
+            setTimeout(function () {
+                gall.contentList.show();
+            }, 100);
+
+        }
+
+
+
         //....................................................................................
 
 
@@ -109,19 +133,36 @@
                                             if (result.number == 200) {
 
 
-                                                // Data veritabanında var sil
+                                                //console.log(repo.root);
+
+                                                // Data, veritabanında var ozaman sil
                                                 if (indx != -1) {
+                                                    // $Gastroskopi$cobble_stone
                                                     _.data[repo.root].splice(indx, 1);
                                                 }
 
-                                                // Eğer data da bir veri kalmadıysa silelim ve seçili menüyü sıfırlayalım
-                                                if (_.data[repo.root].length == 0) {
-                                                    delete _.data[repo.root];
+                                                // Checkbox'ı al
+                                                var chk = menu.selectedMenuItem.target.children[0].children[0];
 
-                                                    menu.selectedMenuItem.remClass('show', 'selected');
-                                                    var chk = menu.selectedMenuItem.target.children[0].children[0];
-                                                    chk.trigger('click');
+                                                // Checkbox'ın yanındaki ikon nesnesini al
+                                                var icon = menu.selectedMenuItem.target.children[1];
+
+                                                var key = chk.getAttr('key');
+
+                                                // Eğer data da bir veri kalmadıysa silelim ve seçili menüyü sıfırlayalım
+                                                if (_.data[repo.root].length == 0 && menu.data[key].count == 0) {
+                                                    delete _.data[repo.root];
+                                                    icon.remClass('menu-item-locked');
+                                                    _.prompter.show({
+                                                        message: [
+                                                            menu.data[key].title + ' için yüklenen dosyalar tamamen temizlendi. Bu alan için menüde hala aktif durumda. Dilerseniz işareti kaldırabilirsiniz ',
+                                                        ],
+                                                        timer: 6000,
+                                                        closeVisible: false
+                                                    });
                                                 }
+
+                                                menu.selectedMenuItem.remClass('show', 'selected');
 
 
                                                 // Upload ekranındaki listeden kaydı silelim
@@ -195,7 +236,6 @@
 
             // Tüm listeyi başlangıçta temizle
             clear();
-
             // Items Array nesnesi varsa işleme al
             if (items && items.length > 0) {
 
@@ -223,6 +263,7 @@
         method.add = add;
         method.clear = clear;
         method.load = load;
+        method.show = show;
 
 
     }); // MODULES
