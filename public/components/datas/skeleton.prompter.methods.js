@@ -14,23 +14,25 @@
         function removeContainer(ev, action) {
 
             isRemoved = false;
-            prom.container.setClass('prev');
-            prom.content.setClass('prev');
+            if (prom.container) {
+                prom.container.setClass('prev');
+                prom.content.setClass('prev');
 
-            if (time)
-                clearTimeout(time);
+                if (time)
+                    clearTimeout(time);
 
-            time = setTimeout(function () {
+                time = setTimeout(function () {
 
-                // kaldır
-                prom.container.remove();
-                // Sıfırla
-                prom.container = null;
+                    // kaldır
+                    prom.container.remove();
+                    // Sıfırla
+                    prom.container = null;
 
-                // Sayfada animasyon ve silme işlemi tamamlandı
-                isRemoved = true;
+                    // Sayfada animasyon ve silme işlemi tamamlandı
+                    isRemoved = true;
 
-            }, 1000);
+                }, 1000);
+            }
         }
 
 
@@ -89,12 +91,11 @@
                 if (typeof args.message === 'object')
                     for (var i = 0, y = ""; i < args.message.length; i++) {
                         var o = new coll('label')
-                        .setCSS({'display':'block','margin-bottom':'7px'})
+                            .setCSS({ 'display': 'block', 'margin-bottom': '7px' })
                             .setHTML(args.message[i])
                             .insert(prom.text.target);
                     }
-                else
-                {
+                else {
                     prom.text.setHTML(args.message);
                 }
 

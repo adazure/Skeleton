@@ -25,6 +25,7 @@ var data = [
     path + 'skeleton.collection.init.js',
     path + 'skeleton.gallery.js',
     path + 'skeleton.gallery.methods.js',
+    path + 'skeleton.gallery.fullscreen.js',
     path + 'skeleton.gallery.init.js',
     path + 'skeleton.contextmenu.js',
     path + 'skeleton.contextmenu.methods.js',

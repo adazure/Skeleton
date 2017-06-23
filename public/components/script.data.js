@@ -1730,7 +1730,6 @@ var Skeleton = (function (_) {
 
 
 
-
         //....................................................................................
 
 
@@ -1743,6 +1742,200 @@ var Skeleton = (function (_) {
 
 
     }); // MODULES
+
+
+})(Skeleton);
+/////////////////////////////////////////////////////////////////////////
+//          SKELETON GALLERY FULLSCREEN
+/////////////////////////////////////////////////////////////////////////
+
+(function (_) {
+
+
+
+    _.MODULE(function () {
+
+
+        var screen = _.gallery.fullscreen = {
+            objects: {
+                images: {
+                    container: null,
+                    data: []
+                }
+            }
+        };
+
+        var coll = _.collection.create;
+
+
+
+        //....................................................................................
+
+
+
+        function show(files) {
+
+        }
+
+
+        //....................................................................................
+
+
+        function hide() {
+
+            screen.objects.content.remove();
+            screen.objects.images.container.remove();
+            screen.objects.container.remove();
+            screen.objects.content = null;
+            screen.objects.images.container = null;
+            screen.objects.container = null;
+
+        }
+
+
+
+        //....................................................................................
+
+
+        function hasScreen() {
+            return screen.objects.container != null;
+        }
+
+
+
+        //....................................................................................
+
+
+
+        function createItem(data) {
+
+        }
+
+
+
+        //....................................................................................
+
+
+
+        function showItem(item) {
+
+            var img = new coll('img', { src: 'http://www.mobileswall.com/wp-content/uploads/2014/12/1200-Tiger-muzzle-l.jpg' })
+                .insert(screen.objects.content.target);
+
+        }
+
+
+
+
+
+        //....................................................................................
+
+        var _x = 0, _y = 0, _status = false;
+        function mousedown(e) {
+            e.preventDefault();
+            _x = e.pageX - e.target.offsetLeft;
+            _y = e.pageY - e.target.offsetTop;
+            _status = true;
+            return;
+        }
+
+        function mouseup(e) {
+            e.preventDefault();
+            _status = false;
+            return;
+        }
+
+        function mousemove(e) {
+            if (_status) {
+                var trg = screen.objects.content.target;
+                var __x = e.pageX - _x;
+                var __y = e.pageY - _y;
+                var __start = parseInt(trg.clientWidth - parent.window.innerWidth);
+                var __end = parseInt(trg.clientHeight - parent.window.innerHeight);
+
+
+                __x = trg.offsetLeft < -__start ? (-__start) : __x;
+                __y = trg.offsetTop < -__end ? (-__end) : __y;
+
+                var a = 0;
+                var b = 0;
+
+                if (__start > 0) {
+                    a = __x < -__start ? -__start : __x;
+                    a = __x > 0 ? 0 : __x;
+                }
+
+                if (__end > 0) {
+                    b = __y < -__end ? -__end : __y;
+                    b = __y > 0 ? 0 : __y;
+                }
+
+
+                console.log(__end,parent.window.innerHeight);
+
+                screen.objects.content.setCSS({ transform: 'translate(' + a + 'px,' + b + 'px)', left: a + 'px', top: b + 'px' })
+            }
+        }
+
+        function dragDrop(obj) {
+
+            obj.setBind('mousedown', mousedown);
+
+            parent.window.addEventListener('mousemove', mousemove);
+            parent.window.addEventListener('mouseup', mouseup);
+
+
+        }
+
+
+        //....................................................................................
+
+
+
+
+
+
+
+        function create(files) {
+
+            if (!hasScreen()) {
+
+                var container = screen.objects.container = new coll('div', { id: 'skeleton-gallery-fullscreen-container' })
+                    .insert(parent.document.body);
+
+                var images = screen.objects.images.container = new coll('div', { id: 'skeleton-gallery-fullscreen-images' })
+                    .insert(container.target);
+
+                var content = screen.objects.content = new coll('div', { id: 'skeleton-gallery-fullscreen-content' })
+                    .insert(container.target);
+
+                dragDrop(content);
+
+                showItem();
+            }
+
+
+            _.prompter.show({
+                message: "Farenizin sol tuşu ile görsel üzerinde sürükleme yaparak kolayca kullanabilirsiniz",
+                timer: 10000
+            });
+
+        }
+
+
+
+
+        //....................................................................................
+
+
+
+
+        screen.show = show;
+        screen.hide = hide;
+
+        setTimeout(create, 1000);
+
+    });
 
 
 })(Skeleton);
@@ -4812,23 +5005,25 @@ var Skeleton = (function (_) {
         function removeContainer(ev, action) {
 
             isRemoved = false;
-            prom.container.setClass('prev');
-            prom.content.setClass('prev');
+            if (prom.container) {
+                prom.container.setClass('prev');
+                prom.content.setClass('prev');
 
-            if (time)
-                clearTimeout(time);
+                if (time)
+                    clearTimeout(time);
 
-            time = setTimeout(function () {
+                time = setTimeout(function () {
 
-                // kaldır
-                prom.container.remove();
-                // Sıfırla
-                prom.container = null;
+                    // kaldır
+                    prom.container.remove();
+                    // Sıfırla
+                    prom.container = null;
 
-                // Sayfada animasyon ve silme işlemi tamamlandı
-                isRemoved = true;
+                    // Sayfada animasyon ve silme işlemi tamamlandı
+                    isRemoved = true;
 
-            }, 1000);
+                }, 1000);
+            }
         }
 
 
@@ -4887,12 +5082,11 @@ var Skeleton = (function (_) {
                 if (typeof args.message === 'object')
                     for (var i = 0, y = ""; i < args.message.length; i++) {
                         var o = new coll('label')
-                        .setCSS({'display':'block','margin-bottom':'7px'})
+                            .setCSS({ 'display': 'block', 'margin-bottom': '7px' })
                             .setHTML(args.message[i])
                             .insert(prom.text.target);
                     }
-                else
-                {
+                else {
                     prom.text.setHTML(args.message);
                 }
 
@@ -5365,15 +5559,15 @@ var Skeleton = (function (_) {
                 'left': '0',
                 'top': '0',
                 'display': 'none',
-                'width':'200px'
+                'width': '200px'
             },
-            '#contextmenu-container::before':{
-                'content':"'Yönetin'",
-                'background-color':'gray',
-                'color':'white',
-                'display':'block',
-                'padding':'4px 10px',
-                'text-align':'center'
+            '#contextmenu-container::before': {
+                'content': "'Yönetin'",
+                'background-color': 'gray',
+                'color': 'white',
+                'display': 'block',
+                'padding': '4px 10px',
+                'text-align': 'center'
             },
             '#contextmenu-content': {},
             '#contextmenu-content > div': {
@@ -5509,7 +5703,7 @@ var Skeleton = (function (_) {
                 'box-shadow': '1px 1px 3px #000'
             },
             '.skeleton-menu-item .menu-item-text': {
-                'cursor':'pointer'
+                'cursor': 'pointer'
             },
             '.skeleton-menu-item .menu-item-chk': {
 
@@ -5524,7 +5718,7 @@ var Skeleton = (function (_) {
                 'opacity': '0.3'
             },
             '#skeleton-menu-header': {
-                'position':'relative',
+                'position': 'relative',
                 'padding': '10px',
                 'background-color': 'rgb(48, 57, 90)',
                 'color': 'white',
@@ -5573,7 +5767,7 @@ var Skeleton = (function (_) {
                 'padding': '10px',
                 'pointer-events': 'none',
                 'z-index': '9999',
-                'opacity':'.9'
+                'opacity': '.9'
             },
             '.no-animate': {
                 'transition': 'none !important'
@@ -6090,7 +6284,7 @@ var Skeleton = (function (_) {
                 'left': '10px',
                 'max-width': '470px',
                 'animation': 'prompter-container .3s forwards',
-                'z-index': '1001',
+                'z-index': '1101',
             },
             '@keyframes prompter-container': {
                 'from': '{background-position:-200px bottom}',
@@ -6159,51 +6353,79 @@ var Skeleton = (function (_) {
                 'background-size': '50%',
                 'box-shadow': 'inset 4px -3px 6px -5px #6d6d6d'
             },
-            '#skeleton-prompter-close:hover':{
-                'background-color':'#bd8b53'
+            '#skeleton-prompter-close:hover': {
+                'background-color': '#bd8b53'
             },
-            '#skeleton-prompter-title':{
-                'font-size':'17px',
-                'margin-bottom':'10px',
-                'font-weight':'bold'
+            '#skeleton-prompter-title': {
+                'font-size': '17px',
+                'margin-bottom': '10px',
+                'font-weight': 'bold'
             },
-            '.information-woman':{
-                'width':'24px',
-                'height':'24px',
-                'position':'absolute',
-                'right':'5px',
-                'top':'0',
-                'bottom':'0',
-                'margin':'auto 0',
-                'background-image':'url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTYuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjI0cHgiIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAwIDYxMiA2MTIiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDYxMiA2MTI7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPGc+Cgk8Zz4KCQk8cGF0aCBkPSJNMjMwLjcyNCwxODEuMjA4Yy0yLjM5MywyLjU4Ny0zLjk1LDQuMjU2LTUuMTE5LDUuNTA4QzIyNy43NzUsMTg0LjM3OSwyMzAuNzI0LDE4MS4yMDgsMjMwLjcyNCwxODEuMjA4eiIgZmlsbD0iI0ZGREE0NCIvPgoJCTxwYXRoIGQ9Ik0zMzYuOTYyLDIwMC44NzVjNy45NTYsOS43OTIsMTEuOTA2LDIxLjMzNywxMS45MDYsMzQuNjM0YzAsOS41MTQtMi43MjcsMTguNjY2LTguMTUxLDI3LjUxMiAgICBjLTIuOTc3LDUuMDA3LTYuODk4LDkuODQ4LTExLjc5NSwxNC40NjVsLTE2LjMwMSwxNi4xMDdjLTE1LjYzNCwxNS4zNTYtMjUuNzMyLDI4Ljk1OC0zMC4zNSw0MC44NjUgICAgYy00LjYxOCwxMS44NzgtNi45MjcsMjcuNTQtNi45MjcsNDYuOTU3aDM2LjI3NWMwLTE3LjEwOCwxLjk0Ny0zMC4wNDQsNS44MTQtMzguODA3YzMuODY2LTguNzYzLDEyLjMyMy0xOS40NDQsMjUuMzctMzIuMTAyICAgIGMxNy45NDItMTcuMzg3LDI5Ljg0OS0zMC41NzIsMzUuNzQ2LTM5LjUzczguODc0LTIwLjY0MSw4Ljg3NC0zNS4wNTFjMC0yMy43NTYtOC4wMzktNDMuMjg1LTI0LjE0Ni01OC41ODUgICAgYy0xNi4xMDYtMTUuMy0zNy41MjYtMjIuOTIyLTY0LjI4OC0yMi45MjJjLTI4LjkzMSwwLTUxLjY4Niw4LjkyOS02OC4yNjYsMjYuNzg5cy0yNC44Nyw0MS40NDktMjQuODcsNzAuNzk3aDM2LjI3NSAgICBjMC42NjctMTcuNjY1LDMuNDc4LTMxLjE4NCw4LjM0Ni00MC41NTljOC42NzktMTYuODMsMjQuMzY5LTI1LjI1OSw0Ny4wNjgtMjUuMjU5ICAgIEMzMTUuODc1LDE4Ni4xODcsMzI5LjAzMywxOTEuMDgzLDMzNi45NjIsMjAwLjg3NXoiIGZpbGw9IiNGRkRBNDQiLz4KCQk8cGF0aCBkPSJNNjEyLDMwNkM2MTIsMTM3LjAwNCw0NzQuOTk1LDAsMzA2LDBDMTM3LjAwNCwwLDAsMTM3LjAwNCwwLDMwNmMwLDE2OC45OTUsMTM3LjAwNCwzMDYsMzA2LDMwNiAgICBDNDc0Ljk5NSw2MTIsNjEyLDQ3NC45OTUsNjEyLDMwNnogTTI3LjgxOCwzMDZDMjcuODE4LDE1Mi4zNiwxNTIuMzYsMjcuODE4LDMwNiwyNy44MThTNTg0LjE4MiwxNTIuMzYsNTg0LjE4MiwzMDYgICAgUzQ1OS42NCw1ODQuMTgyLDMwNiw1ODQuMTgyUzI3LjgxOCw0NTkuNjQsMjcuODE4LDMwNnoiIGZpbGw9IiNGRkRBNDQiLz4KCQk8cmVjdCB4PSIyNzQuNTEiIHk9IjQxNS4yMTQiIHdpZHRoPSI0MC41NTkiIGhlaWdodD0iNDIuMzY3IiBmaWxsPSIjRkZEQTQ0Ii8+Cgk8L2c+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPC9zdmc+Cg==)',
-                'background-repeat':'no-repeat',
-                'background-position':'center center',
-                'background-size':'100%',
-                'border-radius':'50%'
+            '.information-woman': {
+                'width': '24px',
+                'height': '24px',
+                'position': 'absolute',
+                'right': '5px',
+                'top': '0',
+                'bottom': '0',
+                'margin': 'auto 0',
+                'background-image': 'url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTYuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjI0cHgiIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAwIDYxMiA2MTIiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDYxMiA2MTI7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPGc+Cgk8Zz4KCQk8cGF0aCBkPSJNMjMwLjcyNCwxODEuMjA4Yy0yLjM5MywyLjU4Ny0zLjk1LDQuMjU2LTUuMTE5LDUuNTA4QzIyNy43NzUsMTg0LjM3OSwyMzAuNzI0LDE4MS4yMDgsMjMwLjcyNCwxODEuMjA4eiIgZmlsbD0iI0ZGREE0NCIvPgoJCTxwYXRoIGQ9Ik0zMzYuOTYyLDIwMC44NzVjNy45NTYsOS43OTIsMTEuOTA2LDIxLjMzNywxMS45MDYsMzQuNjM0YzAsOS41MTQtMi43MjcsMTguNjY2LTguMTUxLDI3LjUxMiAgICBjLTIuOTc3LDUuMDA3LTYuODk4LDkuODQ4LTExLjc5NSwxNC40NjVsLTE2LjMwMSwxNi4xMDdjLTE1LjYzNCwxNS4zNTYtMjUuNzMyLDI4Ljk1OC0zMC4zNSw0MC44NjUgICAgYy00LjYxOCwxMS44NzgtNi45MjcsMjcuNTQtNi45MjcsNDYuOTU3aDM2LjI3NWMwLTE3LjEwOCwxLjk0Ny0zMC4wNDQsNS44MTQtMzguODA3YzMuODY2LTguNzYzLDEyLjMyMy0xOS40NDQsMjUuMzctMzIuMTAyICAgIGMxNy45NDItMTcuMzg3LDI5Ljg0OS0zMC41NzIsMzUuNzQ2LTM5LjUzczguODc0LTIwLjY0MSw4Ljg3NC0zNS4wNTFjMC0yMy43NTYtOC4wMzktNDMuMjg1LTI0LjE0Ni01OC41ODUgICAgYy0xNi4xMDYtMTUuMy0zNy41MjYtMjIuOTIyLTY0LjI4OC0yMi45MjJjLTI4LjkzMSwwLTUxLjY4Niw4LjkyOS02OC4yNjYsMjYuNzg5cy0yNC44Nyw0MS40NDktMjQuODcsNzAuNzk3aDM2LjI3NSAgICBjMC42NjctMTcuNjY1LDMuNDc4LTMxLjE4NCw4LjM0Ni00MC41NTljOC42NzktMTYuODMsMjQuMzY5LTI1LjI1OSw0Ny4wNjgtMjUuMjU5ICAgIEMzMTUuODc1LDE4Ni4xODcsMzI5LjAzMywxOTEuMDgzLDMzNi45NjIsMjAwLjg3NXoiIGZpbGw9IiNGRkRBNDQiLz4KCQk8cGF0aCBkPSJNNjEyLDMwNkM2MTIsMTM3LjAwNCw0NzQuOTk1LDAsMzA2LDBDMTM3LjAwNCwwLDAsMTM3LjAwNCwwLDMwNmMwLDE2OC45OTUsMTM3LjAwNCwzMDYsMzA2LDMwNiAgICBDNDc0Ljk5NSw2MTIsNjEyLDQ3NC45OTUsNjEyLDMwNnogTTI3LjgxOCwzMDZDMjcuODE4LDE1Mi4zNiwxNTIuMzYsMjcuODE4LDMwNiwyNy44MThTNTg0LjE4MiwxNTIuMzYsNTg0LjE4MiwzMDYgICAgUzQ1OS42NCw1ODQuMTgyLDMwNiw1ODQuMTgyUzI3LjgxOCw0NTkuNjQsMjcuODE4LDMwNnoiIGZpbGw9IiNGRkRBNDQiLz4KCQk8cmVjdCB4PSIyNzQuNTEiIHk9IjQxNS4yMTQiIHdpZHRoPSI0MC41NTkiIGhlaWdodD0iNDIuMzY3IiBmaWxsPSIjRkZEQTQ0Ii8+Cgk8L2c+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPC9zdmc+Cg==)',
+                'background-repeat': 'no-repeat',
+                'background-position': 'center center',
+                'background-size': '100%',
+                'border-radius': '50%'
             },
-            '.information-woman:hover':{
-                'background-color':'#222'
+            '.information-woman:hover': {
+                'background-color': '#222'
             },
-            'i.ichk':{
-                'display':'inline-block',
-                'background-size':'cover',
-                'vertical-align':'middle'
+            'i.ichk': {
+                'display': 'inline-block',
+                'background-size': 'cover',
+                'vertical-align': 'middle'
             },
-            'i.ichk::after':{
-                'content':"''",
-                'display':'block',
-                'padding':'7px',
-                'background-size':'cover'
+            'i.ichk::after': {
+                'content': "''",
+                'display': 'block',
+                'padding': '7px',
+                'background-size': 'cover'
             },
-            'i.ichk_x182':{
-                'background-image':"url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4QYXBjsAa31riwAAALRJREFUKM+1jzGLhDAYRN8XrjOiplMEwdJ/4P8vbKzFShDElAqJ2ATcYrlO97a5qd/MY8R7fw3DwDRNbNvGXbIso65rmqZB+r6/juOgLEvSNL0t7PvOsixEUcSPtZa2bTHGICKPhiRJ6LoOFUL4CAOICMYYQggopRTfRimF+rR8Z/p+/tfy/wWtNc65P0HnHFprZBzHCyDPc+I4foStte/j53le8zyzrive+9uC1pqiKKiqihfDLkJ0kVzlOQAAAABJRU5ErkJggg==')",
+            'i.ichk_x182': {
+                'background-image': "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4QYXBjsAa31riwAAALRJREFUKM+1jzGLhDAYRN8XrjOiplMEwdJ/4P8vbKzFShDElAqJ2ATcYrlO97a5qd/MY8R7fw3DwDRNbNvGXbIso65rmqZB+r6/juOgLEvSNL0t7PvOsixEUcSPtZa2bTHGICKPhiRJ6LoOFUL4CAOICMYYQggopRTfRimF+rR8Z/p+/tfy/wWtNc65P0HnHFprZBzHCyDPc+I4foStte/j53le8zyzrive+9uC1pqiKKiqihfDLkJ0kVzlOQAAAABJRU5ErkJggg==')",
 
             },
-            'i.ichk_x183':{
-                'background-image':"url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4QYXBxQH5sescgAAAUxJREFUKM9tkrFOwmAUhb//p8VCQCAawaXRhM1BmDTGhcFNHoCBGB9BVx9AN1/AMApv4Eji4uAgiSYmhkVMJOCAJSZt2r+tQ6GG4B1vvntycs4Vw2kYtnvQ7cPAAsHihICZg1oZGhXQ2j24fQJDg5yxfOAHMLEjBkB2+xGckMswARyaAbqImG4f5MACKVkapaBZ9bg8luyWPCCyLAXLykEA5qrLyZ7G84fN/ZsTO4i1Ax+2cz6+Al8pLo4kAjjrjElnsrGYNlc8MH2u6glaDx6WHbCzucL13YhvUSSTYPFASui+/vBSTXK6n8L1Q/ojh9ajoLBuLNiV4SxrPZ2jeTNiPPVIJgTnnS/yaxtxIHNO1FthOLGjWF03QFnvFDOCT1Ukm00t9FFIgayVwVHRQk9K9PwWQ78Uw+EMdlTUttaoRAp/ryFAM7Cc/1/jF76IfO/GTNe2AAAAAElFTkSuQmCC')"
+            'i.ichk_x183': {
+                'background-image': "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4QYXBxQH5sescgAAAUxJREFUKM9tkrFOwmAUhb//p8VCQCAawaXRhM1BmDTGhcFNHoCBGB9BVx9AN1/AMApv4Eji4uAgiSYmhkVMJOCAJSZt2r+tQ6GG4B1vvntycs4Vw2kYtnvQ7cPAAsHihICZg1oZGhXQ2j24fQJDg5yxfOAHMLEjBkB2+xGckMswARyaAbqImG4f5MACKVkapaBZ9bg8luyWPCCyLAXLykEA5qrLyZ7G84fN/ZsTO4i1Ax+2cz6+Al8pLo4kAjjrjElnsrGYNlc8MH2u6glaDx6WHbCzucL13YhvUSSTYPFASui+/vBSTXK6n8L1Q/ojh9ajoLBuLNiV4SxrPZ2jeTNiPPVIJgTnnS/yaxtxIHNO1FthOLGjWF03QFnvFDOCT1Ukm00t9FFIgayVwVHRQk9K9PwWQ78Uw+EMdlTUttaoRAp/ryFAM7Cc/1/jF76IfO/GTNe2AAAAAElFTkSuQmCC')"
             },
-            'i.ichk_x184':{
-                'background-image':"url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAACcFBMVEWdyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXcAAADnalsEAAAAAXRSTlMAQObYZgAAAAFiS0dEAIgFHUgAAAAJcEhZcwAADdcAAA3XAUIom3gAAAAHdElNRQfhBhcHGQYkbuKpAAAAX0lEQVQoz52SAQoAIQgE9wf3yr7rm46SzvVaKVoi3EYUUmDKhvCTkap3JmaahM+EXRUn94W9lALcI+KnZ4yDNgtEMwdg4I7vBFL1CwANsAHrDLAS8XH1QHYjPFkGsT4vJpoj0M6qwRkAAAAASUVORK5CYII=')"
+            'i.ichk_x184': {
+                'background-image': "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAACcFBMVEWdyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXedyXcAAADnalsEAAAAAXRSTlMAQObYZgAAAAFiS0dEAIgFHUgAAAAJcEhZcwAADdcAAA3XAUIom3gAAAAHdElNRQfhBhcHGQYkbuKpAAAAX0lEQVQoz52SAQoAIQgE9wf3yr7rm46SzvVaKVoi3EYUUmDKhvCTkap3JmaahM+EXRUn94W9lALcI+KnZ4yDNgtEMwdg4I7vBFL1CwANsAHrDLAS8XH1QHYjPFkGsT4vJpoj0M6qwRkAAAAASUVORK5CYII=')"
+            },
+            '#skeleton-gallery-fullscreen-container': {
+                'position': 'fixed',
+                'background-color': 'rgba(0, 0, 0, 0.65)',
+                'left': '0',
+                'right': '0',
+                'bottom': '0',
+                'top': '0',
+                'z-index': '1010',
+                'overflow':'hidden'
+            },
+            '#skeleton-gallery-fullscreen-images': {
+                'position':'fixed',
+                'left':'0',
+                'right':'0',
+                'bottom':'0',
+                'overflow':'hidden',
+                'border-top':'1px solid #868686',
+                'height':'100px',
+                'z-index':'1011',
+                'background-color':'rgba(56, 56, 56, 0.62)'
+            },
+            '#skeleton-gallery-fullscreen-content': {
+                'position':'relative',
+            },
+            '#skeleton-gallery-fullscreen-content img': {
+                'pointer-events':'none',
+                'display':'block'
             }
         });
 
