@@ -219,7 +219,7 @@
                                                 _.data[grow][_.data[grow].length - 1].title = obj.target.value;
 
                                                 // Şimdi listedeki alanı bulup güncelleyelim
-                                                __item.target.children[0].innerHTML = obj.target.value;
+                                                __item.target.children[0].children[0].innerHTML = obj.target.value;
 
                                                 // Veritabanını güncelle
                                                 Skeleton.savechanges();

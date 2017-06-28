@@ -26,30 +26,36 @@
 
         function add(item) {
 
-            // Yeni bir div oluşturur ve içerisine 3 adet span nesnesi oluşturur
             var galItem = new coll('div')
                 .setClass('gall-item-name')
-                .repeat(3, 'span')
+                .insert(gall.contentList.target);
 
-            // Div nesnesi içerisindeki ilk nesneyi alır ve başlığı ekler
-            galItem.first().setHTML(item.title);
+            var names = galItem.create('div')
+                .setClass('gall-item-content');
 
-            // Div nesnesi içerisindeki ikinci nesnesi alır ve dosya adını yazar
-            galItem.children(1).setHTML(item.file);
+            names.create('div').setHTML(item.title)
+                .setClass('gall-item-title')
+                .createParent('div')
+                .setClass('gall-item-file')
+                .setHTML(item.file);
 
-            // Div nesnesini contentlist nesnesinin içerisine ekler
-            galItem.insert(gall.contentList.target);
+            var showImage = galItem.create('div')
+                .setClass('gall-item-showphoto')
+                .setBind('click', function () {
+                    gall.fullscreen.show('/uploads/' + item.file);
+                });
 
-            // Son span nesnemize dosyayı silme özelliği ekleyelim
-            var last = galItem.last();
+            var delImage = galItem.create('div')
+                .setClass('gall-item-delphoto')
+                .setAttr({ 'fileitem': item.file })
+                .setBind('click', removeFile);
 
             // Basıldığında silinecek nesneyi verelim
-            last.target.__removeItem = galItem;
+            delImage.target.__removeItem = galItem;
 
             // Veritabanına kaydedilen veriyi tutalım. Silme işleminde bulup sileceğiz
-            last.target.__removeSource = { root: helper.getCustomizeUpload() + menu.selectedMenuItem.getAttr('key'), item: item };
+            delImage.target.__removeSource = { root: helper.getCustomizeUpload() + menu.selectedMenuItem.getAttr('key'), item: item };
 
-            last.setAttr({ 'fileitem': item.file }).setBind('click', removeFile);
 
             // Eğer istenirse diye, oluşturulan DIV nesnesini geri döndürüyoruz
             return galItem;

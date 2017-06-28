@@ -1502,30 +1502,36 @@ var Skeleton = (function (_) {
 
         function add(item) {
 
-            // Yeni bir div oluşturur ve içerisine 3 adet span nesnesi oluşturur
             var galItem = new coll('div')
                 .setClass('gall-item-name')
-                .repeat(3, 'span')
+                .insert(gall.contentList.target);
 
-            // Div nesnesi içerisindeki ilk nesneyi alır ve başlığı ekler
-            galItem.first().setHTML(item.title);
+            var names = galItem.create('div')
+                .setClass('gall-item-content');
 
-            // Div nesnesi içerisindeki ikinci nesnesi alır ve dosya adını yazar
-            galItem.children(1).setHTML(item.file);
+            names.create('div').setHTML(item.title)
+                .setClass('gall-item-title')
+                .createParent('div')
+                .setClass('gall-item-file')
+                .setHTML(item.file);
 
-            // Div nesnesini contentlist nesnesinin içerisine ekler
-            galItem.insert(gall.contentList.target);
+            var showImage = galItem.create('div')
+                .setClass('gall-item-showphoto')
+                .setBind('click', function () {
+                    gall.fullscreen.show('/uploads/' + item.file);
+                });
 
-            // Son span nesnemize dosyayı silme özelliği ekleyelim
-            var last = galItem.last();
+            var delImage = galItem.create('div')
+                .setClass('gall-item-delphoto')
+                .setAttr({ 'fileitem': item.file })
+                .setBind('click', removeFile);
 
             // Basıldığında silinecek nesneyi verelim
-            last.target.__removeItem = galItem;
+            delImage.target.__removeItem = galItem;
 
             // Veritabanına kaydedilen veriyi tutalım. Silme işleminde bulup sileceğiz
-            last.target.__removeSource = { root: helper.getCustomizeUpload() + menu.selectedMenuItem.getAttr('key'), item: item };
+            delImage.target.__removeSource = { root: helper.getCustomizeUpload() + menu.selectedMenuItem.getAttr('key'), item: item };
 
-            last.setAttr({ 'fileitem': item.file }).setBind('click', removeFile);
 
             // Eğer istenirse diye, oluşturulan DIV nesnesini geri döndürüyoruz
             return galItem;
@@ -1772,23 +1778,16 @@ var Skeleton = (function (_) {
         //....................................................................................
 
 
-
-        function show(files) {
-
-        }
-
-
-        //....................................................................................
-
-
-        function hide() {
+        function hide(e) {
 
             screen.objects.content.remove();
-            screen.objects.images.container.remove();
+            //screen.objects.images.container.remove();
             screen.objects.container.remove();
+            screen.objects.closeButton.remove();
             screen.objects.content = null;
-            screen.objects.images.container = null;
+            //screen.objects.images.container = null;
             screen.objects.container = null;
+            screen.objects.closeButton = null;
 
         }
 
@@ -1817,18 +1816,18 @@ var Skeleton = (function (_) {
 
 
 
-        function showItem(item) {
-
-            var img = new coll('img', { src: 'http://www.mobileswall.com/wp-content/uploads/2014/12/1200-Tiger-muzzle-l.jpg' })
+        function show(item) {
+            create();
+            // https://www.diagnostikum-berlin.de/sites/default/files/R%C3%B6ntgen%20Lunge.jpg
+            var img = new coll('img', { src: item })
                 .insert(screen.objects.content.target);
-
         }
 
 
 
-
-
         //....................................................................................
+
+
 
         var _x = 0, _y = 0, _status = false;
         function mousedown(e) {
@@ -1836,24 +1835,31 @@ var Skeleton = (function (_) {
             _x = e.pageX - e.target.offsetLeft;
             _y = e.pageY - e.target.offsetTop;
             _status = true;
+            screen.objects.content.setClass('move');
             return;
         }
+
+
 
         function mouseup(e) {
             e.preventDefault();
             _status = false;
+            if (screen.objects.content)
+                screen.objects.content.remClass('move');
             return;
         }
 
+
+
         function mousemove(e) {
+
+            e.preventDefault();
             if (_status) {
                 var trg = screen.objects.content.target;
                 var __x = e.pageX - _x;
                 var __y = e.pageY - _y;
-                var __start = parseInt(trg.clientWidth - parent.window.innerWidth);
-                var __end = parseInt(trg.clientHeight - parent.window.innerHeight);
-
-
+                var __start = parseInt(trg.children[0].clientWidth - parent.window.innerWidth);
+                var __end = parseInt(trg.children[0].clientHeight - parent.window.innerHeight);
                 __x = trg.offsetLeft < -__start ? (-__start) : __x;
                 __y = trg.offsetTop < -__end ? (-__end) : __y;
 
@@ -1862,20 +1868,18 @@ var Skeleton = (function (_) {
 
                 if (__start > 0) {
                     a = __x < -__start ? -__start : __x;
-                    a = __x > 0 ? 0 : __x;
+                    a = a > 0 ? 0 : a;
                 }
 
                 if (__end > 0) {
                     b = __y < -__end ? -__end : __y;
-                    b = __y > 0 ? 0 : __y;
+                    b = b > 0 ? 0 : b;
                 }
 
-
-                console.log(__end,parent.window.innerHeight);
-
-                screen.objects.content.setCSS({ transform: 'translate(' + a + 'px,' + b + 'px)', left: a + 'px', top: b + 'px' })
+                screen.objects.content.setCSS({ left: a + 'px', top: b + 'px' })
             }
         }
+
 
         function dragDrop(obj) {
 
@@ -1893,31 +1897,38 @@ var Skeleton = (function (_) {
 
 
 
-
-
-
-        function create(files) {
+        function create() {
 
             if (!hasScreen()) {
 
+                // Gösterilecek resim için en dış katman oluşturuluyor ve sahneye ekleniyor
                 var container = screen.objects.container = new coll('div', { id: 'skeleton-gallery-fullscreen-container' })
                     .insert(parent.document.body);
 
-                var images = screen.objects.images.container = new coll('div', { id: 'skeleton-gallery-fullscreen-images' })
-                    .insert(container.target);
+                //var images = screen.objects.images.container = new coll('div', { id: 'skeleton-gallery-fullscreen-images' })
+                //    .insert(container.target);
 
+                // Kapatma tuşu
+                var closeButton = screen.objects.closeButton = new coll('div', { id: 'skeleton-gallery-fullscreen-closebutton' })
+                    .insert(container.target)
+                    .setBind('click', hide);
+
+                // Resmin gösterileceği alan oluşturuluyor ve container nesnesine ekleniyor
                 var content = screen.objects.content = new coll('div', { id: 'skeleton-gallery-fullscreen-content' })
                     .insert(container.target);
 
+                // Sürüklenecek nesneyi bildiriyoruz
                 dragDrop(content);
 
-                showItem();
+
             }
 
 
             _.prompter.show({
-                message: "Farenizin sol tuşu ile görsel üzerinde sürükleme yaparak kolayca kullanabilirsiniz",
-                timer: 10000
+                title: 'Hareket ettirin',
+                message: "Farenizin sol tuşu ile basılı tutarak, görseli sağa/sol/yukarı/aşağı kolayca hareket ettirebilirsiniz",
+                timer: 6000,
+                closeVisible: false
             });
 
         }
@@ -1932,8 +1943,6 @@ var Skeleton = (function (_) {
 
         screen.show = show;
         screen.hide = hide;
-
-        setTimeout(create, 1000);
 
     });
 
@@ -2160,7 +2169,7 @@ var Skeleton = (function (_) {
                                                 _.data[grow][_.data[grow].length - 1].title = obj.target.value;
 
                                                 // Şimdi listedeki alanı bulup güncelleyelim
-                                                __item.target.children[0].innerHTML = obj.target.value;
+                                                __item.target.children[0].children[0].innerHTML = obj.target.value;
 
                                                 // Veritabanını güncelle
                                                 Skeleton.savechanges();
@@ -6232,48 +6241,46 @@ var Skeleton = (function (_) {
                 'font-size': '13px'
             },
             '#skeleton-gallery-contentlist > div.gall-item-name': {
-                'padding': '10px 10px 10px 35px',
+                'overflow': 'hidden',
                 'border-bottom': '1px solid #ececec',
                 'transition': 'all .3s linear',
                 'background': "#fff url('data:image/png;base64,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') no-repeat 5px center",
                 'background-size': '20px 20px'
 
             },
-            '#skeleton-gallery-contentlist > div.gall-item-name span': {
-                'display': 'block',
+            'div.gall-item-name > div': {
+                'float': 'left',
+                'box-sizing': 'border-box',
+                'min-height': '55px',
+                'width': '20%',
+                'background-size': 'auto 33% !important',
+                'background-color': 'white',
+                'border-right': '1px solid #ddd',
+                'transition':'background-color .3s linear'
             },
-            '#skeleton-gallery-contentlist > div.gall-item-name span:first-child': {
-                'font-weight': 'bold',
-                'white-space': 'nowrap',
-                'overflow': 'hidden',
-                'text-overflow': 'ellipsis',
-                'color': '#636363'
+            'div.gall-item-name > div.gall-item-content': {
+                'width': '60%',
+                'padding':'12px'
             },
-            '#skeleton-gallery-contentlist > div.gall-item-name span:nth-child(2)': {
-                'font-size': '13px',
-                'color': '#6592bb'
+            'div.gall-item-name > div.gall-item-delphoto': {
+                'cursor':'pointer',
+                'background': "#fff url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABr0lEQVRIidXVPWgVQRQF4O+Fh1iFYCESLGwCiiCiIKIgkkIESWVjZyViIIKgjdWxsNRGLURLWwshlioIioWFijxEiYiFpUUQi0cIFjsb1+f74ZHgz4HL7N659567Z2Z2WkYgyT5cw160i3sFb3EJL5IMzJ8YUXwHHuAIulgu1sWhMrdzWI2hBDiF7biH3Zgptgt3sRWnhxVoN1+KHFMN1+EyLmFPT+6HMh5IMtvwL+NlLdsaQZHjGTb3aeTKkCZni9XoYr9qjSqJkkzi3IDi42ITziTZskagkuXiBhSvcR7b+CnRVyyoFnIeT3F/zKIncEy1+K/xBVrNiCRH8QQ3kyyMUz3JVVzGXJLF2t8enEKSeZxUHah3uK1ojGncwsMk1wfV6CVYLVZjRrVDpkrsQdVGaGOyzH0ssX3P1KiDtm78NYL1EDcl/r8k+rcWecOI/7hEqwP84+CXXTToV1ET3MEjvMF3nC1z3/Aec/g8rKl+vwqYTtJO0kGnMf+48dzFIiSZUF2tI7+gUzo7jqUkK42E1Z7YicZYE3zCq2ZQSw/KvXzD73fwKHRwIcnzpvMHuyBkvFAnyocAAAAASUVORK5CYII=') no-repeat center center"
             },
-            '#skeleton-gallery-contentlist > div.gall-item-name span:last-child': {
-                'width': '25px',
-                'height': '25px',
-                'float': 'right',
-                'margin-top': '-30px',
-                'background': "#fff url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABr0lEQVRIidXVPWgVQRQF4O+Fh1iFYCESLGwCiiCiIKIgkkIESWVjZyViIIKgjdWxsNRGLURLWwshlioIioWFijxEiYiFpUUQi0cIFjsb1+f74ZHgz4HL7N659567Z2Z2WkYgyT5cw160i3sFb3EJL5IMzJ8YUXwHHuAIulgu1sWhMrdzWI2hBDiF7biH3Zgptgt3sRWnhxVoN1+KHFMN1+EyLmFPT+6HMh5IMtvwL+NlLdsaQZHjGTb3aeTKkCZni9XoYr9qjSqJkkzi3IDi42ITziTZskagkuXiBhSvcR7b+CnRVyyoFnIeT3F/zKIncEy1+K/xBVrNiCRH8QQ3kyyMUz3JVVzGXJLF2t8enEKSeZxUHah3uK1ojGncwsMk1wfV6CVYLVZjRrVDpkrsQdVGaGOyzH0ssX3P1KiDtm78NYL1EDcl/r8k+rcWecOI/7hEqwP84+CXXTToV1ET3MEjvMF3nC1z3/Aec/g8rKl+vwqYTtJO0kGnMf+48dzFIiSZUF2tI7+gUzo7jqUkK42E1Z7YicZYE3zCq2ZQSw/KvXzD73fwKHRwIcnzpvMHuyBkvFAnyocAAAAASUVORK5CYII=') no-repeat center center",
-                'margin-right': '-5px',
-                'transition': 'all .2s linear',
-                'border-radius': '50%',
-                'opacity': '0',
-                'background-size': '17px 17px'
+            'div.gall-item-name > div.gall-item-showphoto': {
+                'cursor':'pointer',
+                'background': "#fff url('data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTYuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjMycHgiIGhlaWdodD0iMzJweCIgdmlld0JveD0iMCAwIDUxMiA1MTIiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDUxMiA1MTI7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPGc+Cgk8cGF0aCBkPSJNMCw0OHY0MTZoNTEyVjQ4SDB6IE00ODAsNDMySDMyVjgwaDQ0OFY0MzJ6IE0zNTIsMTYwYzAsMjYuNTEsMjEuNDksNDgsNDgsNDhzNDgtMjEuNDksNDgtNDhzLTIxLjQ5LTQ4LTQ4LTQ4ICAgUzM1MiwxMzMuNDksMzUyLDE2MHogTTQ0OCw0MDBINjRsOTYtMjU2bDEyOCwxNjBsNjQtNDhMNDQ4LDQwMHoiIGZpbGw9IiM0MjQyNDIiLz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K') no-repeat center center"
             },
-            '#skeleton-gallery-contentlist > div.gall-item-name:hover': {
-                'background-color': '#e5e5e5',
-                'padding-left': '15px',
-                'cursor': 'pointer'
+            'div.gall-item-name  div.gall-item-title':{
+                'font-weight':'bold'
             },
-            '#skeleton-gallery-contentlist > div.gall-item-name:hover span:last-child': {
-                'margin-right': '10px',
-                'opacity': '1'
+            'div.gall-item-name > div:hover':{
+                'background-color':'#eee'
             },
+            'div.gall-item-name > div:active':{
+                'background-size':'auto 30% !important',
+                'box-shadow':'inset 0 0 16px 0px #ddd'
+            },
+
 
             // PROMPTER
             '#skeleton-prompter-container': {
@@ -6407,25 +6414,57 @@ var Skeleton = (function (_) {
                 'bottom': '0',
                 'top': '0',
                 'z-index': '1010',
-                'overflow':'hidden'
+                'overflow': 'hidden'
             },
             '#skeleton-gallery-fullscreen-images': {
-                'position':'fixed',
-                'left':'0',
-                'right':'0',
-                'bottom':'0',
-                'overflow':'hidden',
-                'border-top':'1px solid #868686',
-                'height':'100px',
-                'z-index':'1011',
-                'background-color':'rgba(56, 56, 56, 0.62)'
+                'position': 'fixed',
+                'left': '0',
+                'right': '0',
+                'bottom': '0',
+                'overflow': 'hidden',
+                'border-top': '1px solid #868686',
+                'height': '100px',
+                'z-index': '1011',
+                'background-color': 'rgba(56, 56, 56, 0.62)'
             },
             '#skeleton-gallery-fullscreen-content': {
-                'position':'relative',
+                'position': 'relative',
+                'cursor': 'pointer',
+                'display': 'table'
+            },
+            '#skeleton-gallery-fullscreen-content.move:hover': {
+                'cursor': 'move'
             },
             '#skeleton-gallery-fullscreen-content img': {
-                'pointer-events':'none',
-                'display':'block'
+                'pointer-events': 'none',
+                'display': 'block'
+            },
+            '#skeleton-gallery-fullscreen-closebutton': {
+                'position': 'fixed',
+                'right': '30px',
+                'top': '30px',
+                'z-index': '2',
+                'cursor': 'pointer'
+            },
+            '#skeleton-gallery-fullscreen-closebutton::before': {
+                'content': "'X'",
+                'font-size': '43px',
+                'font-weight': 'bold',
+                'display': 'block',
+                'color': 'rgb(255, 255, 255)',
+                'padding': '10px',
+                'border': '3px solid rgba(255, 255, 255, 0.28)',
+                'width': '40px',
+                'height': '40px',
+                'text-align': 'center',
+                'font-family': 'arial',
+                'line-height': '1em',
+                'background': 'rgba(255, 255, 255, 0.22)',
+                'border-radius': '50%',
+                'transition': 'box-shadow .3s linear'
+            },
+            '#skeleton-gallery-fullscreen-closebutton:hover::before': {
+                'box-shadow': '0 0 10px 10px #fff'
             }
         });
 
