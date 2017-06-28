@@ -316,8 +316,8 @@
 
                     if (menu.data[key].count == 0) {
                         _.prompter.show({
-                            title: 'Temizlendi',
-                            message: 'İskelet üzerinde hiç ' + menu.data[key].title + ' kalmadı. Ancak menüde hala işaretli bıraktık',
+                            title: _.lang.current.infoClearAllTitle,
+                            message: _.helper.method.format(_.lang.current.infoClearAllText, menu.data[key].title),
                             closeVisible: false,
                             timer:4000
                         });

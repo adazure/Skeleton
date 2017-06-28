@@ -36,13 +36,14 @@
                 'z-index': '9999999',
                 'min-width': '200px',
                 'background-color': 'white',
-                'box-shadow': '4px 4px 11px #777',
+                'box-shadow': '0 0 0 6px rgba(0, 0, 0, 0.37)',
                 'transform': 'translateX(-50%) translateY(-50%)',
                 'left': '50%',
                 'top': '50%',
                 'display': 'none',
                 'transition': 'all .3s linear',
                 'border-top': '10px solid #588690',
+                'border-radius':'6px'
             },
             '#skeleton-dialog *': {
                 'font-family': 'arial',

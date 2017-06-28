@@ -8,6 +8,7 @@
     _.MODULE(function () {
 
         var global = _.globalWindowEvents;
+        var lang = _.lang;
 
         var inc = {};
 
@@ -343,7 +344,7 @@
         //....................................................................................
 
         inc.first = function () {
-            if (this.target.children == 0) throw ("Alt nesne bulunamadı");
+            if (this.target.children == 0) throw (lang.current.errSubObject);
             return this.target.children[0].__collectionData;
         }
 
@@ -351,7 +352,7 @@
         //....................................................................................
 
         inc.last = function () {
-            if (this.target.children.length == 0) throw ("Alt nesne bulunamadı");
+            if (this.target.children.length == 0) throw (lang.current.errSubObject);
             return this.target.children[this.target.children.length - 1].__collectionData;
         }
 

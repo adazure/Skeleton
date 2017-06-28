@@ -105,14 +105,14 @@
             context.method.clear(function () {
 
                 context.method.add({
-                    title: 'Bu kaydı sil',
+                    title: _.lang.current.infoDeleteItemText,
                     action: function () {
 
                         dialog.show({
-                            title: 'Silme işlemi',
-                            content: 'Kaydı silmek istediğinize emin misiniz?',
+                            title: _.lang.current.infoDeleteItemTitle,
+                            content: _.lang.current.infoDeleteItemQuestion,
                             button1: {
-                                text: 'SİL',
+                                text: _.lang.current.infoDeleteButton,
                                 action: function () {
                                     // Silinecek nesneyi seç
                                     pathMethod.selectRemovedItem(e);
@@ -134,7 +134,7 @@
                                 }
                             },
                             button2: {
-                                text: 'İPTAL',
+                                text: _.lang.current.infoCancelButton,
                                 action: function () {
                                     // Context menüyü gizle
                                     context.method.hide();
@@ -154,7 +154,7 @@
                 if (key) {
                     var q = data[key].url || data[key].jsonData;
                     context.method.add({
-                        title: 'Detayları göster',
+                        title: _.lang.current.infoDetailButton,
                         action: function () {
                             e.target.trigger('click');
                             // Context menüyü gizle
@@ -216,7 +216,7 @@
                 // Sürükleme esnasında, eğer geçerli alanlar yoksa kullanıcıya uyarı bilgisi verelim
                 if (!isAllow) {
 
-                    tooltip.message('Bu ikonu bırakabileceğiniz bir alan tanımlı değil');
+                    tooltip.message(_.lang.current.infoIconTooltipText);
                     tooltip.container.setClass('no-animate');
 
                     // MouseUp olduğunda uyarı mesajını silelim
@@ -245,7 +245,7 @@
 
                     // Icon üzerine gelindiğinde görünecek mesajı görüntüleyelim
                     clone.setBind('mouseover', function (e) {
-                        tooltip.message('Detaylar için tıklayın<span style=\'font-size:11px; display:block;\'> Kaydı silmek için fare ile sağ tıklayın</span>', { ev: e });
+                        tooltip.message(_.lang.current.infoItemHoverText, { ev: e });
                     });
 
                     // Sağ tuş özelliği ekleyelim
@@ -285,7 +285,7 @@
 
             // Icon üzerine gelindiğinde görünecek mesajı görüntüleyelim
             clone.setBind('mouseover', function (e) {
-                tooltip.message('Detaylar için tıklayın<span style=\'font-size:11px; display:block;\'> Kaydı silmek için fare ile sağ tıklayın</span>', { ev: e });
+                tooltip.message(_.lang.current.infoItemHoverText, { ev: e });
             });
 
             // Sağ tuş özelliği ekleyelim

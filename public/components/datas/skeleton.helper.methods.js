@@ -73,7 +73,7 @@
          */
         function http(args) {
 
-            if (!args.url) throw ('URL bilgisini girmediniz yada HTTP yapısını değiştirdiniz');
+            if (!args.url) throw (_.lang.current.errURLNotFound);
 
             var xhttp = new XMLHttpRequest();
             xhttp.timeout = 60000;
@@ -122,7 +122,21 @@
         }
 
 
+        //....................................................................................
 
+        function format(content){
+            if(content){
+                var arr = arguments.length > 1 ? Array.prototype.slice.call(arguments, 1) : null;
+                if(arr){
+                    for(var x = 0; x < arr.length; x++){
+                        var n = new RegExp("\\{" + x + "\\}",'g');
+                        content = content.replace(n,arr[x]);
+                    }
+                }
+            }
+            return content;
+        }
+        
         //....................................................................................
 
 
@@ -163,6 +177,7 @@
         method.http = http;
         method.extend = extend;
         method.getCustomizeUpload = getCustomizeUpload;
+        method.format = format;
 
     }); // MODULE
 

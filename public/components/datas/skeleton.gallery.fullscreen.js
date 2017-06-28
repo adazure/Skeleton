@@ -145,7 +145,6 @@
                 selectedMaker.remClass('selected');
             }
             selectedMaker = obj.setClass('selected');
-            console.log(screen.objects.content.children());
             var tx = screen.objects.content.setCSS({ left: 0, top: 0 }).children().windowmakerimage;
             tx.remClass('horizontal', 'vertical');
             if (css) {
@@ -209,8 +208,8 @@
 
 
             _.prompter.show({
-                title: 'Hareket ettirin',
-                message: "Farenizin sol tuşu ile basılı tutarak, görseli sağa/sol/yukarı/aşağı kolayca hareket ettirebilirsiniz",
+                title: _.lang.current.infoMoveTitle,
+                message: _.lang.current.infoMoveMessage,
                 timer: 6000,
                 closeVisible: false
             });

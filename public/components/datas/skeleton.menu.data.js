@@ -31,7 +31,7 @@
 
         //_.2selectedSection = _.2Request.section;
         menu.activeSectionName = _.Request.section;
-        if (!menu.activeSectionName) { throw ("QueryString 'Section' parametresi gönderilmediğinden işlem yapılamıyor"); }
+        if (!menu.activeSectionName) { throw (_.lang.current.errSectionText); }
 
 
         // Menüde yer alacak olan butonların isim ve görselleri bu listede

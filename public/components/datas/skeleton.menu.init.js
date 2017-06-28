@@ -38,17 +38,17 @@
         var header = displayMenu.create('div', {
             id: 'skeleton-menu-header'
         })
-            .setHTML('Menü');
+            .setHTML(_.lang.current.infoMenuTitle);
 
         var info = header.create('div')
             .setClass('information-woman')
             .setBind('click', function () {
                 _.prompter.show({
-                    title: 'Bunları biliyor musunuz?',
+                    title: _.lang.current.infoDoYouKnowTitle,
                     message: [
-                        '<i class="ichk_x182 ichk"></i> İlgili hastalıkların en solundaki kutucuğu işaretlediğinizde, o hastalık iskelet üzerinde aktif olur',
-                        '<i class="ichk_x182 ichk"></i>-<i class="ichk_x183 ichk"></i> Kutucuğu işaretlediğinizde sağ tarafındaki görsel aktifleşir ve fare ile sürükleyerek iskelet üzerinde kırmızı olarak renklendirilen alanlara bırakabilirsiniz.',
-                        '<i class="ichk_x184 ichk"></i> Yeşil ikonun ve hastalık adının bulunduğu alana fare ile tıkladığınızda, ilgili hastalık için dosya yükleyebileceğiniz pencereyi açabilirsiniz'
+                        '<i class="ichk_x182 ichk"></i> ' + _.lang.current.infoMenuInfoText1,
+                        '<i class="ichk_x182 ichk"></i>-<i class="ichk_x183 ichk"></i>' + _.lang.current.infoMenuInfoText2,
+                        '<i class="ichk_x184 ichk"></i> '  + _.lang.current.infoMenuInfoText3
                     ]
                 });
             });
@@ -82,7 +82,7 @@
             // Children A
             .create('a')
             // A HTML
-            .setHTML('Gizle/Göster');
+            .setHTML(_.lang.current.infoMenuShowHide);
 
 
 
@@ -197,7 +197,7 @@
                             // İşaretlendikten sonra eğer iskelet üzerinde ilgili hastalık hiç yoksa, kullanıcıya bir kereliğine ekranda mesaj gösterelim
                             if (menu.data[key].count == 0) {
                                 _.prompter.show({
-                                    message: '<b>' + menu.data[key].title + '</b> için iskelet üzerinde hiç nesne yok. İsterseniz sürükleyerek belirli noktalara işaretleme yapabilirsiniz',
+                                    message: helper.format(_.lang.current.infoAnyPathText,menu.data[key].title),
                                     closeVisible: false,
                                     timer: 5000
                                 });
@@ -243,8 +243,8 @@
 
                                 // Kullanıcıya gösterilecek text alanı oluşturuluyor
 
-                                var textForPath = isAnyPath > 0 ? '- İskelet üzerinde bırakılmış ' + isAnyPath + ' adet ' + nm + ' nesnesi var<br/>' : '';
-                                var textForFile = length > 0 ? '- ' + nm + ' için eklemiş olduğunuz ' + length + ' adet dosya var' : '';
+                                var textForPath = isAnyPath > 0 ? helper.format(_.lang.current.infoPathFoundText,isAnyPath,nm) : '';
+                                var textForFile = length > 0 ? helper.format(_.lang.current.infoFileFoundText,nm,length) : '';
 
                                 // Eğer dosya varsa upload ekranını açalım
                                 if (length > 0)

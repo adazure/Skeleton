@@ -30,7 +30,7 @@
         gall.header = gall.container
             .create('div', { id: 'skeleton-upload-files-header' });
         gall.header.create('div', { id: 'upload-files-header-title' })
-            .setHTML('Upload Files')
+            .setHTML(_.lang.current.infoUploadTitle)
             .createParent('div', { id: 'upload-files-header-close' })
             .setBind('click', function(e) {
                 menu.method.selectMenuItem(null);
@@ -64,7 +64,7 @@
             .create('div', { id: 'upt-load-icon' })
             .createParent('label', { id: 'upt-load-label' })
             .setClass('animation', 'bounceInLeft')
-            .setHTML('Yükleniyor...');
+            .setHTML(_.lang.current.infoLoadingText);
 
 
         //....................................................................................
@@ -150,7 +150,7 @@
 
                                 if (result.number == 200) {
 
-                                    x.setHTML('Yüklendi :)');
+                                    x.setHTML(_.lang.current.infoLoadingSuccess);
 
                                     icn.remClass('progress', 'error', 'timeout')
                                         .setClass('success');
@@ -175,7 +175,7 @@
                                     // Hem veritabanı hem de ekrana yansıtılacak veriler
                                     var src = {
                                         file: result.sourceFile,
-                                        title: 'Yeni Dosya'
+                                        title: _.lang.current.infoNewFileDefault
                                     };
 
                                     // Tabloya kayıt
@@ -207,9 +207,9 @@
 
                                     // Dosya yüklendi ancak bir isim yazılmadı. Kullanıcıdan dosya için başlık isteyelim
                                     dialog.prompt({
-                                        title: 'Dosya için bir başlık yazın',
+                                        title: _.lang.current.infoNewFileTitle,
                                         button1: {
-                                            text: 'KAYDET',
+                                            text: _.lang.current.infoSaveButton,
                                             action: function(ev, obj) {
 
                                                 if(!obj.target.value) return;
@@ -233,7 +233,7 @@
 
                                 } else {
 
-                                    x.setHTML('JPG veya PNG dosyası olmalı :((');
+                                    x.setHTML(_.lang.current.errFileExtension);
                                     icn.remClass('success', 'progress', 'timeout').setClass('error');
                                     gall.footerInput.target.value = "";
 
@@ -255,14 +255,14 @@
                             error: function() {
                                 icn.remClass('success', 'progress', 'timeout').setClass('error');
                                 gall.footerInput.target.value = "";
-                                x.setHTML('Sistem hatası oluştu. Daha sonra tekrar deneyin.');
+                                x.setHTML(_.lang.current.errSystemError);
                                 gall.footer.remClass('locked');
                                 menu.container.remClass('locked');
                             },
 
                             // Zaman aşımı olduğunda
                             timeout: function() {
-                                x.setHTML('Yükleme işlemi zaman aşımına uğradı.');
+                                x.setHTML(_.lang.current.errUploadTimeout);
                                 icn.remClass('success', 'progress', 'error').setClass('timeout');
                                 gall.footerInput.target.value = "";
                                 gall.footer.remClass('locked');
@@ -282,7 +282,7 @@
 
 
         gall.footerButton = new coll('input', { type: 'button', id: 'skeleton-upload-button' })
-            .setVal('DOSYA YÜKLE')
+            .setVal(_.lang.current.infoUploadButtonText)
             .insert(gall.footer.target);
 
 

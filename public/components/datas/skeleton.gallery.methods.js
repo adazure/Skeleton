@@ -103,12 +103,12 @@
 
             // Silmeden önce bir uyarı penceresi çıkaralım
             dialog.show({
-                title: 'Dosya silme işlemi',
-                content: "<b>" + repo.item.title + "</b><br/>" + repo.item.file + "<p>Dosya'yı silmek istiyor musunuz?</p>",
+                title: _.lang.current.infoDeleteFileTitle,
+                content: "<b>" + repo.item.title + "</b><br/>" + repo.item.file + "<p>"+_.lang.current.infoDeleteQuestion+"</p>",
 
                 // Sil dediğinde yapılacak işlemler
                 button1: {
-                    text: 'EVET SİL',
+                    text: _.lang.current.infoDeleteButtonAllow,
                     action: function () {
 
                         // Hemen bir POST işlemi yapıp silmesini söyleyelim
@@ -130,9 +130,9 @@
                                 // Burada olumlu veya olumsuz bir mesaj gelmiş olacak
                                 dialog.show({
                                     title: '',
-                                    content: result.message,
+                                    content: result.number == 200 ? _.lang.current.infoFileDeletedText : result.message,
                                     button1: {
-                                        text: 'TAMAM',
+                                        text: _.lang.current.infoOkayButton,
                                         action: function () {
 
                                             // Sadece silindiyse bir takım işlemler yapalım
@@ -161,7 +161,7 @@
                                                     icon.remClass('menu-item-locked');
                                                     _.prompter.show({
                                                         message: [
-                                                            menu.data[key].title + ' için yüklenen dosyalar tamamen temizlendi. Bu alan için menüde hala aktif durumda. Dilerseniz işareti kaldırabilirsiniz ',
+                                                            helper.format(_.lang.current.infoAllFileClear,menu.data[key].title),
                                                         ],
                                                         timer: 6000,
                                                         closeVisible: false
@@ -182,10 +182,10 @@
                             },
                             error: function (result) {
                                 dialog.show({
-                                    title: 'Hata oluştu',
-                                    content: 'Sistemsel bir nedenden dolayı dosyayı şuan da silemiyoruz.',
+                                    title: _.lang.current.errErrorTitle,
+                                    content: _.lang.current.errSystemDeleteText,
                                     button1: {
-                                        text: 'TAMAM',
+                                        text: _.lang.current.infoOkayButton,
                                         action: function () {
                                             dialog.hide();
                                         }
@@ -197,7 +197,7 @@
                     }
                 },
                 button2: {
-                    text: 'VAZGEÇ',
+                    text: _.lang.current.infoCancelButton,
                     action: function () {
                         dialog.hide();
                     }
@@ -252,7 +252,7 @@
 
             } else {
                 var comment = new coll("div", { id: 'skeleton-gallery-comment' })
-                    .setHTML('Henüz hiç yükleme yapmadınız')
+                    .setHTML(_.lang.current.infoAnyFileText)
                     .insert(gall.contentList.target);
             }
 
