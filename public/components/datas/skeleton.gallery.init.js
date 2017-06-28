@@ -19,7 +19,7 @@
 
 
         gall.container = new coll('div', { id: 'skeleton-upload-files' })
-            .setClass('animated', 'flipInX');
+            .setClass('animated', 'bounceIn');
 
 
 

@@ -1518,7 +1518,7 @@ var Skeleton = (function (_) {
             var showImage = galItem.create('div')
                 .setClass('gall-item-showphoto')
                 .setBind('click', function () {
-                    gall.fullscreen.show('/uploads/' + item.file);
+                    gall.fullscreen.show('/uploads/' + item.file, item.title);
                 });
 
             var delImage = galItem.create('div')
@@ -1789,6 +1789,8 @@ var Skeleton = (function (_) {
             screen.objects.container = null;
             screen.objects.closeButton = null;
 
+            parent.document.body.remClass('noflow');
+
         }
 
 
@@ -1802,25 +1804,20 @@ var Skeleton = (function (_) {
 
 
 
-        //....................................................................................
-
-
-
-        function createItem(data) {
-
-        }
-
-
 
         //....................................................................................
 
 
 
-        function show(item) {
+        function show(item, title) {
             create();
             // https://www.diagnostikum-berlin.de/sites/default/files/R%C3%B6ntgen%20Lunge.jpg
-            var img = new coll('img', { src: item })
+            var img = new coll('img', { id: 'window-maker-image', src: item })
+                .setClass('window-maker')
                 .insert(screen.objects.content.target);
+
+            screen.objects.contentTitle.setHTML(title);
+            setTimeout(function () { screen.objects.contentTitle.remClass('flipInY').setClass('fadeOutUp'); }, 5000);
         }
 
 
@@ -1895,7 +1892,21 @@ var Skeleton = (function (_) {
         //....................................................................................
 
 
-
+        var selectedMaker = null;
+        function resetSelection(obj, css) {
+            if (selectedMaker != null) {
+                selectedMaker.remClass('selected');
+            }
+            selectedMaker = obj.setClass('selected');
+            console.log(screen.objects.content.children());
+            var tx = screen.objects.content.setCSS({ left: 0, top: 0 }).children().windowmakerimage;
+            tx.remClass('horizontal', 'vertical');
+            if (css) {
+                setTimeout(function () {
+                    tx.setClass(css);
+                }, 100);
+            }
+        }
 
         function create() {
 
@@ -1905,9 +1916,6 @@ var Skeleton = (function (_) {
                 var container = screen.objects.container = new coll('div', { id: 'skeleton-gallery-fullscreen-container' })
                     .insert(parent.document.body);
 
-                //var images = screen.objects.images.container = new coll('div', { id: 'skeleton-gallery-fullscreen-images' })
-                //    .insert(container.target);
-
                 // Kapatma tuşu
                 var closeButton = screen.objects.closeButton = new coll('div', { id: 'skeleton-gallery-fullscreen-closebutton' })
                     .insert(container.target)
@@ -1915,10 +1923,39 @@ var Skeleton = (function (_) {
 
                 // Resmin gösterileceği alan oluşturuluyor ve container nesnesine ekleniyor
                 var content = screen.objects.content = new coll('div', { id: 'skeleton-gallery-fullscreen-content' })
+                    .setClass('animated', 'pulse')
                     .insert(container.target);
+
+                var title = screen.objects.contentTitle = screen.objects.container.create('div', { id: 'gall-window-title' }).setClass('noselect', 'animated', 'flipInY');
 
                 // Sürüklenecek nesneyi bildiriyoruz
                 dragDrop(content);
+
+
+                // Pencere düzenleyici
+                var windowMaker = screen.objects.container.create('div', { id: 'gall-window-maker' })
+                    .setClass('animated', 'slideInRight');
+
+                var all = selectedMaker = windowMaker.create('div', { id: 'gall-window-maker-all' })
+                    .setClass('selected')
+                    .setBind('click', function () {
+                        resetSelection(all);
+                        content.setCSS({ left: 0, top: 0, display: 'table' }).children().windowmakerimage.remClass('horizontal', 'vertical');
+                    });
+                var vertical = windowMaker.create('div', { id: 'gall-window-maker-vertical' })
+                    .setBind('click', function () {
+                        resetSelection(vertical);
+                        content.setCSS({ left: 0, top: 0, display: 'inherit' }).children().windowmakerimage.remClass('horizontal').setClass('vertical');
+                    });
+                var horizontal = windowMaker.create('div', { id: 'gall-window-maker-horizontal' })
+                    .setBind('click', function () {
+                        resetSelection(horizontal);
+                        content.setCSS({ left: 0, top: 0, display: 'table' }).children().windowmakerimage.remClass('vertical').setClass('horizontal');
+                    });
+
+                // Pencere scroll'unu kaldır
+                parent.document.body.setClass('noflow');
+
 
 
             }
@@ -1969,7 +2006,7 @@ var Skeleton = (function (_) {
 
 
         gall.container = new coll('div', { id: 'skeleton-upload-files' })
-            .setClass('animated', 'flipInX');
+            .setClass('animated', 'bounceIn');
 
 
 
@@ -6256,29 +6293,32 @@ var Skeleton = (function (_) {
                 'background-size': 'auto 33% !important',
                 'background-color': 'white',
                 'border-right': '1px solid #ddd',
-                'transition':'background-color .3s linear'
+                'transition': 'background-color .3s linear'
             },
             'div.gall-item-name > div.gall-item-content': {
                 'width': '60%',
-                'padding':'12px'
+                'padding': '12px'
             },
             'div.gall-item-name > div.gall-item-delphoto': {
-                'cursor':'pointer',
+                'cursor': 'pointer',
                 'background': "#fff url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABr0lEQVRIidXVPWgVQRQF4O+Fh1iFYCESLGwCiiCiIKIgkkIESWVjZyViIIKgjdWxsNRGLURLWwshlioIioWFijxEiYiFpUUQi0cIFjsb1+f74ZHgz4HL7N659567Z2Z2WkYgyT5cw160i3sFb3EJL5IMzJ8YUXwHHuAIulgu1sWhMrdzWI2hBDiF7biH3Zgptgt3sRWnhxVoN1+KHFMN1+EyLmFPT+6HMh5IMtvwL+NlLdsaQZHjGTb3aeTKkCZni9XoYr9qjSqJkkzi3IDi42ITziTZskagkuXiBhSvcR7b+CnRVyyoFnIeT3F/zKIncEy1+K/xBVrNiCRH8QQ3kyyMUz3JVVzGXJLF2t8enEKSeZxUHah3uK1ojGncwsMk1wfV6CVYLVZjRrVDpkrsQdVGaGOyzH0ssX3P1KiDtm78NYL1EDcl/r8k+rcWecOI/7hEqwP84+CXXTToV1ET3MEjvMF3nC1z3/Aec/g8rKl+vwqYTtJO0kGnMf+48dzFIiSZUF2tI7+gUzo7jqUkK42E1Z7YicZYE3zCq2ZQSw/KvXzD73fwKHRwIcnzpvMHuyBkvFAnyocAAAAASUVORK5CYII=') no-repeat center center"
             },
             'div.gall-item-name > div.gall-item-showphoto': {
-                'cursor':'pointer',
+                'cursor': 'pointer',
                 'background': "#fff url('data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTYuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjMycHgiIGhlaWdodD0iMzJweCIgdmlld0JveD0iMCAwIDUxMiA1MTIiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDUxMiA1MTI7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPGc+Cgk8cGF0aCBkPSJNMCw0OHY0MTZoNTEyVjQ4SDB6IE00ODAsNDMySDMyVjgwaDQ0OFY0MzJ6IE0zNTIsMTYwYzAsMjYuNTEsMjEuNDksNDgsNDgsNDhzNDgtMjEuNDksNDgtNDhzLTIxLjQ5LTQ4LTQ4LTQ4ICAgUzM1MiwxMzMuNDksMzUyLDE2MHogTTQ0OCw0MDBINjRsOTYtMjU2bDEyOCwxNjBsNjQtNDhMNDQ4LDQwMHoiIGZpbGw9IiM0MjQyNDIiLz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K') no-repeat center center"
             },
-            'div.gall-item-name  div.gall-item-title':{
-                'font-weight':'bold'
+            'div.gall-item-name  div.gall-item-title': {
+                'font-weight': 'bold',
+                'white-space': 'nowrap',
+                'overflow': 'hidden',
+                'text-overflow': 'ellipsis'
             },
-            'div.gall-item-name > div:hover':{
-                'background-color':'#eee'
+            'div.gall-item-name > div:hover': {
+                'background-color': '#eee'
             },
-            'div.gall-item-name > div:active':{
-                'background-size':'auto 30% !important',
-                'box-shadow':'inset 0 0 16px 0px #ddd'
+            'div.gall-item-name > div:active': {
+                'background-size': 'auto 30% !important',
+                'box-shadow': 'inset 0 0 16px 0px #ddd'
             },
 
 
@@ -6408,7 +6448,7 @@ var Skeleton = (function (_) {
             },
             '#skeleton-gallery-fullscreen-container': {
                 'position': 'fixed',
-                'background-color': 'rgba(0, 0, 0, 0.65)',
+                'background': "rgba(0, 0, 0, 0.86) url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAACgAgMAAADm7QMnAAAADFBMVEWIiIixsbGxsbGxsbF0SLUbAAAABHRSTlP/bytS3QghxwAAAEVJREFUeAFjYA3FAA4Mq17tWrcalVhBtOBK7IL/McFf4rUPZYtGLRq1aNSiUYtGLSJcoYzWR4PBolGLRi0atWjUotH6CAA67a9q5+gpSAAAAABJRU5ErkJggg==') ",
                 'left': '0',
                 'right': '0',
                 'bottom': '0',
@@ -6430,14 +6470,18 @@ var Skeleton = (function (_) {
             '#skeleton-gallery-fullscreen-content': {
                 'position': 'relative',
                 'cursor': 'pointer',
-                'display': 'table'
+                'display': 'table',
+                'height': '100%',
+                'text-align': 'center',
+                'width': 'auto'
             },
             '#skeleton-gallery-fullscreen-content.move:hover': {
                 'cursor': 'move'
             },
             '#skeleton-gallery-fullscreen-content img': {
                 'pointer-events': 'none',
-                'display': 'block'
+                'display': 'inline-block',
+                'box-shadow': '0 0 110px 20px #fff'
             },
             '#skeleton-gallery-fullscreen-closebutton': {
                 'position': 'fixed',
@@ -6459,12 +6503,94 @@ var Skeleton = (function (_) {
                 'text-align': 'center',
                 'font-family': 'arial',
                 'line-height': '1em',
-                'background': 'rgba(255, 255, 255, 0.22)',
+                'background': 'rgba(0, 0, 0, 0.56)',
                 'border-radius': '50%',
                 'transition': 'box-shadow .3s linear'
             },
             '#skeleton-gallery-fullscreen-closebutton:hover::before': {
                 'box-shadow': '0 0 10px 10px #fff'
+            },
+            '.noflow': {
+                'overflow': 'hidden'
+            },
+            '#gall-window-maker': {
+                'position': 'fixed',
+                'z-index': '10',
+                'box-shadow': '0 0 0 5px rgba(0, 0, 0, 0.24)',
+                'right': '10px',
+                'bottom': '10px'
+            },
+            '#gall-window-maker>div': {
+                'float': 'right',
+                'width': '40px',
+                'height': '40px',
+                'position': 'relative',
+                'margin': '9px',
+                'background': 'rgba(0, 0, 0, 0.41)'
+            },
+            '#gall-window-maker>div.selected': {
+                'box-shadow': '0 0 9px 4px #fffdbd',
+                'transition': 'all .3s linear'
+            },
+            '#gall-window-maker-horizontal': {
+
+            },
+            '#gall-window-maker-horizontal::before,#gall-window-maker-vertical::before,#gall-window-maker-all::before': {
+                'content': "''",
+                'background-color': '#d4cdb4',
+                'border': '1px dotted #fff',
+                'position': 'absolute',
+                'margin': 'auto',
+            },
+            '#gall-window-maker-horizontal::before': {
+                'top': '19%',
+                'bottom': '19%',
+                'left': '2px',
+                'right': '2px'
+            },
+            '#gall-window-maker-vertical': {
+
+            },
+            '#gall-window-maker-vertical::before': {
+                'top': '2px',
+                'bottom': '2px',
+                'left': '19%',
+                'right': '19%'
+            },
+            '#gall-window-maker-all': {
+
+            },
+            '#gall-window-maker-all::before': {
+                'top': '2px',
+                'bottom': '2px',
+                'left': '2px',
+                'right': '2px'
+            },
+            '.window-maker.horizontal': {
+                'height': 'auto',
+                'width': '100%'
+            },
+            '.window-maker.vertical': {
+                'width': 'auto',
+                'height': '100%'
+            },
+            '#gall-window-title': {
+                'position': 'fixed',
+                'z-index': '11',
+                'font-size': '40px',
+                'color': 'white',
+                'top': '30px',
+                'left': '30px',
+                'pointer-events': 'none',
+                'text-shadow':'2px 2px 7px rgba(0, 0, 0, 0.65)'
+            },
+            '.noselect': {
+                '-webkit-touch-callout': 'none',
+                '-webkit-user-select': 'none',
+                '-khtml-user-select': 'none',
+                '-moz-user-select': 'none',
+                '-ms-user-select': 'none',
+                'user-select': 'none'
             }
         });
 

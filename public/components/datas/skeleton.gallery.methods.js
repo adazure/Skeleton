@@ -42,7 +42,7 @@
             var showImage = galItem.create('div')
                 .setClass('gall-item-showphoto')
                 .setBind('click', function () {
-                    gall.fullscreen.show('/uploads/' + item.file);
+                    gall.fullscreen.show('/uploads/' + item.file, item.title);
                 });
 
             var delImage = galItem.create('div')

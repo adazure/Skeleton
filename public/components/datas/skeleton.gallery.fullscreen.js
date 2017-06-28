@@ -36,6 +36,8 @@
             screen.objects.container = null;
             screen.objects.closeButton = null;
 
+            parent.document.body.remClass('noflow');
+
         }
 
 
@@ -49,25 +51,20 @@
 
 
 
-        //....................................................................................
-
-
-
-        function createItem(data) {
-
-        }
-
-
 
         //....................................................................................
 
 
 
-        function show(item) {
+        function show(item, title) {
             create();
             // https://www.diagnostikum-berlin.de/sites/default/files/R%C3%B6ntgen%20Lunge.jpg
-            var img = new coll('img', { src: item })
+            var img = new coll('img', { id: 'window-maker-image', src: item })
+                .setClass('window-maker')
                 .insert(screen.objects.content.target);
+
+            screen.objects.contentTitle.setHTML(title);
+            setTimeout(function () { screen.objects.contentTitle.remClass('flipInY').setClass('fadeOutUp'); }, 5000);
         }
 
 
@@ -142,7 +139,21 @@
         //....................................................................................
 
 
-
+        var selectedMaker = null;
+        function resetSelection(obj, css) {
+            if (selectedMaker != null) {
+                selectedMaker.remClass('selected');
+            }
+            selectedMaker = obj.setClass('selected');
+            console.log(screen.objects.content.children());
+            var tx = screen.objects.content.setCSS({ left: 0, top: 0 }).children().windowmakerimage;
+            tx.remClass('horizontal', 'vertical');
+            if (css) {
+                setTimeout(function () {
+                    tx.setClass(css);
+                }, 100);
+            }
+        }
 
         function create() {
 
@@ -152,9 +163,6 @@
                 var container = screen.objects.container = new coll('div', { id: 'skeleton-gallery-fullscreen-container' })
                     .insert(parent.document.body);
 
-                //var images = screen.objects.images.container = new coll('div', { id: 'skeleton-gallery-fullscreen-images' })
-                //    .insert(container.target);
-
                 // Kapatma tuşu
                 var closeButton = screen.objects.closeButton = new coll('div', { id: 'skeleton-gallery-fullscreen-closebutton' })
                     .insert(container.target)
@@ -162,10 +170,39 @@
 
                 // Resmin gösterileceği alan oluşturuluyor ve container nesnesine ekleniyor
                 var content = screen.objects.content = new coll('div', { id: 'skeleton-gallery-fullscreen-content' })
+                    .setClass('animated', 'pulse')
                     .insert(container.target);
+
+                var title = screen.objects.contentTitle = screen.objects.container.create('div', { id: 'gall-window-title' }).setClass('noselect', 'animated', 'flipInY');
 
                 // Sürüklenecek nesneyi bildiriyoruz
                 dragDrop(content);
+
+
+                // Pencere düzenleyici
+                var windowMaker = screen.objects.container.create('div', { id: 'gall-window-maker' })
+                    .setClass('animated', 'slideInRight');
+
+                var all = selectedMaker = windowMaker.create('div', { id: 'gall-window-maker-all' })
+                    .setClass('selected')
+                    .setBind('click', function () {
+                        resetSelection(all);
+                        content.setCSS({ left: 0, top: 0, display: 'table' }).children().windowmakerimage.remClass('horizontal', 'vertical');
+                    });
+                var vertical = windowMaker.create('div', { id: 'gall-window-maker-vertical' })
+                    .setBind('click', function () {
+                        resetSelection(vertical);
+                        content.setCSS({ left: 0, top: 0, display: 'inherit' }).children().windowmakerimage.remClass('horizontal').setClass('vertical');
+                    });
+                var horizontal = windowMaker.create('div', { id: 'gall-window-maker-horizontal' })
+                    .setBind('click', function () {
+                        resetSelection(horizontal);
+                        content.setCSS({ left: 0, top: 0, display: 'table' }).children().windowmakerimage.remClass('vertical').setClass('horizontal');
+                    });
+
+                // Pencere scroll'unu kaldır
+                parent.document.body.setClass('noflow');
+
 
 
             }
