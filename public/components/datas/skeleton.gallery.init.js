@@ -202,7 +202,7 @@
                                         gall.footer.remClass('locked');
                                         menu.container.remClass('locked');
 
-                                    }, 1000);
+                                    }, 100);
 
 
                                     // Dosya yüklendi ancak bir isim yazılmadı. Kullanıcıdan dosya için başlık isteyelim
@@ -220,7 +220,7 @@
 
                                                 // Şimdi listedeki alanı bulup güncelleyelim
                                                 __item.target.children[0].children[0].innerHTML = obj.target.value;
-
+                                                console.log(__item.target.children[0].children[0]);
                                                 // Veritabanını güncelle
                                                 Skeleton.savechanges();
                                                 

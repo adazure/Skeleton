@@ -251,8 +251,8 @@
                                     ul.target.children[2].trigger('click');
 
                                 _.prompter.show({
-                                    title: 'Yardımınıza ihtiyacım var',
-                                    message: nm + ' işaretini kaldırabilmem için aşağıdaki kayıtları kaldırmanız gerekiyor <br/><br/>' + textForPath + textForFile
+                                    title: _.lang.current.infoINeedYourHelpTitle,
+                                    message: helper.format(_.lang.current.infoINeedYourHelpText,nm) + textForPath + textForFile
                                 });
 
                                 /* dialog.show({
