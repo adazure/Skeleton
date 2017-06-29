@@ -2,10 +2,10 @@
 //          SKELETON GALLERY METHOD
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
 
-    _.MODULE(function () {
+    _.MODULE(function() {
 
         var gall = _.gallery;
         var method = gall.method;
@@ -41,9 +41,13 @@
 
             var showImage = galItem.create('div')
                 .setClass('gall-item-showphoto')
-                .setBind('click', function () {
+                .setBind('click', function() {
                     gall.fullscreen.show('/uploads/' + item.file, item.title);
                 });
+
+            if (!helper.imageExists('/uploads/' + item.file)) {
+                showImage.setClass('error');
+            }
 
             var delImage = galItem.create('div')
                 .setClass('gall-item-delphoto')
@@ -80,7 +84,7 @@
             gall.container.show();
             gall.contentList.hide();
 
-            setTimeout(function () {
+            setTimeout(function() {
                 gall.contentList.show();
             }, 100);
 
@@ -104,19 +108,19 @@
             // Silmeden önce bir uyarı penceresi çıkaralım
             dialog.show({
                 title: _.lang.current.infoDeleteFileTitle,
-                content: "<b>" + repo.item.title + "</b><br/>" + repo.item.file + "<p>"+_.lang.current.infoDeleteQuestion+"</p>",
+                content: "<b>" + repo.item.title + "</b><br/>" + repo.item.file + "<p>" + _.lang.current.infoDeleteQuestion + "</p>",
 
                 // Sil dediğinde yapılacak işlemler
                 button1: {
                     text: _.lang.current.infoDeleteButtonAllow,
-                    action: function () {
+                    action: function() {
 
                         // Hemen bir POST işlemi yapıp silmesini söyleyelim
                         helper.http({
 
                             method: 'POST',
                             url: '/removeFile/' + e.target.getAttr('fileitem'),
-                            success: function (result) {
+                            success: function(result) {
 
                                 // Eğer sorunsuz bir iletişim kurduysak gelen mesajı ekranda yansıtalım
                                 result = JSON.parse(result);
@@ -130,10 +134,10 @@
                                 // Burada olumlu veya olumsuz bir mesaj gelmiş olacak
                                 dialog.show({
                                     title: '',
-                                    content: result.number == 200 ? _.lang.current.infoFileDeletedText : result.message,
+                                    content: result.number == 200 ? _.lang.current.infoFileDeletedText : _.lang.current.infoDeleteFileNotFound,
                                     button1: {
                                         text: _.lang.current.infoOkayButton,
-                                        action: function () {
+                                        action: function() {
 
                                             // Sadece silindiyse bir takım işlemler yapalım
                                             if (result.number == 200) {
@@ -161,7 +165,7 @@
                                                     icon.remClass('menu-item-locked');
                                                     _.prompter.show({
                                                         message: [
-                                                            helper.format(_.lang.current.infoAllFileClear,menu.data[key].title),
+                                                            helper.format(_.lang.current.infoAllFileClear, menu.data[key].title),
                                                         ],
                                                         timer: 6000,
                                                         closeVisible: false
@@ -180,13 +184,13 @@
                                     }
                                 });
                             },
-                            error: function (result) {
+                            error: function(result) {
                                 dialog.show({
                                     title: _.lang.current.errErrorTitle,
                                     content: _.lang.current.errSystemDeleteText,
                                     button1: {
                                         text: _.lang.current.infoOkayButton,
-                                        action: function () {
+                                        action: function() {
                                             dialog.hide();
                                         }
                                     }
@@ -198,7 +202,7 @@
                 },
                 button2: {
                     text: _.lang.current.infoCancelButton,
-                    action: function () {
+                    action: function() {
                         dialog.hide();
                     }
                 }

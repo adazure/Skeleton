@@ -1,6 +1,6 @@
-(function (_) {
+(function(_) {
 
-    _.MODULE(function () {
+    _.MODULE(function() {
 
 
         var coll = _.collection.create;
@@ -43,7 +43,7 @@
                 'display': 'none',
                 'transition': 'all .3s linear',
                 'border-top': '10px solid #588690',
-                'border-radius':'6px'
+                'border-radius': '6px'
             },
             '#skeleton-dialog *': {
                 'font-family': 'arial',
@@ -813,7 +813,22 @@
             },
             'div.gall-item-name > div.gall-item-showphoto': {
                 'cursor': 'pointer',
+                'position': 'relative',
                 'background': "#fff url('data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTYuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjMycHgiIGhlaWdodD0iMzJweCIgdmlld0JveD0iMCAwIDUxMiA1MTIiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDUxMiA1MTI7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPGc+Cgk8cGF0aCBkPSJNMCw0OHY0MTZoNTEyVjQ4SDB6IE00ODAsNDMySDMyVjgwaDQ0OFY0MzJ6IE0zNTIsMTYwYzAsMjYuNTEsMjEuNDksNDgsNDgsNDhzNDgtMjEuNDksNDgtNDhzLTIxLjQ5LTQ4LTQ4LTQ4ICAgUzM1MiwxMzMuNDksMzUyLDE2MHogTTQ0OCw0MDBINjRsOTYtMjU2bDEyOCwxNjBsNjQtNDhMNDQ4LDQwMHoiIGZpbGw9IiM0MjQyNDIiLz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K') no-repeat center center"
+            },
+            'div.gall-item-name > div.gall-item-showphoto.error::before': {
+                'content': "'?'",
+                'background-color': '#ff3b00',
+                'color': 'white',
+                'font-size': '10px',
+                'position': 'absolute',
+                'border-radius': '50%',
+                'width': '10px',
+                'height': '10px',
+                'text-align': 'center',
+                'padding': '1px',
+                'right': '10px',
+                'bottom': '14px',
             },
             'div.gall-item-name  div.gall-item-title': {
                 'font-weight': 'bold',
@@ -1090,7 +1105,7 @@
                 'top': '30px',
                 'left': '30px',
                 'pointer-events': 'none',
-                'text-shadow':'2px 2px 7px rgba(0, 0, 0, 0.65)'
+                'text-shadow': '2px 2px 7px rgba(0, 0, 0, 0.65)'
             },
             '.noselect': {
                 '-webkit-touch-callout': 'none',

@@ -163,6 +163,15 @@
             });
         }
 
+        //....................................................................................
+
+        // Dosya kontrolü
+        function imageExists(image_url){
+            var http = new XMLHttpRequest();
+            http.open('HEAD', image_url, false);
+            http.send();
+            return http.status != 404;
+        }
 
         //....................................................................................
 
@@ -178,6 +187,7 @@
         method.extend = extend;
         method.getCustomizeUpload = getCustomizeUpload;
         method.format = format;
+        method.imageExists = imageExists;
 
     }); // MODULE
 

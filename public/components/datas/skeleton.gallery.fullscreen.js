@@ -2,11 +2,11 @@
 //          SKELETON GALLERY FULLSCREEN
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
 
 
-    _.MODULE(function () {
+    _.MODULE(function() {
 
 
         var screen = _.gallery.fullscreen = {
@@ -57,14 +57,30 @@
 
 
         function show(item, title) {
-            create();
-            // https://www.diagnostikum-berlin.de/sites/default/files/R%C3%B6ntgen%20Lunge.jpg
-            var img = new coll('img', { id: 'window-maker-image', src: item })
-                .setClass('window-maker')
-                .insert(screen.objects.content.target);
 
-            screen.objects.contentTitle.setHTML(title);
-            setTimeout(function () { screen.objects.contentTitle.remClass('flipInY').setClass('fadeOutUp'); }, 5000);
+            // Önce gelen image nesnesi var mı kontrol edelim
+            // Eğer yoksa uyarı verelim
+            if (!_.helper.method.imageExists(item)) {
+                _.dialog.show({
+                    title: _.lang.current.errUnknownFileTitle,
+                    content: _.lang.current.errUnknownFileText,
+                    button1: {
+                        text: _.lang.current.infoOkayButton,
+                        action: _.dialog.hide,
+                    }
+                });
+            }
+            // Resim var, resmi gösterelim
+            else {
+                create();
+                // https://www.diagnostikum-berlin.de/sites/default/files/R%C3%B6ntgen%20Lunge.jpg
+                var img = new coll('img', { id: 'window-maker-image', src: item })
+                    .setClass('window-maker')
+                    .insert(screen.objects.content.target);
+
+                screen.objects.contentTitle.setHTML(title);
+                setTimeout(function() { screen.objects.contentTitle.remClass('flipInY').setClass('fadeOutUp'); }, 5000);
+            }
         }
 
 
@@ -73,7 +89,10 @@
 
 
 
-        var _x = 0, _y = 0, _status = false;
+        var _x = 0,
+            _y = 0,
+            _status = false;
+
         function mousedown(e) {
             e.preventDefault();
             _x = e.pageX - e.target.offsetLeft;
@@ -140,6 +159,7 @@
 
 
         var selectedMaker = null;
+
         function resetSelection(obj, css) {
             if (selectedMaker != null) {
                 selectedMaker.remClass('selected');
@@ -148,7 +168,7 @@
             var tx = screen.objects.content.setCSS({ left: 0, top: 0 }).children().windowmakerimage;
             tx.remClass('horizontal', 'vertical');
             if (css) {
-                setTimeout(function () {
+                setTimeout(function() {
                     tx.setClass(css);
                 }, 100);
             }
@@ -184,17 +204,17 @@
 
                 var all = selectedMaker = windowMaker.create('div', { id: 'gall-window-maker-all' })
                     .setClass('selected')
-                    .setBind('click', function () {
+                    .setBind('click', function() {
                         resetSelection(all);
                         content.setCSS({ left: 0, top: 0, display: 'table' }).children().windowmakerimage.remClass('horizontal', 'vertical');
                     });
                 var vertical = windowMaker.create('div', { id: 'gall-window-maker-vertical' })
-                    .setBind('click', function () {
+                    .setBind('click', function() {
                         resetSelection(vertical);
                         content.setCSS({ left: 0, top: 0, display: 'inherit' }).children().windowmakerimage.remClass('horizontal').setClass('vertical');
                     });
                 var horizontal = windowMaker.create('div', { id: 'gall-window-maker-horizontal' })
-                    .setBind('click', function () {
+                    .setBind('click', function() {
                         resetSelection(horizontal);
                         content.setCSS({ left: 0, top: 0, display: 'table' }).children().windowmakerimage.remClass('vertical').setClass('horizontal');
                     });

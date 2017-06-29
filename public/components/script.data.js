@@ -7,9 +7,15 @@ var Skeleton = (function (_) {
     _.datetime = new Date();
     _.method = {};
     _.globalMethod = {};
+    // SaveChange nedir? SaveChange bizim için, uygulamada veritabanına kayıt işlemi yapacağımız işlemlerde
+    // Bir şeylerin değiştiğinde çalıştıracağımız methoddur.
+    // Örneğin dosya upload ettik ve veritabanına kayıt yapılması gerek
+    // Skeleton.savechanges() diyerek methodu çalıştırıyoruz. SaveChanges methodu içerisinde veritabanına kayıt işlemleri olacak
+    // Ancak buradaki method scope'u boş. Çünkü dışarıdan override edilecek şekilde bırakıldı.
+    // Amaç MongoDB gibi veritabanı olduğu için, bir datayı tek bir seferde değiştireceğiz.
+    // O yüzden geliştirici, bu methodu override ederek; zaten her seferinde çalıştırılacak bu method ile kayıt işlemlerini kolayca yapabilir.
+    
     _.savechanges = function () {
-
-
         console.log(new Date() + ' Veritabanı güncellendi');
     }
 
@@ -205,117 +211,119 @@ var Skeleton = (function (_) {
     });
 
 })(Skeleton);
-(function (_) {
+(function(_) {
 
-    _.MODULE(function () {
+    _.MODULE(function() {
 
         var lang = _.lang = { current: null, change: null };
 
 
         var TR = {
             errSubObject: "Alt nesne bulunamadı",
-            infoMoveTitle:"Hareket ettirin",
-            infoMoveMessage:"Farenizin sol tuşu ile basılı tutarak, görseli sağa/sol/yukarı/aşağı kolayca hareket ettirebilirsiniz",
-            infoUploadTitle:"Upload Files",
-            infoLoadingText:"Yükleniyor...",
-            infoLoadingSuccess:"Yüklendi :)",
-            infoNewFileDefault:"Yeni Dosya",
-            infoNewFileTitle:"Dosya için bir başlık yazın",
-            errFileExtension:"JPG veya PNG dosyası olmalı :((",
-            errSystemError:"Sistem hatası oluştu. Daha sonra tekrar deneyin.",
-            errUploadTimeout:"Yükleme işlemi zaman aşımına uğradı.",
-            infoUploadButtonText:"DOSYA YÜKLE",
-            infoDeleteFileTitle:"Dosya silme işlemi",
-            infoDeleteQuestion:"Dosya'yı silmek istiyor musunuz?",
-            infoDeleteButtonAllow:"EVET SİL",
-            infoOkayButton:"TAMAM",
-            infoSaveButton:"KAYDET",
-            infoCancelButton:"VAZGEÇ",
-            infoDeleteButton:'SİL',
-            infoAllFileClear:"{0} için yüklenen dosyalar tamamen temizlendi. Bu alan için menüde hala aktif durumda. Dilerseniz işareti kaldırabilirsiniz ",
-            errErrorTitle:"Hata oluştu",
-            errSystemDeleteText:"Sistemsel bir nedenden dolayı dosyayı şuan da silemiyoruz.",
-            infoAnyFileText:"Henüz hiç yükleme yapmadınız",
-            errURLNotFound:"URL bilgisini girmediniz yada HTTP yapısını değiştirdiniz",
-            errSectionText:"QueryString 'Section' parametresi gönderilmediğinden işlem yapılamıyor",
-            infoMenuTitle:"Menü",
-            infoDoYouKnowTitle:"Bunları biliyor musunuz?",
-            infoMenuInfoText1:"İlgili hastalıkların en solundaki kutucuğu işaretlediğinizde, o hastalık iskelet üzerinde aktif olur",
-            infoMenuInfoText2:"Kutucuğu işaretlediğinizde sağ tarafındaki görsel aktifleşir ve fare ile sürükleyerek iskelet üzerinde kırmızı olarak renklendirilen alanlara bırakabilirsiniz.",
-            infoMenuInfoText3:"Yeşil ikonun ve hastalık adının bulunduğu alana fare ile tıkladığınızda, ilgili hastalık için dosya yükleyebileceğiniz pencereyi açabilirsiniz",
-            infoMenuShowHide:"Gizle/Göster",
-            infoAnyPathText:"<b>{0}</b> için iskelet üzerinde hiç nesne yok. İsterseniz sürükleyerek belirli noktalara işaretleme yapabilirsiniz",
-            infoPathFoundText:"- İskelet üzerinde bırakılmış {0} adet {1} nesnesi var<br/>",
-            infoFileFoundText:"- {0} için eklemiş olduğunuz {1} adet dosya var",
-            infoDeleteItemText:"Bu kaydı sil",
-            infoDeleteItemTitle:"Kayıt Silme işlemi",
-            infoDeleteItemQuestion:"Kaydı silmek istediğinize emin misiniz?",
-            infoDetailButton:"Detayları göster",
-            infoIconTooltipText:"Bu ikonu bırakabileceğiniz bir alan tanımlı değil",
-            infoItemHoverText:"Detaylar için tıklayın<span style=\'font-size:11px; display:block;\'> Kaydı silmek için fare ile sağ tıklayın</span>",
-            infoClearAllTitle:"Temizlendi",
-            infoClearAllText:"İskelet üzerinde hiç {0} kalmadı. Ancak menüde hala işaretli bıraktık ",
-            infoINeedYourHelpTitle:"Yardımınıza ihtiyacım var",
-            infoINeedYourHelpText:" {0} işaretini kaldırabilmem için aşağıdaki kayıtları kaldırmanız gerekiyor <br/><br/>"
-
+            infoMoveTitle: "Hareket ettirin",
+            infoMoveMessage: "Farenizin sol tuşu ile basılı tutarak, görseli sağa/sol/yukarı/aşağı kolayca hareket ettirebilirsiniz",
+            infoUploadTitle: "Upload Files",
+            infoLoadingText: "Yükleniyor...",
+            infoLoadingSuccess: "Yüklendi :)",
+            infoNewFileDefault: "Yeni Dosya",
+            infoNewFileTitle: "Dosya için bir başlık yazın",
+            errFileExtension: "JPG veya PNG dosyası olmalı :((",
+            errSystemError: "Sistem hatası oluştu. Daha sonra tekrar deneyin.",
+            errUploadTimeout: "Yükleme işlemi zaman aşımına uğradı.",
+            infoUploadButtonText: "DOSYA YÜKLE",
+            infoDeleteFileTitle: "Dosya silme işlemi",
+            infoDeleteQuestion: "Dosya'yı silmek istiyor musunuz?",
+            infoDeleteButtonAllow: "EVET SİL",
+            infoOkayButton: "TAMAM",
+            infoSaveButton: "KAYDET",
+            infoCancelButton: "VAZGEÇ",
+            infoDeleteButton: 'SİL',
+            infoAllFileClear: "{0} için yüklenen dosyalar tamamen temizlendi. Bu alan için menüde hala aktif durumda. Dilerseniz işareti kaldırabilirsiniz ",
+            errErrorTitle: "Hata oluştu",
+            errSystemDeleteText: "Sistemsel bir nedenden dolayı dosyayı şuan da silemiyoruz.",
+            infoAnyFileText: "Henüz hiç yükleme yapmadınız",
+            errURLNotFound: "URL bilgisini girmediniz yada HTTP yapısını değiştirdiniz",
+            errSectionText: "QueryString 'Section' parametresi gönderilmediğinden işlem yapılamıyor",
+            infoMenuTitle: "Menü",
+            infoDoYouKnowTitle: "Bunları biliyor musunuz?",
+            infoMenuInfoText1: "İlgili hastalıkların en solundaki kutucuğu işaretlediğinizde, o hastalık iskelet üzerinde aktif olur",
+            infoMenuInfoText2: "Kutucuğu işaretlediğinizde sağ tarafındaki görsel aktifleşir ve fare ile sürükleyerek iskelet üzerinde kırmızı olarak renklendirilen alanlara bırakabilirsiniz.",
+            infoMenuInfoText3: "Yeşil ikonun ve hastalık adının bulunduğu alana fare ile tıkladığınızda, ilgili hastalık için dosya yükleyebileceğiniz pencereyi açabilirsiniz",
+            infoMenuShowHide: "Gizle/Göster",
+            infoAnyPathText: "<b>{0}</b> için iskelet üzerinde hiç nesne yok. İsterseniz sürükleyerek belirli noktalara işaretleme yapabilirsiniz",
+            infoPathFoundText: "- İskelet üzerinde bırakılmış {0} adet {1} nesnesi var<br/>",
+            infoFileFoundText: "- {0} için eklemiş olduğunuz {1} adet dosya var",
+            infoDeleteItemText: "Bu kaydı sil",
+            infoDeleteItemTitle: "Kayıt Silme işlemi",
+            infoDeleteItemQuestion: "Kaydı silmek istediğinize emin misiniz?",
+            infoDeleteFileNotFound: "Dosya bulunamadı. Silinmiş olabilir veya erişiminiz olmayan bir alana ulaşmaya çalışıyorsunuz.",
+            infoDetailButton: "Detayları göster",
+            infoIconTooltipText: "Bu ikonu bırakabileceğiniz bir alan tanımlı değil",
+            infoItemHoverText: "Detaylar için tıklayın<span style=\'font-size:11px; display:block;\'> Kaydı silmek için fare ile sağ tıklayın</span>",
+            infoClearAllTitle: "Temizlendi",
+            infoClearAllText: "İskelet üzerinde hiç {0} kalmadı. Ancak menüde hala işaretli bıraktık ",
+            infoINeedYourHelpTitle: "Yardımınıza ihtiyacım var",
+            infoINeedYourHelpText: " {0} işaretini kaldırabilmem için aşağıdaki kayıtları kaldırmanız gerekiyor <br/><br/>",
+            errUnknownFileTitle: 'Bilinmeyen Dosya',
+            errUnknownFileText: 'Aradığınız dosya silinmiş olabilir yada geçiçi olarak dosyaya ulaşamıyorsunuz'
 
 
 
         }
 
         var EN = {
-            errSubObject: "Alt nesne bulunamadı",
-            infoMoveTitle:"Move with the mouse",
-            infoMoveMessage:"You can easily move the image right / left / up / down by pressing and holding the left mouse button",
-            infoUploadTitle:"Upload Files",
-            infoLoadingText:"Loading...",
-            infoLoadingSuccess:"File has been sent :)",
-            infoNewFileDefault:"New File",
-            infoNewFileTitle:"Type a title for the file",
-            errFileExtension:"File must be JPG or PNG file :((",
-            errSystemError:"System error occurred. Try again later.",
-            errUploadTimeout:"File Upload has timed out",
-            infoUploadButtonText:"UPLOAD FILE",
-            infoDeleteFileTitle:"File Deletion Process",
-            infoDeleteQuestion:"Do you want to delete the file?",
-            infoDeleteButtonAllow:"YES, DELETE",
-            infoOkayButton:"OKAY",
-            infoSaveButton:"SAVE",
-            infoCancelButton:"CANCEL",
-            infoDeleteButton:'DELETE',
-            infoAllFileClear:"The uploaded files for {0} have been completely cleaned. It is still active in the menu for this area. You can remove the sign",
-            errErrorTitle:"An error occurred",
-            errSystemDeleteText:"We can not delete the file because of system error.",
-            infoAnyFileText:"You have not uploaded yet",
-            errURLNotFound:"You did not enter the URL information, you changed the HTTP structure",
-            errSectionText:"QueryString 'Section' parametresi gönderilmediğinden işlem yapılamıyor",
-            infoMenuTitle:"Menu",
-            infoDoYouKnowTitle:"Do you know these?",
-            infoMenuInfoText1:"When you mark the leftmost box of related diseases, the disease becomes active on the skeleton",
-            infoMenuInfoText2:"When you mark the box, the right side activates visually. You can drag it with the mouse and drop it onto the red colored areas on the skeleton.",
-            infoMenuInfoText3:"If you click on the green icon and the area where the disease name is located, you can open the window where you can download files for the disease",
-            infoMenuShowHide:"Hide/Show",
-            infoAnyPathText:"There are no objects on the skeleton for <b>{0}</b>. You can mark specific points by dragging them",
-            infoPathFoundText:"- There are {1} {0} objects on the skeleton<br/>",
-            infoFileFoundText:"- Found {1} files for {0}",
-            infoDeleteItemText:"Delete this file",
-            infoDeleteItemTitle:"Item Deletion Process",
-            infoDeleteItemQuestion:"Are you sure you want to delete the Item?",
-            infoDetailButton:"Show Details",
-            infoIconTooltipText:"There is no area defined for this icon",
-            infoItemHoverText:"Click for Details<span style=\'font-size:11px; display:block;\'> Right click with the mouse to delete the Item</span>",
-            infoClearAllTitle:"Cleaned",
-            infoClearAllText:"There was no {0} on the skeleton. However, the menu is still marked ",
-            infoFileDeletedText:"File deleted",
-            infoINeedYourHelpTitle:"I need your help",
-            infoINeedYourHelpText:"You need to delete the following records in order to unmark {0} <br/><br/>"
-
-
-
+            errSubObject: "Child object not found",
+            infoMoveTitle: "Move with the mouse",
+            infoMoveMessage: "You can easily move the image right / left / up / down by pressing and holding the left mouse button",
+            infoUploadTitle: "Upload Files",
+            infoLoadingText: "Loading...",
+            infoLoadingSuccess: "File has been sent :)",
+            infoNewFileDefault: "New File",
+            infoNewFileTitle: "Type a title for the file",
+            errFileExtension: "File must be JPG or PNG file :((",
+            errSystemError: "System error occurred. Try again later.",
+            errUploadTimeout: "File Upload has timed out",
+            infoUploadButtonText: "UPLOAD FILE",
+            infoDeleteFileTitle: "File Deletion Process",
+            infoDeleteQuestion: "Do you want to delete the file?",
+            infoDeleteButtonAllow: "YES, DELETE",
+            infoOkayButton: "OKAY",
+            infoSaveButton: "SAVE",
+            infoCancelButton: "CANCEL",
+            infoDeleteButton: 'DELETE',
+            infoAllFileClear: "The uploaded files for {0} have been completely cleaned. It is still active in the menu for this area. You can remove the sign",
+            errErrorTitle: "An error occurred",
+            errSystemDeleteText: "We can not delete the file because of system error.",
+            infoAnyFileText: "You have not uploaded yet",
+            errURLNotFound: "You did not enter the URL information, you changed the HTTP structure",
+            errSectionText: "QueryString 'Section' parametresi gönderilmediğinden işlem yapılamıyor",
+            infoMenuTitle: "Menu",
+            infoDoYouKnowTitle: "Do you know these?",
+            infoMenuInfoText1: "When you mark the leftmost box of related diseases, the disease becomes active on the skeleton",
+            infoMenuInfoText2: "When you mark the box, the right side activates visually. You can drag it with the mouse and drop it onto the red colored areas on the skeleton.",
+            infoMenuInfoText3: "If you click on the green icon and the area where the disease name is located, you can open the window where you can download files for the disease",
+            infoMenuShowHide: "Hide/Show",
+            infoAnyPathText: "There are no objects on the skeleton for <b>{0}</b>. You can mark specific points by dragging them",
+            infoPathFoundText: "- There are {1} {0} objects on the skeleton<br/>",
+            infoFileFoundText: "- Found {1} files for {0}",
+            infoDeleteItemText: "Delete this file",
+            infoDeleteItemTitle: "Item Deletion Process",
+            infoDeleteItemQuestion: "Are you sure you want to delete the Item?",
+            infoDeleteFileNotFound: "File not found. You may have deleted or are trying to reach an area that you do not have access to",
+            infoDetailButton: "Show Details",
+            infoIconTooltipText: "There is no area defined for this icon",
+            infoItemHoverText: "Click for Details<span style=\'font-size:11px; display:block;\'> Right click with the mouse to delete the Item</span>",
+            infoClearAllTitle: "Cleaned",
+            infoClearAllText: "There was no {0} on the skeleton. However, the menu is still marked ",
+            infoFileDeletedText: "File deleted",
+            infoINeedYourHelpTitle: "I need your help",
+            infoINeedYourHelpText: "You need to delete the following records in order to unmark {0} <br/><br/>",
+            errUnknownFileTitle: 'Unknown file',
+            errUnknownFileText: 'The file you are looking for may have been deleted, but you can not get to the file temporarily'
         }
 
 
-        lang.change = function (ln) {
+        lang.change = function(ln) {
             lang.current = eval(ln);
         }
 
@@ -945,6 +953,15 @@ var Skeleton = (function (_) {
             });
         }
 
+        //....................................................................................
+
+        // Dosya kontrolü
+        function imageExists(image_url){
+            var http = new XMLHttpRequest();
+            http.open('HEAD', image_url, false);
+            http.send();
+            return http.status != 404;
+        }
 
         //....................................................................................
 
@@ -960,6 +977,7 @@ var Skeleton = (function (_) {
         method.extend = extend;
         method.getCustomizeUpload = getCustomizeUpload;
         method.format = format;
+        method.imageExists = imageExists;
 
     }); // MODULE
 
@@ -1600,11 +1618,17 @@ var Skeleton = (function (_) {
 (function(_) {
 
     _.gallery = {
+        // Upload HTML Elementi
         container: false,
+        // Upload edilen dosyaların listelendiği alan
         contentList: false,
+        // Yükleniyor, tamamlandı, hata gibi uyarıların bulunduğu nesne
         content: false,
+        // Loader nesnesine buradan ulaşıyoruz
         loader: false,
+        // İlgili methodlar burada tutulacak
         method: {},
+        // Oluşturulan nesnelerimiz
         objects: []
     };
 
@@ -1613,10 +1637,10 @@ var Skeleton = (function (_) {
 //          SKELETON GALLERY METHOD
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
 
-    _.MODULE(function () {
+    _.MODULE(function() {
 
         var gall = _.gallery;
         var method = gall.method;
@@ -1652,9 +1676,13 @@ var Skeleton = (function (_) {
 
             var showImage = galItem.create('div')
                 .setClass('gall-item-showphoto')
-                .setBind('click', function () {
+                .setBind('click', function() {
                     gall.fullscreen.show('/uploads/' + item.file, item.title);
                 });
+
+            if (!helper.imageExists('/uploads/' + item.file)) {
+                showImage.setClass('error');
+            }
 
             var delImage = galItem.create('div')
                 .setClass('gall-item-delphoto')
@@ -1691,7 +1719,7 @@ var Skeleton = (function (_) {
             gall.container.show();
             gall.contentList.hide();
 
-            setTimeout(function () {
+            setTimeout(function() {
                 gall.contentList.show();
             }, 100);
 
@@ -1715,19 +1743,19 @@ var Skeleton = (function (_) {
             // Silmeden önce bir uyarı penceresi çıkaralım
             dialog.show({
                 title: _.lang.current.infoDeleteFileTitle,
-                content: "<b>" + repo.item.title + "</b><br/>" + repo.item.file + "<p>"+_.lang.current.infoDeleteQuestion+"</p>",
+                content: "<b>" + repo.item.title + "</b><br/>" + repo.item.file + "<p>" + _.lang.current.infoDeleteQuestion + "</p>",
 
                 // Sil dediğinde yapılacak işlemler
                 button1: {
                     text: _.lang.current.infoDeleteButtonAllow,
-                    action: function () {
+                    action: function() {
 
                         // Hemen bir POST işlemi yapıp silmesini söyleyelim
                         helper.http({
 
                             method: 'POST',
                             url: '/removeFile/' + e.target.getAttr('fileitem'),
-                            success: function (result) {
+                            success: function(result) {
 
                                 // Eğer sorunsuz bir iletişim kurduysak gelen mesajı ekranda yansıtalım
                                 result = JSON.parse(result);
@@ -1741,10 +1769,10 @@ var Skeleton = (function (_) {
                                 // Burada olumlu veya olumsuz bir mesaj gelmiş olacak
                                 dialog.show({
                                     title: '',
-                                    content: result.number == 200 ? _.lang.current.infoFileDeletedText : result.message,
+                                    content: result.number == 200 ? _.lang.current.infoFileDeletedText : _.lang.current.infoDeleteFileNotFound,
                                     button1: {
                                         text: _.lang.current.infoOkayButton,
-                                        action: function () {
+                                        action: function() {
 
                                             // Sadece silindiyse bir takım işlemler yapalım
                                             if (result.number == 200) {
@@ -1772,7 +1800,7 @@ var Skeleton = (function (_) {
                                                     icon.remClass('menu-item-locked');
                                                     _.prompter.show({
                                                         message: [
-                                                            helper.format(_.lang.current.infoAllFileClear,menu.data[key].title),
+                                                            helper.format(_.lang.current.infoAllFileClear, menu.data[key].title),
                                                         ],
                                                         timer: 6000,
                                                         closeVisible: false
@@ -1791,13 +1819,13 @@ var Skeleton = (function (_) {
                                     }
                                 });
                             },
-                            error: function (result) {
+                            error: function(result) {
                                 dialog.show({
                                     title: _.lang.current.errErrorTitle,
                                     content: _.lang.current.errSystemDeleteText,
                                     button1: {
                                         text: _.lang.current.infoOkayButton,
-                                        action: function () {
+                                        action: function() {
                                             dialog.hide();
                                         }
                                     }
@@ -1809,7 +1837,7 @@ var Skeleton = (function (_) {
                 },
                 button2: {
                     text: _.lang.current.infoCancelButton,
-                    action: function () {
+                    action: function() {
                         dialog.hide();
                     }
                 }
@@ -1890,11 +1918,11 @@ var Skeleton = (function (_) {
 //          SKELETON GALLERY FULLSCREEN
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
 
 
-    _.MODULE(function () {
+    _.MODULE(function() {
 
 
         var screen = _.gallery.fullscreen = {
@@ -1945,14 +1973,30 @@ var Skeleton = (function (_) {
 
 
         function show(item, title) {
-            create();
-            // https://www.diagnostikum-berlin.de/sites/default/files/R%C3%B6ntgen%20Lunge.jpg
-            var img = new coll('img', { id: 'window-maker-image', src: item })
-                .setClass('window-maker')
-                .insert(screen.objects.content.target);
 
-            screen.objects.contentTitle.setHTML(title);
-            setTimeout(function () { screen.objects.contentTitle.remClass('flipInY').setClass('fadeOutUp'); }, 5000);
+            // Önce gelen image nesnesi var mı kontrol edelim
+            // Eğer yoksa uyarı verelim
+            if (!_.helper.method.imageExists(item)) {
+                _.dialog.show({
+                    title: _.lang.current.errUnknownFileTitle,
+                    content: _.lang.current.errUnknownFileText,
+                    button1: {
+                        text: _.lang.current.infoOkayButton,
+                        action: _.dialog.hide,
+                    }
+                });
+            }
+            // Resim var, resmi gösterelim
+            else {
+                create();
+                // https://www.diagnostikum-berlin.de/sites/default/files/R%C3%B6ntgen%20Lunge.jpg
+                var img = new coll('img', { id: 'window-maker-image', src: item })
+                    .setClass('window-maker')
+                    .insert(screen.objects.content.target);
+
+                screen.objects.contentTitle.setHTML(title);
+                setTimeout(function() { screen.objects.contentTitle.remClass('flipInY').setClass('fadeOutUp'); }, 5000);
+            }
         }
 
 
@@ -1961,7 +2005,10 @@ var Skeleton = (function (_) {
 
 
 
-        var _x = 0, _y = 0, _status = false;
+        var _x = 0,
+            _y = 0,
+            _status = false;
+
         function mousedown(e) {
             e.preventDefault();
             _x = e.pageX - e.target.offsetLeft;
@@ -2028,6 +2075,7 @@ var Skeleton = (function (_) {
 
 
         var selectedMaker = null;
+
         function resetSelection(obj, css) {
             if (selectedMaker != null) {
                 selectedMaker.remClass('selected');
@@ -2036,7 +2084,7 @@ var Skeleton = (function (_) {
             var tx = screen.objects.content.setCSS({ left: 0, top: 0 }).children().windowmakerimage;
             tx.remClass('horizontal', 'vertical');
             if (css) {
-                setTimeout(function () {
+                setTimeout(function() {
                     tx.setClass(css);
                 }, 100);
             }
@@ -2072,17 +2120,17 @@ var Skeleton = (function (_) {
 
                 var all = selectedMaker = windowMaker.create('div', { id: 'gall-window-maker-all' })
                     .setClass('selected')
-                    .setBind('click', function () {
+                    .setBind('click', function() {
                         resetSelection(all);
                         content.setCSS({ left: 0, top: 0, display: 'table' }).children().windowmakerimage.remClass('horizontal', 'vertical');
                     });
                 var vertical = windowMaker.create('div', { id: 'gall-window-maker-vertical' })
-                    .setBind('click', function () {
+                    .setBind('click', function() {
                         resetSelection(vertical);
                         content.setCSS({ left: 0, top: 0, display: 'inherit' }).children().windowmakerimage.remClass('horizontal').setClass('vertical');
                     });
                 var horizontal = windowMaker.create('div', { id: 'gall-window-maker-horizontal' })
-                    .setBind('click', function () {
+                    .setBind('click', function() {
                         resetSelection(horizontal);
                         content.setCSS({ left: 0, top: 0, display: 'table' }).children().windowmakerimage.remClass('vertical').setClass('horizontal');
                     });
@@ -2341,7 +2389,7 @@ var Skeleton = (function (_) {
 
                                                 // Şimdi listedeki alanı bulup güncelleyelim
                                                 __item.target.children[0].children[0].innerHTML = obj.target.value;
-                                                console.log(__item.target.children[0].children[0]);
+                                                //console.log(__item.target.children[0].children[0]);
                                                 // Veritabanını güncelle
                                                 Skeleton.savechanges();
                                                 
@@ -5616,18 +5664,9 @@ var Skeleton = (function (_) {
     }); // MODULE
 
 })(Skeleton);
-(function (_) {
-    
+(function(_) {
 
-    
-
-
-
-
-})(Skeleton);
-(function (_) {
-
-    _.MODULE(function () {
+    _.MODULE(function() {
 
 
         var coll = _.collection.create;
@@ -5670,7 +5709,7 @@ var Skeleton = (function (_) {
                 'display': 'none',
                 'transition': 'all .3s linear',
                 'border-top': '10px solid #588690',
-                'border-radius':'6px'
+                'border-radius': '6px'
             },
             '#skeleton-dialog *': {
                 'font-family': 'arial',
@@ -6440,7 +6479,22 @@ var Skeleton = (function (_) {
             },
             'div.gall-item-name > div.gall-item-showphoto': {
                 'cursor': 'pointer',
+                'position': 'relative',
                 'background': "#fff url('data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTYuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjMycHgiIGhlaWdodD0iMzJweCIgdmlld0JveD0iMCAwIDUxMiA1MTIiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDUxMiA1MTI7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPGc+Cgk8cGF0aCBkPSJNMCw0OHY0MTZoNTEyVjQ4SDB6IE00ODAsNDMySDMyVjgwaDQ0OFY0MzJ6IE0zNTIsMTYwYzAsMjYuNTEsMjEuNDksNDgsNDgsNDhzNDgtMjEuNDksNDgtNDhzLTIxLjQ5LTQ4LTQ4LTQ4ICAgUzM1MiwxMzMuNDksMzUyLDE2MHogTTQ0OCw0MDBINjRsOTYtMjU2bDEyOCwxNjBsNjQtNDhMNDQ4LDQwMHoiIGZpbGw9IiM0MjQyNDIiLz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K') no-repeat center center"
+            },
+            'div.gall-item-name > div.gall-item-showphoto.error::before': {
+                'content': "'?'",
+                'background-color': '#ff3b00',
+                'color': 'white',
+                'font-size': '10px',
+                'position': 'absolute',
+                'border-radius': '50%',
+                'width': '10px',
+                'height': '10px',
+                'text-align': 'center',
+                'padding': '1px',
+                'right': '10px',
+                'bottom': '14px',
             },
             'div.gall-item-name  div.gall-item-title': {
                 'font-weight': 'bold',
@@ -6717,7 +6771,7 @@ var Skeleton = (function (_) {
                 'top': '30px',
                 'left': '30px',
                 'pointer-events': 'none',
-                'text-shadow':'2px 2px 7px rgba(0, 0, 0, 0.65)'
+                'text-shadow': '2px 2px 7px rgba(0, 0, 0, 0.65)'
             },
             '.noselect': {
                 '-webkit-touch-callout': 'none',

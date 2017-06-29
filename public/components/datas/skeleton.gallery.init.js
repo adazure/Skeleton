@@ -220,7 +220,7 @@
 
                                                 // Şimdi listedeki alanı bulup güncelleyelim
                                                 __item.target.children[0].children[0].innerHTML = obj.target.value;
-                                                console.log(__item.target.children[0].children[0]);
+                                                //console.log(__item.target.children[0].children[0]);
                                                 // Veritabanını güncelle
                                                 Skeleton.savechanges();
                                                 

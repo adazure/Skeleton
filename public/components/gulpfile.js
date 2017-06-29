@@ -55,7 +55,6 @@ var data = [
     path + 'skeleton.prompter.methods.js',
     path + 'skeleton.prompter.init.js',
     path + 'skeleton.methods.js',
-    path + 'skeleton.form.collection.js',
     path + 'skeleton.styles.js',
     path + 'skeleton.stacker.js',
     path + 'modals/**/*.js',

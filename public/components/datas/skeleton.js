@@ -7,9 +7,15 @@ var Skeleton = (function (_) {
     _.datetime = new Date();
     _.method = {};
     _.globalMethod = {};
+    // SaveChange nedir? SaveChange bizim için, uygulamada veritabanına kayıt işlemi yapacağımız işlemlerde
+    // Bir şeylerin değiştiğinde çalıştıracağımız methoddur.
+    // Örneğin dosya upload ettik ve veritabanına kayıt yapılması gerek
+    // Skeleton.savechanges() diyerek methodu çalıştırıyoruz. SaveChanges methodu içerisinde veritabanına kayıt işlemleri olacak
+    // Ancak buradaki method scope'u boş. Çünkü dışarıdan override edilecek şekilde bırakıldı.
+    // Amaç MongoDB gibi veritabanı olduğu için, bir datayı tek bir seferde değiştireceğiz.
+    // O yüzden geliştirici, bu methodu override ederek; zaten her seferinde çalıştırılacak bu method ile kayıt işlemlerini kolayca yapabilir.
+    
     _.savechanges = function () {
-
-
         console.log(new Date() + ' Veritabanı güncellendi');
     }
 
