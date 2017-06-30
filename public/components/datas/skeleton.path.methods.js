@@ -2,17 +2,16 @@
 //          SKELETON PATH METHODS
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
 
-    _.MODULE(function () {
+    _.MODULE(function() {
 
         var path = _.path;
         var pathMethod = path.method;
         var menu = _.menuObject;
         var tooltip = _.tooltip;
         var context = _.contextmenu;
-        var data = _.data;
         var popup = _.popup;
 
 
@@ -135,10 +134,10 @@
             var icondata = e.target.customdata;
             var url = menu.data[icondata.name].url;
             if (url) {
-                var r = data[icondata.root];
+                var r = _.data[icondata.root];
                 // Popup'ın okuyacağı datayı verelim
                 popup.data = r.transforms[icondata.index];
-                popup.open(url, function () {
+                popup.open(url, function() {
                     // Popup'ı açtıktan sonra gerekli dataları ekrana yansıtalım
                     fillData(popup.data.fields);
 
@@ -249,7 +248,7 @@
 
         // Veritabanından gelen verileri sahneye yansıtıyoruz
         function loadData(dbdata) {
-            Object.keys(dbdata).forEach(function (e) {
+            Object.keys(dbdata).forEach(function(e) {
                 var menudata = path.data[e];
                 if (menudata)
                     createPathItem(dbdata[e], e);
@@ -310,7 +309,7 @@
                     path.removedPath = null;
 
                     // Silinen nesneyi veritabanı için tutulan tablodan silme aşaması
-                    var dta = data[custom.root];
+                    var dta = _.data[custom.root];
 
                     menu.data[key].count--;
 
@@ -319,7 +318,7 @@
                             title: _.lang.current.infoClearAllTitle,
                             message: _.helper.method.format(_.lang.current.infoClearAllText, menu.data[key].title),
                             closeVisible: false,
-                            timer:4000
+                            timer: 4000
                         });
                     }
 

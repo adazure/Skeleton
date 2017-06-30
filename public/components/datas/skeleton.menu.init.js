@@ -2,9 +2,9 @@
 //          SKELETON MENU INIT
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
-    _.MODULE(function () {
+    _.MODULE(function() {
 
         var collection = _.collection.create;
         var menu = _.menuObject;
@@ -20,11 +20,11 @@
 
         // Sayfada görüntülenecek menu ekranını oluşturur. Ana katman
         var displayMenu = new collection('div', {
-            id: 'skeleton-menu'
-        })
+                id: 'skeleton-menu'
+            })
             //Sınıf
             .setClass('slidetoright', 'animated', 'flipInY')
-            .setBind('mousedown', function (e) { e.preventDefault(); return; });
+            .setBind('mousedown', function(e) { e.preventDefault(); return; });
 
         menu.container = displayMenu;
 
@@ -36,19 +36,19 @@
 
         // Menü header bar
         var header = displayMenu.create('div', {
-            id: 'skeleton-menu-header'
-        })
+                id: 'skeleton-menu-header'
+            })
             .setHTML(_.lang.current.infoMenuTitle);
 
         var info = header.create('div')
             .setClass('information-woman')
-            .setBind('click', function () {
+            .setBind('click', function() {
                 _.prompter.show({
                     title: _.lang.current.infoDoYouKnowTitle,
                     message: [
                         '<i class="ichk_x182 ichk"></i> ' + _.lang.current.infoMenuInfoText1,
                         '<i class="ichk_x182 ichk"></i>-<i class="ichk_x183 ichk"></i>' + _.lang.current.infoMenuInfoText2,
-                        '<i class="ichk_x184 ichk"></i> '  + _.lang.current.infoMenuInfoText3
+                        '<i class="ichk_x184 ichk"></i> ' + _.lang.current.infoMenuInfoText3
                     ]
                 });
             });
@@ -76,7 +76,7 @@
                 id: 'skeleton-menu-footer'
             })
             // Footer Click
-            .setBind('click', function () {
+            .setBind('click', function() {
                 displayMenu.toggleClass('showhide');
             })
             // Children A
@@ -102,7 +102,7 @@
         var ml = menu.data;
 
         // Tüm menu listesi kayıtlarını tarayalım
-        Object.keys(ml).forEach(function (key) {
+        Object.keys(ml).forEach(function(key) {
 
             // Üzerinde sorgu yapılacak nesne
             var obj = ml[key];
@@ -130,8 +130,8 @@
                 /* UL nesnesi  */
 
                 var ul = new collection('ul', {
-                    key: key
-                })
+                        key: key
+                    })
                     .setClass('skeleton-menu-item');
 
 
@@ -147,8 +147,8 @@
 
                 // Input nesnesi
                 ul.create('li', {
-                    key: key
-                })
+                        key: key
+                    })
                     // Class
                     .setClass('menu-item-chk')
                     // Style
@@ -168,7 +168,7 @@
                           });
                       })*/
                     // Input Event
-                    .setBind('click', function (ev) {
+                    .setBind('click', function(ev) {
 
                         var main = ev.target.parentNode.parentNode;
                         var checkbox = main.children[1];
@@ -197,7 +197,7 @@
                             // İşaretlendikten sonra eğer iskelet üzerinde ilgili hastalık hiç yoksa, kullanıcıya bir kereliğine ekranda mesaj gösterelim
                             if (menu.data[key].count == 0) {
                                 _.prompter.show({
-                                    message: helper.format(_.lang.current.infoAnyPathText,menu.data[key].title),
+                                    message: helper.format(_.lang.current.infoAnyPathText, menu.data[key].title),
                                     closeVisible: false,
                                     timer: 5000
                                 });
@@ -243,8 +243,8 @@
 
                                 // Kullanıcıya gösterilecek text alanı oluşturuluyor
 
-                                var textForPath = isAnyPath > 0 ? helper.format(_.lang.current.infoPathFoundText,isAnyPath,nm) : '';
-                                var textForFile = length > 0 ? helper.format(_.lang.current.infoFileFoundText,nm,length) : '';
+                                var textForPath = isAnyPath > 0 ? helper.format(_.lang.current.infoPathFoundText, isAnyPath, nm) : '';
+                                var textForFile = length > 0 ? helper.format(_.lang.current.infoFileFoundText, nm, length) : '';
 
                                 // Eğer dosya varsa upload ekranını açalım
                                 if (length > 0)
@@ -252,7 +252,7 @@
 
                                 _.prompter.show({
                                     title: _.lang.current.infoINeedYourHelpTitle,
-                                    message: helper.format(_.lang.current.infoINeedYourHelpText,nm) + textForPath + textForFile
+                                    message: helper.format(_.lang.current.infoINeedYourHelpText, nm) + textForPath + textForFile
                                 });
 
                                 /* dialog.show({
@@ -265,8 +265,7 @@
                                          }
                                      }
                                  });*/
-                            }
-                            else
+                            } else
                                 checkbox.setClass('menu-item-locked');
 
 
@@ -290,15 +289,15 @@
 
                 // Image nesnesi
                 var li = ul.create('li', {
-                    key: key
-                })
+                        key: key
+                    })
                     // Class
                     .setClass('menu-item-img', 'menu-item-locked')
                     // Style
                     .setCSS({
                         width: '20%'
                     }).
-                    setBind('mousedown', menu.method.itemdown);
+                setBind('mousedown', menu.method.itemdown);
 
                 var img = li.create('img', {
                     key: key,
@@ -306,10 +305,10 @@
                     src: obj.data
                 })
 
-                    .setCSS({
-                        width: '30px',
-                        height: '30px'
-                    });
+                .setCSS({
+                    width: '30px',
+                    height: '30px'
+                });
 
 
                 //....................................................................................
@@ -322,9 +321,9 @@
 
                 // Label nesnesi
                 ul.create('li', {
-                    key: key
-                })
-                    .setBind('click', function () {
+                        key: key
+                    })
+                    .setBind('click', function() {
 
                         // Seçilen menuyü işaretle
                         menu.selectedMenuItem = ul;
@@ -400,9 +399,6 @@
 
         });
 
-
-        // Gelen dataya göre menüdeki alanları işaretleyelim
-        menu.method.fillMenuItem();
 
 
     }); // MODULE

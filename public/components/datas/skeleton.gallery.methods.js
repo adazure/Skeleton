@@ -60,7 +60,6 @@
             // Veritabanına kaydedilen veriyi tutalım. Silme işleminde bulup sileceğiz
             delImage.target.__removeSource = { root: helper.getCustomizeUpload() + menu.selectedMenuItem.getAttr('key'), item: item };
 
-
             // Eğer istenirse diye, oluşturulan DIV nesnesini geri döndürüyoruz
             return galItem;
         }

@@ -2,10 +2,10 @@
 //          SKELETON METHODS
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
 
-    _.MODULE(function () {
+    _.MODULE(function() {
 
         //SVG için method tutucu
         var method = _.method;
@@ -17,7 +17,6 @@
         var matrix = _.svg.matrix;
         var menu = _.menuObject;
         var popup = _.popup;
-        var dbdata = _.data;
         var gall = _.gallery;
 
 
@@ -138,8 +137,8 @@
                         //Eğer tabloda bir veri yoksa oluşturuyoruz, varsa üzerine yazıyoruz
 
                         var dbdataCurrent = _.data[path.selectedPath.id] || (_.data[path.selectedPath.id] = {
-                            transforms: []
-                        }),
+                                transforms: []
+                            }),
                             moveItemKey = _.selectedObject.getAttr('key');
 
                         // Koordinat bilgileri
@@ -150,7 +149,7 @@
                             y: _y,
                             obj:
                             //Sürüklenen nesnenin key ve root bilgisi
-                            moveItemKey
+                                moveItemKey
                         });
 
                         // Sahne üzerindeki nesneye tıklandığında detay sayfasının gelebilmesi için ilgili nesneye bazı özellikler ekliyoruz

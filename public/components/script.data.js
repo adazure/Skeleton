@@ -2,7 +2,7 @@
 //          SKELETON
 /////////////////////////////////////////////////////////////////////////
 
-var Skeleton = (function (_) {
+var Skeleton = (function(_) {
 
     _.datetime = new Date();
     _.method = {};
@@ -14,9 +14,15 @@ var Skeleton = (function (_) {
     // Ancak buradaki method scope'u boş. Çünkü dışarıdan override edilecek şekilde bırakıldı.
     // Amaç MongoDB gibi veritabanı olduğu için, bir datayı tek bir seferde değiştireceğiz.
     // O yüzden geliştirici, bu methodu override ederek; zaten her seferinde çalıştırılacak bu method ile kayıt işlemlerini kolayca yapabilir.
-    
-    _.savechanges = function () {
+
+    _.savechanges = function() {
         console.log(new Date() + ' Veritabanı güncellendi');
+    }
+
+    _.update = function(data) {
+        _.data = data;
+        _.path.method.loadData(_.data);
+        _.menuObject.method.fillMenuItem();
     }
 
     // Açılacak popuplar için özel olarak tanımlandı.
@@ -46,112 +52,6 @@ var Skeleton = (function (_) {
     // Veritabanına kaydedilecek olan veriler
     _.data = {};
 
-    _.data = {
-        "$Gastroskopi$luminal_darlik": [
-
-        ],
-        "path4": {
-            "transforms": [
-                {
-                    "x": "637",
-                    "y": "86",
-                    "obj": "luminal_darlik",
-                    "fields": {
-                        "endoskopi": "Geçti"
-                    }
-                },
-                {
-                    "x": "631",
-                    "y": "57",
-                    "obj": "luminal_darlik",
-                    "fields": {
-                        "uzunluk": "3",
-                        "endoskopi": "Geçemedi"
-                    }
-                }
-            ]
-        },
-        "$Gastroskopi$ulser_izole": [
-            {
-                "file": "1498041261968.png",
-                "title": "sdfsdfdsf"
-            },
-            {
-                "file": "1498041267947.png",
-                "title": "123123123123"
-            }
-        ],
-        "path39": {
-            "transforms": [
-                {
-                    "x": "607",
-                    "y": "427",
-                    "obj": "ulser_izole",
-                    "fields": {
-                        "oval": "Oval",
-                        "boyut1": "<0.5 cm",
-                        "boyut2": "0.5-1 cm",
-                        "boyut3": "1-2 cm",
-                        "boyut4": "3-5 cm",
-                        "adet": "3",
-                        "nodularite": true
-                    }
-                },
-                {
-                    "x": "604",
-                    "y": "469",
-                    "obj": "ulser_izole",
-                    "fields": {
-                        "aftoz": "Aftöz",
-                        "oval": "Oval",
-                        "yildiz": "Yıldız",
-                        "sirkuler": "Sirküler",
-                        "boyut1": "<0.5 cm",
-                        "boyut4": "3-5 cm",
-                        "adet": "4",
-                        "nodularite": true
-                    }
-                }
-            ]
-        },
-        "path38": {
-            "transforms": [
-                {
-                    "x": "565",
-                    "y": "637",
-                    "obj": "ulser_izole",
-                    "fields": {
-
-                    }
-                }
-            ]
-        },
-        "path40": {
-            "transforms": [
-                {
-                    "x": "669",
-                    "y": "605",
-                    "obj": "ulser_izole",
-                    "fields": {
-                        "oval": "Oval",
-                        "yildiz": "Yıldız",
-                        "boyut1": "<0.5 cm",
-                        "boyut2": "0.5-1 cm",
-                        "boyut3": "1-2 cm",
-                        "boyut4": "3-5 cm",
-                        "boyut5": ">5 cm",
-                        "adet": "4",
-                        "nodularite": true
-                    }
-                }
-            ]
-        },
-        "$Gastroskopi$cobble_stone": [
-
-        ]
-    };
-
-
     // Kod tarafında debugmode özelliğine bağlanmış/oluşturulmuş/oluşturulmak istenen yerler için kontrol değişkeni
     _.debugmode = false;
 
@@ -159,7 +59,7 @@ var Skeleton = (function (_) {
     var inits = [];
 
 
-    _.MODULE = function (action) {
+    _.MODULE = function(action) {
         if (action && typeof action === 'function') {
             inits.push(action);
         } else
@@ -1695,7 +1595,6 @@ var Skeleton = (function (_) {
             // Veritabanına kaydedilen veriyi tutalım. Silme işleminde bulup sileceğiz
             delImage.target.__removeSource = { root: helper.getCustomizeUpload() + menu.selectedMenuItem.getAttr('key'), item: item };
 
-
             // Eğer istenirse diye, oluşturulan DIV nesnesini geri döndürüyoruz
             return galItem;
         }
@@ -3148,17 +3047,16 @@ var Skeleton = (function (_) {
 //          SKELETON PATH METHODS
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
 
-    _.MODULE(function () {
+    _.MODULE(function() {
 
         var path = _.path;
         var pathMethod = path.method;
         var menu = _.menuObject;
         var tooltip = _.tooltip;
         var context = _.contextmenu;
-        var data = _.data;
         var popup = _.popup;
 
 
@@ -3281,10 +3179,10 @@ var Skeleton = (function (_) {
             var icondata = e.target.customdata;
             var url = menu.data[icondata.name].url;
             if (url) {
-                var r = data[icondata.root];
+                var r = _.data[icondata.root];
                 // Popup'ın okuyacağı datayı verelim
                 popup.data = r.transforms[icondata.index];
-                popup.open(url, function () {
+                popup.open(url, function() {
                     // Popup'ı açtıktan sonra gerekli dataları ekrana yansıtalım
                     fillData(popup.data.fields);
 
@@ -3395,7 +3293,7 @@ var Skeleton = (function (_) {
 
         // Veritabanından gelen verileri sahneye yansıtıyoruz
         function loadData(dbdata) {
-            Object.keys(dbdata).forEach(function (e) {
+            Object.keys(dbdata).forEach(function(e) {
                 var menudata = path.data[e];
                 if (menudata)
                     createPathItem(dbdata[e], e);
@@ -3456,7 +3354,7 @@ var Skeleton = (function (_) {
                     path.removedPath = null;
 
                     // Silinen nesneyi veritabanı için tutulan tablodan silme aşaması
-                    var dta = data[custom.root];
+                    var dta = _.data[custom.root];
 
                     menu.data[key].count--;
 
@@ -3465,7 +3363,7 @@ var Skeleton = (function (_) {
                             title: _.lang.current.infoClearAllTitle,
                             message: _.helper.method.format(_.lang.current.infoClearAllText, menu.data[key].title),
                             closeVisible: false,
-                            timer:4000
+                            timer: 4000
                         });
                     }
 
@@ -4526,9 +4424,9 @@ var Skeleton = (function (_) {
 //          SKELETON MENU INIT
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
-    _.MODULE(function () {
+    _.MODULE(function() {
 
         var collection = _.collection.create;
         var menu = _.menuObject;
@@ -4544,11 +4442,11 @@ var Skeleton = (function (_) {
 
         // Sayfada görüntülenecek menu ekranını oluşturur. Ana katman
         var displayMenu = new collection('div', {
-            id: 'skeleton-menu'
-        })
+                id: 'skeleton-menu'
+            })
             //Sınıf
             .setClass('slidetoright', 'animated', 'flipInY')
-            .setBind('mousedown', function (e) { e.preventDefault(); return; });
+            .setBind('mousedown', function(e) { e.preventDefault(); return; });
 
         menu.container = displayMenu;
 
@@ -4560,19 +4458,19 @@ var Skeleton = (function (_) {
 
         // Menü header bar
         var header = displayMenu.create('div', {
-            id: 'skeleton-menu-header'
-        })
+                id: 'skeleton-menu-header'
+            })
             .setHTML(_.lang.current.infoMenuTitle);
 
         var info = header.create('div')
             .setClass('information-woman')
-            .setBind('click', function () {
+            .setBind('click', function() {
                 _.prompter.show({
                     title: _.lang.current.infoDoYouKnowTitle,
                     message: [
                         '<i class="ichk_x182 ichk"></i> ' + _.lang.current.infoMenuInfoText1,
                         '<i class="ichk_x182 ichk"></i>-<i class="ichk_x183 ichk"></i>' + _.lang.current.infoMenuInfoText2,
-                        '<i class="ichk_x184 ichk"></i> '  + _.lang.current.infoMenuInfoText3
+                        '<i class="ichk_x184 ichk"></i> ' + _.lang.current.infoMenuInfoText3
                     ]
                 });
             });
@@ -4600,7 +4498,7 @@ var Skeleton = (function (_) {
                 id: 'skeleton-menu-footer'
             })
             // Footer Click
-            .setBind('click', function () {
+            .setBind('click', function() {
                 displayMenu.toggleClass('showhide');
             })
             // Children A
@@ -4626,7 +4524,7 @@ var Skeleton = (function (_) {
         var ml = menu.data;
 
         // Tüm menu listesi kayıtlarını tarayalım
-        Object.keys(ml).forEach(function (key) {
+        Object.keys(ml).forEach(function(key) {
 
             // Üzerinde sorgu yapılacak nesne
             var obj = ml[key];
@@ -4654,8 +4552,8 @@ var Skeleton = (function (_) {
                 /* UL nesnesi  */
 
                 var ul = new collection('ul', {
-                    key: key
-                })
+                        key: key
+                    })
                     .setClass('skeleton-menu-item');
 
 
@@ -4671,8 +4569,8 @@ var Skeleton = (function (_) {
 
                 // Input nesnesi
                 ul.create('li', {
-                    key: key
-                })
+                        key: key
+                    })
                     // Class
                     .setClass('menu-item-chk')
                     // Style
@@ -4692,7 +4590,7 @@ var Skeleton = (function (_) {
                           });
                       })*/
                     // Input Event
-                    .setBind('click', function (ev) {
+                    .setBind('click', function(ev) {
 
                         var main = ev.target.parentNode.parentNode;
                         var checkbox = main.children[1];
@@ -4721,7 +4619,7 @@ var Skeleton = (function (_) {
                             // İşaretlendikten sonra eğer iskelet üzerinde ilgili hastalık hiç yoksa, kullanıcıya bir kereliğine ekranda mesaj gösterelim
                             if (menu.data[key].count == 0) {
                                 _.prompter.show({
-                                    message: helper.format(_.lang.current.infoAnyPathText,menu.data[key].title),
+                                    message: helper.format(_.lang.current.infoAnyPathText, menu.data[key].title),
                                     closeVisible: false,
                                     timer: 5000
                                 });
@@ -4767,8 +4665,8 @@ var Skeleton = (function (_) {
 
                                 // Kullanıcıya gösterilecek text alanı oluşturuluyor
 
-                                var textForPath = isAnyPath > 0 ? helper.format(_.lang.current.infoPathFoundText,isAnyPath,nm) : '';
-                                var textForFile = length > 0 ? helper.format(_.lang.current.infoFileFoundText,nm,length) : '';
+                                var textForPath = isAnyPath > 0 ? helper.format(_.lang.current.infoPathFoundText, isAnyPath, nm) : '';
+                                var textForFile = length > 0 ? helper.format(_.lang.current.infoFileFoundText, nm, length) : '';
 
                                 // Eğer dosya varsa upload ekranını açalım
                                 if (length > 0)
@@ -4776,7 +4674,7 @@ var Skeleton = (function (_) {
 
                                 _.prompter.show({
                                     title: _.lang.current.infoINeedYourHelpTitle,
-                                    message: helper.format(_.lang.current.infoINeedYourHelpText,nm) + textForPath + textForFile
+                                    message: helper.format(_.lang.current.infoINeedYourHelpText, nm) + textForPath + textForFile
                                 });
 
                                 /* dialog.show({
@@ -4789,8 +4687,7 @@ var Skeleton = (function (_) {
                                          }
                                      }
                                  });*/
-                            }
-                            else
+                            } else
                                 checkbox.setClass('menu-item-locked');
 
 
@@ -4814,15 +4711,15 @@ var Skeleton = (function (_) {
 
                 // Image nesnesi
                 var li = ul.create('li', {
-                    key: key
-                })
+                        key: key
+                    })
                     // Class
                     .setClass('menu-item-img', 'menu-item-locked')
                     // Style
                     .setCSS({
                         width: '20%'
                     }).
-                    setBind('mousedown', menu.method.itemdown);
+                setBind('mousedown', menu.method.itemdown);
 
                 var img = li.create('img', {
                     key: key,
@@ -4830,10 +4727,10 @@ var Skeleton = (function (_) {
                     src: obj.data
                 })
 
-                    .setCSS({
-                        width: '30px',
-                        height: '30px'
-                    });
+                .setCSS({
+                    width: '30px',
+                    height: '30px'
+                });
 
 
                 //....................................................................................
@@ -4846,9 +4743,9 @@ var Skeleton = (function (_) {
 
                 // Label nesnesi
                 ul.create('li', {
-                    key: key
-                })
-                    .setBind('click', function () {
+                        key: key
+                    })
+                    .setBind('click', function() {
 
                         // Seçilen menuyü işaretle
                         menu.selectedMenuItem = ul;
@@ -4924,9 +4821,6 @@ var Skeleton = (function (_) {
 
         });
 
-
-        // Gelen dataya göre menüdeki alanları işaretleyelim
-        menu.method.fillMenuItem();
 
 
     }); // MODULE
@@ -5358,10 +5252,10 @@ var Skeleton = (function (_) {
 //          SKELETON METHODS
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
 
-    _.MODULE(function () {
+    _.MODULE(function() {
 
         //SVG için method tutucu
         var method = _.method;
@@ -5373,7 +5267,6 @@ var Skeleton = (function (_) {
         var matrix = _.svg.matrix;
         var menu = _.menuObject;
         var popup = _.popup;
-        var dbdata = _.data;
         var gall = _.gallery;
 
 
@@ -5494,8 +5387,8 @@ var Skeleton = (function (_) {
                         //Eğer tabloda bir veri yoksa oluşturuyoruz, varsa üzerine yazıyoruz
 
                         var dbdataCurrent = _.data[path.selectedPath.id] || (_.data[path.selectedPath.id] = {
-                            transforms: []
-                        }),
+                                transforms: []
+                            }),
                             moveItemKey = _.selectedObject.getAttr('key');
 
                         // Koordinat bilgileri
@@ -5506,7 +5399,7 @@ var Skeleton = (function (_) {
                             y: _y,
                             obj:
                             //Sürüklenen nesnenin key ve root bilgisi
-                            moveItemKey
+                                moveItemKey
                         });
 
                         // Sahne üzerindeki nesneye tıklandığında detay sayfasının gelebilmesi için ilgili nesneye bazı özellikler ekliyoruz
@@ -7235,11 +7128,11 @@ var Skeleton = (function (_) {
 //          SKELETON INIT
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
     // Init Module
 
-    _.MODULE(function () {
+    _.MODULE(function() {
 
         var path = _.path;
         var menu = _.menuObject;
@@ -7309,7 +7202,7 @@ var Skeleton = (function (_) {
             }
 
             var tempNames = Object.keys(menu.data);
-            Object.keys(path.data).forEach(function (e) {
+            Object.keys(path.data).forEach(function(e) {
                 var tempRnd = Math.random(6) + 1;
                 path.data[e].data = get(tempRnd);
             });
@@ -7347,7 +7240,108 @@ var Skeleton = (function (_) {
         //....................................................................................
 
 
-        _.path.method.loadData(_.data);
+        /* 
+
+        Skeleton.update({
+                "$Gastroskopi$luminal_darlik": [
+
+                ],
+                "path4": {
+                    "transforms": [{
+                            "x": "637",
+                            "y": "86",
+                            "obj": "luminal_darlik",
+                            "fields": {
+                                "endoskopi": "Geçti"
+                            }
+                        },
+                        {
+                            "x": "631",
+                            "y": "57",
+                            "obj": "luminal_darlik",
+                            "fields": {
+                                "uzunluk": "3",
+                                "endoskopi": "Geçemedi"
+                            }
+                        }
+                    ]
+                },
+                "$Gastroskopi$ulser_izole": [{
+                        "file": "1498041261968.png",
+                        "title": "sdfsdfdsf"
+                    },
+                    {
+                        "file": "1498041267947.png",
+                        "title": "123123123123"
+                    }
+                ],
+                "path39": {
+                    "transforms": [{
+                            "x": "607",
+                            "y": "427",
+                            "obj": "ulser_izole",
+                            "fields": {
+                                "oval": "Oval",
+                                "boyut1": "<0.5 cm",
+                                "boyut2": "0.5-1 cm",
+                                "boyut3": "1-2 cm",
+                                "boyut4": "3-5 cm",
+                                "adet": "3",
+                                "nodularite": true
+                            }
+                        },
+                        {
+                            "x": "604",
+                            "y": "469",
+                            "obj": "ulser_izole",
+                            "fields": {
+                                "aftoz": "Aftöz",
+                                "oval": "Oval",
+                                "yildiz": "Yıldız",
+                                "sirkuler": "Sirküler",
+                                "boyut1": "<0.5 cm",
+                                "boyut4": "3-5 cm",
+                                "adet": "4",
+                                "nodularite": true
+                            }
+                        }
+                    ]
+                },
+                "path38": {
+                    "transforms": [{
+                        "x": "565",
+                        "y": "637",
+                        "obj": "ulser_izole",
+                        "fields": {
+
+                        }
+                    }]
+                },
+                "path40": {
+                    "transforms": [{
+                        "x": "669",
+                        "y": "605",
+                        "obj": "ulser_izole",
+                        "fields": {
+                            "oval": "Oval",
+                            "yildiz": "Yıldız",
+                            "boyut1": "<0.5 cm",
+                            "boyut2": "0.5-1 cm",
+                            "boyut3": "1-2 cm",
+                            "boyut4": "3-5 cm",
+                            "boyut5": ">5 cm",
+                            "adet": "4",
+                            "nodularite": true
+                        }
+                    }]
+                },
+                "$Gastroskopi$cobble_stone": [
+
+                ]
+            });
+
+
+        */
 
 
 
