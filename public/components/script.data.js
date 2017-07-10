@@ -165,7 +165,8 @@ var Skeleton = (function(_) {
             infoINeedYourHelpTitle: "Yardımınıza ihtiyacım var",
             infoINeedYourHelpText: " {0} işaretini kaldırabilmem için aşağıdaki kayıtları kaldırmanız gerekiyor <br/><br/>",
             errUnknownFileTitle: 'Bilinmeyen Dosya',
-            errUnknownFileText: 'Aradığınız dosya silinmiş olabilir yada geçiçi olarak dosyaya ulaşamıyorsunuz'
+            errUnknownFileText: 'Aradığınız dosya silinmiş olabilir yada geçiçi olarak dosyaya ulaşamıyorsunuz',
+            infoLayerTitle:'Katmanlar'
 
 
 
@@ -219,7 +220,8 @@ var Skeleton = (function(_) {
             infoINeedYourHelpTitle: "I need your help",
             infoINeedYourHelpText: "You need to delete the following records in order to unmark {0} <br/><br/>",
             errUnknownFileTitle: 'Unknown file',
-            errUnknownFileText: 'The file you are looking for may have been deleted, but you can not get to the file temporarily'
+            errUnknownFileText: 'The file you are looking for may have been deleted, but you can not get to the file temporarily',
+            infoLayerTitle:'Layers'
         }
 
 
@@ -5258,6 +5260,7 @@ var Skeleton = (function(_) {
 (function (_) {
 
     _.layers = {
+        items: {},
         objects: {
             container: null,
             content: null
@@ -5274,9 +5277,70 @@ var Skeleton = (function(_) {
 
 (function (_) {
 
-   _.METHOD(function(){
-       
-   });
+    _.MODULE(function () {
+
+        var coll = _.collection.create;
+        var layer = _.layers;
+
+
+
+        //....................................................................................
+
+
+
+        function add(args) {
+
+            var length = Object.keys(layer.items).length;
+
+            var context = new coll('div')
+                .setClass('layer-item')
+                .insert(layer.objects.content.target);
+
+            var chkdiv = new coll('div', { id: 'layer' + length })
+                .setClass('layer-item-chk')
+                .insert(context.target);
+
+            var chk = new coll('input', { type: 'checkbox' })
+                .insert(chkdiv.target)
+                .setBind('click', args.change);
+
+            var text = new coll('div', { id: 'layer-text' + length })
+                .setClass('layer-text')
+                .setHTML(args.text)
+                .insert(context.target);
+
+            var n = {
+                context: context,
+                checkbox: {
+                    container: chkdiv,
+                    target: chk
+                },
+                text: {
+                    container: text
+                }
+            }
+
+            context.target.__root =
+                chkdiv.target.__root =
+                chk.target.__root =
+                text.target.__root = n;
+
+            layer.items['layer' + length] = n;
+
+            return context;
+
+        }
+
+
+
+        //....................................................................................
+
+
+
+
+        layer.method.add = add;
+
+    });
 
 })(Skeleton);
 /////////////////////////////////////////////////////////////////////////
@@ -5285,9 +5349,54 @@ var Skeleton = (function(_) {
 
 (function (_) {
 
-   _.METHOD(function(){
-       
-   });
+    _.MODULE(function () {
+
+
+        var layer = _.layers;
+        var coll = _.collection.create;
+
+
+        layer.objects.container = new coll('div', {
+            id: 'skeleton-layer-container'
+        }).insert(parent.document.body);
+
+        layer.objects.header = new coll('div', {
+            id: 'skeleton-layer-header'
+        }).insert(layer.objects.container.target)
+            .setHTML(_.lang.current.infoLayerTitle);
+
+        layer.objects.content = new coll('div', {
+            id: 'skeleton-layer-content'
+        }).insert(layer.objects.container.target);
+
+        layer.objects.footer = new coll('div', {
+            id: 'skeleton-layer-footer'
+        }).insert(layer.objects.container.target)
+            .setHTML(_.lang.current.infoMenuShowHide)
+            .setBind('click', function() {
+                layer.objects.content.toggleClass('showhide');
+            })
+
+
+        // Init
+        layer.method.add({
+            text: 'Baş/Boyun/Mide/İnce Bağırsak', change: function (e) {
+                console.log(e);
+            }
+        });
+        layer.method.add({
+            text: 'Kalın Bağırsak', change: function (e) {
+                console.log(e);
+            }
+        });
+        layer.method.add({
+            text: 'Karaciğer', change: function (e) {
+                console.log(e);
+            }
+        });
+
+
+    });
 
 })(Skeleton);
 /////////////////////////////////////////////////////////////////////////
@@ -5599,9 +5708,9 @@ var Skeleton = (function(_) {
     }); // MODULE
 
 })(Skeleton);
-(function(_) {
+(function (_) {
 
-    _.MODULE(function() {
+    _.MODULE(function () {
 
 
         var coll = _.collection.create;
@@ -5770,7 +5879,7 @@ var Skeleton = (function(_) {
                 'overflow': 'hidden',
                 'background-color': 'rgb(48, 57, 90)',
                 'border': '3px solid rgb(255, 255, 255)',
-                'box-shadow': 'rgba(0, 0, 0, 0.27) 0px 0px 0px 8px',
+                'box-shadow': 'rgba(0, 0, 0, 0.27) 0px 0px 0px 6px',
                 'z-index': '1000',
                 'font-family': 'arial',
                 'font-size': '14px',
@@ -6715,8 +6824,71 @@ var Skeleton = (function(_) {
                 '-moz-user-select': 'none',
                 '-ms-user-select': 'none',
                 'user-select': 'none'
+            },
+
+            // LAYER
+            '#skeleton-layer-container': {
+                'background-color': '#fefefe',
+                'position': 'fixed',
+                'right': '40px',
+                'top': '40px',
+                'border': '3px solid #fff',
+                'border-radius': '7px',
+                'box-shadow': '0 0 0 6px rgba(0, 0, 0, 0.32)',
+                'font-family': 'Arial'
+            },
+            '#skeleton-layer-content': {
+                'max-height': '246px'
+            },
+            '#skeleton-layer-content.showhide':{
+                'display':'none',
+                'width':'250px'
+            },
+            '#skeleton-layer-header, #skeleton-layer-footer': {
+                'padding': '10px',
+                'background': '#ccc',
+                'font-size': '13px',
+                'color': 'white',
+                'animation': 'upload-colors 50s linear infinite'
+            },
+            '#skeleton-layer-header': {
+
+                'border-radius': '4px 4px 0 0',
+                'border-bottom':'1px solid #ddd'
+            },
+            '#skeleton-layer-footer': {
+                'border-radius': '0px 0px 4px 4px',
+                'cursor':'pointer'
+            },
+            '.layer-item':{
+                'display':'table',
+                'font-size':'14px',
+                'border-bottom':'1px solid #eee',
+                'width':'100%'
+            },
+            '.layer-item > div':{
+                'display':'table-cell',
+                'padding':'8px',
+                'vertical-align':'middle',
+                'height':'40px'
+            },
+            '.layer-item-chk':{
+                'width':'20px',
+            },
+            '.layer-item-chk input[type=checkbox]':{
+
+            },
+            '.layer-text':{
+                'text-align':'left'
             }
+            
+
         });
+
+
+
+
+
 
         style.insert(parent.document.body);
 

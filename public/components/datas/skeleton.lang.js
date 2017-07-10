@@ -52,7 +52,8 @@
             infoINeedYourHelpTitle: "Yardımınıza ihtiyacım var",
             infoINeedYourHelpText: " {0} işaretini kaldırabilmem için aşağıdaki kayıtları kaldırmanız gerekiyor <br/><br/>",
             errUnknownFileTitle: 'Bilinmeyen Dosya',
-            errUnknownFileText: 'Aradığınız dosya silinmiş olabilir yada geçiçi olarak dosyaya ulaşamıyorsunuz'
+            errUnknownFileText: 'Aradığınız dosya silinmiş olabilir yada geçiçi olarak dosyaya ulaşamıyorsunuz',
+            infoLayerTitle:'Katmanlar'
 
 
 
@@ -106,7 +107,8 @@
             infoINeedYourHelpTitle: "I need your help",
             infoINeedYourHelpText: "You need to delete the following records in order to unmark {0} <br/><br/>",
             errUnknownFileTitle: 'Unknown file',
-            errUnknownFileText: 'The file you are looking for may have been deleted, but you can not get to the file temporarily'
+            errUnknownFileText: 'The file you are looking for may have been deleted, but you can not get to the file temporarily',
+            infoLayerTitle:'Layers'
         }
 
 

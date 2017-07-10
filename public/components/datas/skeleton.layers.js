@@ -5,6 +5,7 @@
 (function (_) {
 
     _.layers = {
+        items: {},
         objects: {
             container: null,
             content: null

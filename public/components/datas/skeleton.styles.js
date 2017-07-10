@@ -1,6 +1,6 @@
-(function(_) {
+(function (_) {
 
-    _.MODULE(function() {
+    _.MODULE(function () {
 
 
         var coll = _.collection.create;
@@ -169,7 +169,7 @@
                 'overflow': 'hidden',
                 'background-color': 'rgb(48, 57, 90)',
                 'border': '3px solid rgb(255, 255, 255)',
-                'box-shadow': 'rgba(0, 0, 0, 0.27) 0px 0px 0px 8px',
+                'box-shadow': 'rgba(0, 0, 0, 0.27) 0px 0px 0px 6px',
                 'z-index': '1000',
                 'font-family': 'arial',
                 'font-size': '14px',
@@ -1114,8 +1114,71 @@
                 '-moz-user-select': 'none',
                 '-ms-user-select': 'none',
                 'user-select': 'none'
+            },
+
+            // LAYER
+            '#skeleton-layer-container': {
+                'background-color': '#fefefe',
+                'position': 'fixed',
+                'right': '40px',
+                'top': '40px',
+                'border': '3px solid #fff',
+                'border-radius': '7px',
+                'box-shadow': '0 0 0 6px rgba(0, 0, 0, 0.32)',
+                'font-family': 'Arial'
+            },
+            '#skeleton-layer-content': {
+                'max-height': '246px'
+            },
+            '#skeleton-layer-content.showhide':{
+                'display':'none',
+                'width':'250px'
+            },
+            '#skeleton-layer-header, #skeleton-layer-footer': {
+                'padding': '10px',
+                'background': '#ccc',
+                'font-size': '13px',
+                'color': 'white',
+                'animation': 'upload-colors 50s linear infinite'
+            },
+            '#skeleton-layer-header': {
+
+                'border-radius': '4px 4px 0 0',
+                'border-bottom':'1px solid #ddd'
+            },
+            '#skeleton-layer-footer': {
+                'border-radius': '0px 0px 4px 4px',
+                'cursor':'pointer'
+            },
+            '.layer-item':{
+                'display':'table',
+                'font-size':'14px',
+                'border-bottom':'1px solid #eee',
+                'width':'100%'
+            },
+            '.layer-item > div':{
+                'display':'table-cell',
+                'padding':'8px',
+                'vertical-align':'middle',
+                'height':'40px'
+            },
+            '.layer-item-chk':{
+                'width':'20px',
+            },
+            '.layer-item-chk input[type=checkbox]':{
+
+            },
+            '.layer-text':{
+                'text-align':'left'
             }
+            
+
         });
+
+
+
+
+
 
         style.insert(parent.document.body);
 
