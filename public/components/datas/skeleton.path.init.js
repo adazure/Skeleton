@@ -35,6 +35,7 @@
             path.objects[i].setClass(path.objects[i].id ? 'path' : 'not');
 
             // Olay dinleyiciler
+            
             path.objects[i].setBind('mouseover', path.method.mouseover);
             path.objects[i].setBind('mouseout', path.method.mouseout);
 
