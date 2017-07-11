@@ -53,7 +53,7 @@ var Skeleton = (function(_) {
     _.data = {};
 
     // Kod tarafında debugmode özelliğine bağlanmış/oluşturulmuş/oluşturulmak istenen yerler için kontrol değişkeni
-    _.debugmode = true;
+    _.debugmode = false;
 
     //Her şey yüklendiğinde çalıştırılacak Module init methodları
     var inits = [];

@@ -325,8 +325,7 @@
                  fill: #000;
                  font-family: arial;
              }
-             
-             #skeleton-menu {
+             /*#skeleton-menu {
                  position: fixed;
                  width: 300px;
                  height: 300px;
@@ -356,4 +355,4 @@
              #skeleton-menu .skeleton-menu-footer {
                  padding: 5px;
                  background-color: blue;
-             }
+             }*/
