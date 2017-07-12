@@ -19,7 +19,8 @@ var Skeleton = (function(_) {
         console.log(new Date() + ' Veritabanı güncellendi');
     }
 
-    _.update = function(data) {
+    _.update = function(data, section) {
+        _.section = section;
         _.data = data;
         _.path.method.loadData(_.data);
         _.menuObject.method.fillMenuItem();
@@ -42,6 +43,8 @@ var Skeleton = (function(_) {
         down: [],
         move: []
     };
+
+    _.section = null;
 
     // SVG Nesnesi
     _.container = null;

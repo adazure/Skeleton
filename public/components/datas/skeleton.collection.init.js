@@ -1,11 +1,11 @@
 /////////////////////////////////////////////////////////////////////////
 //          SKELETON COLLECTION INIT
 /////////////////////////////////////////////////////////////////////////
-(function (_) {
+(function(_) {
 
 
     // MODULE INIT
-    _.MODULE(function () {
+    _.MODULE(function() {
 
         var method = _.collection.globals.method;
 

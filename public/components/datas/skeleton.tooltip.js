@@ -2,10 +2,10 @@
 //          SKELETON TOOLTIP
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
 
-    _.MODULE(function () {
+    _.MODULE(function() {
 
         _.tooltip = {};
 

@@ -1,7 +1,7 @@
-(function(_){
+(function(_) {
 
     _.element = {
-        method:{}
+        method: {}
     };
 
 })(Skeleton);

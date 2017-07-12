@@ -2,10 +2,10 @@
 //          SKELETON QUERY PARSER
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
 
-    _.MODULE(function () {
+    _.MODULE(function() {
 
         var request = _.Request = {};
 

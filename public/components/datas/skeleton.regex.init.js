@@ -2,9 +2,9 @@
 //          SKELETON REGEX INIT
 /////////////////////////////////////////////////////////////////////////
 
-(function(_){
+(function(_) {
 
-    _.MODULE(function(){
+    _.MODULE(function() {
 
 
     }); // MODULE

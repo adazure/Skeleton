@@ -1,5 +1,5 @@
 /////////////////////////////////////////////////////////////////////////
-//          SKELETON GLOBAL PROTOTYPES METHODS
+//          SKELETON HELPER METHODS
 /////////////////////////////////////////////////////////////////////////
 
 (function(_) {
@@ -124,19 +124,19 @@
 
         //....................................................................................
 
-        function format(content){
-            if(content){
+        function format(content) {
+            if (content) {
                 var arr = arguments.length > 1 ? Array.prototype.slice.call(arguments, 1) : null;
-                if(arr){
-                    for(var x = 0; x < arr.length; x++){
-                        var n = new RegExp("\\{" + x + "\\}",'g');
-                        content = content.replace(n,arr[x]);
+                if (arr) {
+                    for (var x = 0; x < arr.length; x++) {
+                        var n = new RegExp("\\{" + x + "\\}", 'g');
+                        content = content.replace(n, arr[x]);
                     }
                 }
             }
             return content;
         }
-        
+
         //....................................................................................
 
 
@@ -166,7 +166,7 @@
         //....................................................................................
 
         // Dosya kontrolü
-        function imageExists(image_url){
+        function imageExists(image_url) {
             var http = new XMLHttpRequest();
             http.open('HEAD', image_url, false);
             http.send();
@@ -177,7 +177,7 @@
 
 
         function getCustomizeUpload() {
-            return '$' + _.Request.section + '$';
+            return '$' + _.section + '$';
         }
 
 

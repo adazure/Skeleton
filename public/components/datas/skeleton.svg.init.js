@@ -2,10 +2,10 @@
 //          SKELETON SVG INIT
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
 
-    _.MODULE(function () {
+    _.MODULE(function() {
         // Bu alandaki prototype tanımlamaları sadece SVG nesnelerine tanımlanmıştır
 
         var glob = _.globalPrototype;
@@ -23,13 +23,13 @@
 
             // Global
 
-            Object.keys(glob.method).forEach(function (n) {
+            Object.keys(glob.method).forEach(function(n) {
                 e[i].prototype[n] = glob.method[n];
             });
 
             // Sadece SVG için
 
-            Object.keys(method).forEach(function (n) {
+            Object.keys(method).forEach(function(n) {
                 e[i].prototype[n] = method[n];
             });
 

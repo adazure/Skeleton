@@ -20,6 +20,7 @@
 
 
         function mouseover(a) {
+
             // Path üzerine gelindiğinde path'in kendisini seçili hale getir
             path.selectedPath = a.target;
 
@@ -28,6 +29,7 @@
 
 
             if (_.debugmode) {
+
                 //Path'in ID bilgisini ve title bilgisini aynı anda gösterir
                 tooltip.message(path.selectedPath.id + ' : ' + path.data[path.selectedPath.id].title, {
                     ev: a

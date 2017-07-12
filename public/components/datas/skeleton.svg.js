@@ -2,14 +2,14 @@
 //          SKELETON SVG
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
 
     _.svg = {
-        method:{},
+        method: {},
         // Global olarak istendiğinde erişileilecek methodların listesi
-        globals:{},
-        matrix:null
+        globals: {},
+        matrix: null
     }
-    
+
 })(Skeleton);

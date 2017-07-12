@@ -223,10 +223,6 @@
                                                 //console.log(__item.target.children[0].children[0]);
                                                 // Veritabanını güncelle
                                                 Skeleton.savechanges();
-
-                                                // Değişiklik yaptık bilgileri kaydettik.
-                                                // Bir hata oluşmaması ve değişikliklerin listede görünmesi için listeyi tekrar getirelim
-                                                gall.method.show(key);
                                                 
                                                 dialog.hide();
 

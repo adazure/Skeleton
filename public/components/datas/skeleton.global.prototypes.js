@@ -2,11 +2,11 @@
 //          SKELETON PROTOTYPES
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
-    
+(function(_) {
+
     _.globalPrototype = {
-        method:{},
-        extend:null
+        method: {},
+        extend: null
     }
 
 })(Skeleton);

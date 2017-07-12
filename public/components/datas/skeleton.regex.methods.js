@@ -2,10 +2,10 @@
 //          SKELETON REGEX METHOD
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
-    
+(function(_) {
 
-    _.MODULE(function(){
+
+    _.MODULE(function() {
 
 
 

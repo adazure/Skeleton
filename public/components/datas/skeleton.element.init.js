@@ -2,10 +2,10 @@
 //          SKELETON ELEMENT INIT
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
 
-    _.MODULE(function () {
+    _.MODULE(function() {
 
         // Yardımcılar
         var glob = _.globalPrototype;
@@ -22,14 +22,14 @@
 
             // Global
 
-            Object.keys(glob.method).forEach(function (n) {
+            Object.keys(glob.method).forEach(function(n) {
                 //extend(e[i], n, glob[n]);
                 e[i].prototype[n] = glob.method[n];
             });
 
             // Elements
 
-            Object.keys(el).forEach(function (n) {
+            Object.keys(el).forEach(function(n) {
                 //extend(e[i], n, el[n]);
                 e[i].prototype[n] = el[n];
             });

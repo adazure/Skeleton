@@ -14,25 +14,23 @@
         function removeContainer(ev, action) {
 
             isRemoved = false;
-            if (prom.container) {
-                prom.container.setClass('prev');
-                prom.content.setClass('prev');
+            prom.container.setClass('prev');
+            prom.content.setClass('prev');
 
-                if (time)
-                    clearTimeout(time);
+            if (time)
+                clearTimeout(time);
 
-                time = setTimeout(function () {
+            time = setTimeout(function () {
 
-                    // kaldır
-                    prom.container.remove();
-                    // Sıfırla
-                    prom.container = null;
+                // kaldır
+                prom.container.remove();
+                // Sıfırla
+                prom.container = null;
 
-                    // Sayfada animasyon ve silme işlemi tamamlandı
-                    isRemoved = true;
+                // Sayfada animasyon ve silme işlemi tamamlandı
+                isRemoved = true;
 
-                }, 1000);
-            }
+            }, 1000);
         }
 
 
@@ -49,6 +47,7 @@
                 if (!prom.container)
                     prom.container = new coll('div', { id: 'skeleton-prompter-container' })
                         .insert(parent.document.body);
+
 
                 change(args);
                 isRemoved = true;
@@ -68,43 +67,21 @@
 
         }
 
-        // Prompter'in mesajının görüntülendiği alan
-        // Burada mesaj alanı oluşturuluyor
         function change(args) {
 
-            // Önce var olan mesaj alanını kaldır
             removeContent(function () {
 
-                // Mesajın görüneceği container nesnesini oluştur
                 prom.content = new coll('div', { id: 'skeleton-prompter-content' })
                     .insert(prom.container.target);
 
-                // Başlık metni varsa başlığın görüneceği nesneyi oluştur ve başlığı ekle
-                if (args.title)
-                    prom.title = prom.content.create('div', { id: 'skeleton-prompter-title' })
-                        .setHTML(args.title);
+                prom.title = prom.content.create('div', { id: 'skeleton-prompter-title' })
+                    .setHTML(args.title);
 
-                // Metnin görüneceği nesneyi oluştur
-                prom.text = prom.content.create('div', { id: 'skeleton-prompter-text' });
+                prom.text = prom.content.create('div', { id: 'skeleton-prompter-text' })
+                    .setHTML(args.message);
 
-                // Görünecek metnin öncesinde gelen datanın array mi yoksa normal string mi olduğuna göre işlem yapılacak
-                if (typeof args.message === 'object')
-                    for (var i = 0, y = ""; i < args.message.length; i++) {
-                        var o = new coll('label')
-                            .setCSS({ 'display': 'block', 'margin-bottom': '7px' })
-                            .setHTML(args.message[i])
-                            .insert(prom.text.target);
-                    }
-                else {
-                    prom.text.setHTML(args.message);
-                }
-
-                if (args.closeVisible == undefined || args.closeVisible === true)
-                    prom.close = prom.content.create('div', { id: 'skeleton-prompter-close' })
-                        .setBind('click', args.close || removeContainer);
-                else {
-                    setTimeout(removeContainer, args.timer || 3000);
-                }
+                prom.close = prom.content.create('div', { id: 'skeleton-prompter-close' })
+                    .setBind('click', args.close || removeContainer);
 
             });
 

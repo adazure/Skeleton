@@ -2,9 +2,9 @@
 //          SKELETON MENU METHOD
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
+(function(_) {
 
-    _.MODULE(function () {
+    _.MODULE(function() {
 
         var method = _.menuObject.method;
         var menu = _.menuObject;
@@ -28,12 +28,12 @@
         function fillMenuItem() {
 
             // Veritabanından gelen datayı döngüye sok
-            Object.keys(_.data).forEach(function (key) {
+            Object.keys(_.data).forEach(function(key) {
 
-                if (!_.Request.section) return;
+                if (!_.section) return;
 
                 // Section bilgisini alalım
-                var sect = '$' + _.Request.section;
+                var sect = '$' + _.section;
 
                 // Aktif section değerine eşit bir kayıt varsa al
                 if (key.indexOf(sect) != -1) {
@@ -63,7 +63,7 @@
                         if (ky == inputchk) {
                             chk.checked = true;
                             w.children[1].remClass('menu-item-locked');
-                            
+
                         }
                     }
 
@@ -102,18 +102,18 @@
 
         function contextmenu(e) {
             e.preventDefault();
-            context.method.clear(function () {
+            context.method.clear(function() {
 
                 context.method.add({
                     title: _.lang.current.infoDeleteItemText,
-                    action: function () {
+                    action: function() {
 
                         dialog.show({
                             title: _.lang.current.infoDeleteItemTitle,
                             content: _.lang.current.infoDeleteItemQuestion,
                             button1: {
                                 text: _.lang.current.infoDeleteButton,
-                                action: function () {
+                                action: function() {
                                     // Silinecek nesneyi seç
                                     pathMethod.selectRemovedItem(e);
 
@@ -135,7 +135,7 @@
                             },
                             button2: {
                                 text: _.lang.current.infoCancelButton,
-                                action: function () {
+                                action: function() {
                                     // Context menüyü gizle
                                     context.method.hide();
 
@@ -155,7 +155,7 @@
                     var q = data[key].url || data[key].jsonData;
                     context.method.add({
                         title: _.lang.current.infoDetailButton,
-                        action: function () {
+                        action: function() {
                             e.target.trigger('click');
                             // Context menüyü gizle
                             context.method.hide();
@@ -237,14 +237,13 @@
 
                     skeletonGlobalMethod.setGlobal('up', __tooltipUp);
                     skeletonGlobalMethod.setGlobal('move', __tooltipMove);
-                }
-                else {
+                } else {
                     // Icon sahneye eklendiğinde, ilgili datanın detaylarının görüntülenebilmesi için tıklama ekliyoruz
                     // Tıklama yapıldığında detayları göster
                     clone.setBind('click', pathMethod.showPathDetails);
 
                     // Icon üzerine gelindiğinde görünecek mesajı görüntüleyelim
-                    clone.setBind('mouseover', function (e) {
+                    clone.setBind('mouseover', function(e) {
                         tooltip.message(_.lang.current.infoItemHoverText, { ev: e });
                     });
 
@@ -284,7 +283,7 @@
             clone.setBind('click', pathMethod.showPathDetails);
 
             // Icon üzerine gelindiğinde görünecek mesajı görüntüleyelim
-            clone.setBind('mouseover', function (e) {
+            clone.setBind('mouseover', function(e) {
                 tooltip.message(_.lang.current.infoItemHoverText, { ev: e });
             });
 

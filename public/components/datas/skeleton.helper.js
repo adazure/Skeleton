@@ -2,10 +2,10 @@
 //          SKELETON HELPER
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
-    
+(function(_) {
+
     _.helper = {
-        method:{}
+        method: {}
     };
 
 })(Skeleton);

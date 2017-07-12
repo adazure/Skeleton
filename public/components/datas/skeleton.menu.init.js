@@ -108,7 +108,7 @@
             var obj = ml[key];
 
             // Sadece section querystring değerine uygun olanları yükle
-            if (obj.section.indexOf(_.Request.section) != -1) {
+            if (obj.section.indexOf(_.section) != -1) {
 
 
                 //BU ALANDA MENU'DEKİ BUTONLAR YÜKLENMEKTEDİR

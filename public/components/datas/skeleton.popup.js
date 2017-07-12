@@ -2,14 +2,14 @@
 //          SKELETON POPUP
 /////////////////////////////////////////////////////////////////////////
 
-(function (_) {
-    
+(function(_) {
+
     _.popup = {
-        method:{},
-        objects:{},
+        method: {},
+        objects: {},
         // Popup açıldığında veritabanından gelebilecek datalar buraya aktarılacak
         // Kısacası; üzerinde değişiklik yapılacak verimiz
-        data:{}
+        data: {}
     };
 
 })(Skeleton);
